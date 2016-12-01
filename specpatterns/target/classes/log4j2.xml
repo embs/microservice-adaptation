@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- https://logging.apache.org/log4j/2.x/manual/configuration.html -->
+<Configuration status="INFO">
+	<Appenders>
+		<!-- https://logging.apache.org/log4j/2.x/manual/appenders.html#JeroMQAppender -->
+		<Console name="Console" target="SYSTEM_OUT">
+			<!-- https://marketplace.eclipse.org/content/ansi-escape-console -->
+			<!-- https://logging.apache.org/log4j/2.x/manual/layouts.html#PatternLayout -->
+			<PatternLayout pattern="%d{UNIX} [%t] %level %logger{36} - %msg%n" />
+		</Console>
+		<File name="LogFile" fileName="src/main/resources/logs/all.log"
+			immediateFlush="false" append="false">
+			<PatternLayout pattern="%d{UNIX} [%t] %-5level %logger{36} - %msg%n" />
+		</File>
+		<Socket name="Socket" host="localhost" port="5160" protocol="UDP">
+			<PatternLayout pattern="%d{UNIX} [%t] %level %logger{36} - %msg%n" />
+			<!-- <JSONLaout /> -->
+		</Socket>
+	</Appenders>
+	<Loggers>
+		<!-- additivity attribute allows show message in ROOT logger -->
+		<!-- <Logger name="com.adalrsjr.processor_unit.fluentd.subscriber.TraceSubscriber" 
+			level="ALL"> <AppenderRef ref="JeroMQAppender" /> </Logger> -->
+		<Root level="ALL">
+			<AppenderRef ref="Console" />
+		</Root>
+	</Loggers>
+</Configuration>

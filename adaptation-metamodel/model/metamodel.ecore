@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ecore:EPackage xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ecore="http://www.eclipse.org/emf/2002/Ecore" name="metamodel" nsURI="http://gfads.cin.ufpe.br/maveric" nsPrefix="metamodel">
+  <eClassifiers xsi:type="ecore:EClass" name="ICommand" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="commandParameter" eType="#//ICommandParameter"
+        containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="implementation" lowerBound="1"
+        eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CommandContext" eSuperTypes="#//ICommand">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="contextAttributes" upperBound="-1"
+        eType="#//ContextAttribute" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="Command" eSuperTypes="#//ICommand"/>
+  <eClassifiers xsi:type="ecore:EClass" name="CommandParameter" eSuperTypes="#//ICommandParameter">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="value" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ContextAttribute">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//ContextType"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="temporary" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EBoolean"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="contextImpl" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EJavaObject"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="AdaptationScript">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="commands" upperBound="-1"
+        eType="#//ICommand" containment="true"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="name" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="ContextType">
+    <eLiterals name="INTEGER"/>
+    <eLiterals name="DOUBLE" value="1"/>
+    <eLiterals name="STRING" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="CompositeCommandParameter" eSuperTypes="#//ICommandParameter">
+    <eStructuralFeatures xsi:type="ecore:EReference" name="value" upperBound="-1"
+        eType="#//ICommandParameter" containment="true"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EClass" name="ICommandParameter" abstract="true">
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="key" lowerBound="1" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"
+        iD="true"/>
+  </eClassifiers>
+</ecore:EPackage>

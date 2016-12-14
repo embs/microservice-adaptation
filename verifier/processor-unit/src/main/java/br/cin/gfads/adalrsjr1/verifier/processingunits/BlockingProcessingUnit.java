@@ -86,32 +86,4 @@ public class BlockingProcessingUnit extends AbstractProcessingUnit {
 		return result;
 	}
 	
-	public static void main(String[] args) throws InterruptedException {
-		PropertyInstance p = new TestProperty();
-		
-		Map<String, String> m1 = new HashMap<>();
-		m1.put("idx", "0");
-		
-		Map<String, String> m2 = new HashMap<>();
-		m2.put("idx", "3");
-		
-		BlockingProcessingUnit pu = new BlockingProcessingUnit(p, new SymptomEvent(null, m1), new SymptomEvent(null, m2),1000);
-
-		Thread t = new Thread(pu);
-		t.start();
-		pu.start();
-
-		
-		
-		pu.toEvaluate(new SymptomEvent(null, m2)); //0
-		pu.toEvaluate(new SymptomEvent(null, m2)); //1
-		pu.toEvaluate(new SymptomEvent(null, m1)); //2
-		
-		pu.toEvaluate(new SymptomEvent(null, m1)); //3
-		pu.toEvaluate(new SymptomEvent(null, m1)); //0
-		pu.toEvaluate(new SymptomEvent(null, m2)); //1
-		pu.toEvaluate(new SymptomEvent(null, m2)); //2
-		Thread.sleep(10000);
-		t.interrupt();
-	}
 }

@@ -1,2 +1,2 @@
-{"changeRequest":"changeRequest0", "action":"testScript", "priority":0}
-{"changeRequest":"changeRequest1", "action":"testScript", "priority":1}
+{"changeRequest":"mock0", "action":"testScript", "priority":0}
+{"changeRequest":"mock1", "action":"testScript", "priority":1}

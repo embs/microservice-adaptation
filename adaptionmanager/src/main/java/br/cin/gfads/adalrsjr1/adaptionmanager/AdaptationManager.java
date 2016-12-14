@@ -4,6 +4,7 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,8 +42,7 @@ public class AdaptationManager implements AutoCloseable, ContextListener {
 			while(!stopped && !Thread.currentThread().isInterrupted()) {
 				try {
 					ChangePlanEvent changePlan = manager.queue.take();
-					String adaptationScript = changePlan.getAdaptationScript();
-					manager.execute(adaptationScript);
+					manager.execute(changePlan);
 				}
 				catch (InterruptedException e) {
 					Thread.currentThread().interrupt();
@@ -78,7 +78,7 @@ public class AdaptationManager implements AutoCloseable, ContextListener {
 		worker = new AdaptationQueueWorker(this);
 		
 		tPool = Executors.newCachedThreadPool(Util.threadFactory("adaptation-manager-%d"));
-		log.info("AdaptationManager instantited in {}", watch.stop());
+		Util.instrumentation("AdaptationManager-Constructor", watch.stop().elapsed(TimeUnit.MILLISECONDS), "AdaptationManager instantiated in");
 	}
 	
 	void init() {
@@ -100,17 +100,18 @@ public class AdaptationManager implements AutoCloseable, ContextListener {
 		stop();
 	}
 	
-	private void execute(String adaptationScriptName) {
+	private void execute(ChangePlanEvent changePlan) {
 		Stopwatch watch = Stopwatch.createStarted();
 		
-		Script script = repository.getAdaptationScript(adaptationScriptName);
+		Script script = repository.getAdaptationScript(changePlan.getAdaptationScript());
+		Util.instrumentation("AdaptationManager-execute", TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-changePlan.getTime()), "workflow time before to adapt");
 		if(script != null) {	
 			engine.execute(script);
 		}
 		else {
-			log.warn("no script with name {}", adaptationScriptName);
+			Util.instumentation(log, "message", "no script with name " + changePlan.getAdaptationScript());
 		}
-		log.info("adaptation performed in {} ", watch.stop());
+		Util.instrumentation("AdaptationManager-executor", watch.stop().elapsed(TimeUnit.MILLISECONDS), "adaptation performed in");
 	}
 	
 	@Override

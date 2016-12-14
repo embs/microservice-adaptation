@@ -15,7 +15,6 @@ public class PolicyRepositoryFileImpl implements PolicyRepository {
 
 	PolicyRepositoryFileImpl() {
 		this(Planner.CONFIG.policiesRepository)
-		
 	}
 		
 	PolicyRepositoryFileImpl(String path) {

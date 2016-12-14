@@ -16,8 +16,11 @@ public class ChangePlanEvent extends CommonEvent implements Comparable {
 	private int priority
 	@JsonProperty("adaptationScript")
 	private String adaptationScript
-	
-	ChangePlanEvent() { super() }
+	@JsonProperty("time")
+	public long time;
+	ChangePlanEvent() { super()
+		time = System.nanoTime()
+	}
 	
 	/**
 	 * 
@@ -31,6 +34,14 @@ public class ChangePlanEvent extends CommonEvent implements Comparable {
 		super(source)
 		this.priority = priority
 		this.adaptationScript = adaptationScript
+	}
+	
+	public long getTime() {
+		time
+	}
+	
+	public void setTime(long t) {
+		time = t;
 	}
 					
 	int getPriority() {

@@ -13,7 +13,7 @@ import groovy.transform.ToString
 public abstract class CommonEvent {
 
 	@JsonProperty("source")
-	private def source 
+	protected def source 
 	
 	private static final Logger log = LoggerFactory.getLogger(CommonEvent.class);
 	

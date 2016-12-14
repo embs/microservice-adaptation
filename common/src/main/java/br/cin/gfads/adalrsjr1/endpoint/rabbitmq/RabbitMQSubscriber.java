@@ -30,6 +30,7 @@ import com.rabbitmq.client.Consumer;
 import com.rabbitmq.client.DefaultConsumer;
 import com.rabbitmq.client.Envelope;
 
+import br.cin.gfads.adalrsjr1.common.events.SymptomEvent;
 import br.cin.gfads.adalrsjr1.endpoint.ReceiverEndpoint;
 
 public class RabbitMQSubscriber implements ReceiverEndpoint {
@@ -228,7 +229,8 @@ public class RabbitMQSubscriber implements ReceiverEndpoint {
 				.withExchangeDurable(true)
 				.withExchangeName("fluentd.fanout")
 				.withExchangeType(FANOUT)
-				.withHost("10.0.75.1")
+				//.withHost("10.0.75.1")
+				.withHost("10.66.66.22")
 				.withRoutingKey("")
 				.build();
 		int i = 0;
@@ -236,24 +238,18 @@ public class RabbitMQSubscriber implements ReceiverEndpoint {
 		while(true) {
 
 			try{
-				String message = new String(buffer.take());
 				Stopwatch watch = Stopwatch.createStarted();
-				ObjectMapper mapper = new ObjectMapper();
-				Map<String, String> containerLog = new HashMap<>();
-				// convert JSON string to Map
-				containerLog = mapper.readValue(message, new TypeReference<Map<String, String>>(){});
-
-				ObjectMapper mapper2 = new ObjectMapper();
-				Map<String, String> appLog = new HashMap<>();
-				appLog = mapper.readValue(containerLog.get("log"), new TypeReference<Map<String, String>>(){});
+				SymptomEvent symptom = new SymptomEvent(null, buffer.take());
 				
-				long t1 = Long.parseLong(appLog.get("timeMillis"));
+				System.err.println(symptom);
+				
+				long t1 = Long.parseLong(symptom.tryGet("timeMillis"));
 				long t2 = System.currentTimeMillis();
 				
 				System.out.println(watch.stop() + " :: " + t1 + " :: " + t2 + " :: " + (t2-t1) + "ms");
 				
 			} catch(Exception e) {
-				continue;
+				e.printStackTrace();
 			}
 
 		}

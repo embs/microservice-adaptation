@@ -4,6 +4,9 @@ import br.cin.gfads.adalrsjr1.common.MicroserviceInfo
 import groovy.transform.ToString
 
 import com.fasterxml.jackson.annotation.JsonProperty
+
+import java.util.concurrent.TimeUnit
+
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +19,9 @@ public class ChangeRequestEvent extends CommonEvent {
 	private String name
 	@JsonProperty("metadata")
 	private Map<String, String> metadata
+	
+	@JsonProperty("time")
+	private long time = 0;
 	
 	private static ChangeRequestEvent nullChangeRequestEvent = new ChangeRequestEvent("NULL", new Object(), Collections.emptyMap());
 	
@@ -30,7 +36,17 @@ public class ChangeRequestEvent extends CommonEvent {
 					   @JsonProperty("metadata") Map<String, String> metadata) {
 		super(source)
 		this.name = name
-		this.metadata = Collections.unmodifiableMap(metadata)
+		if(metadata)
+			this.metadata = Collections.unmodifiableMap(metadata)
+		
+	}
+	
+	public long getTime() {
+		time
+	}
+	
+	public void setTime(long t) {
+		time = t
 	}
 	
 	String getName() {
@@ -41,9 +57,4 @@ public class ChangeRequestEvent extends CommonEvent {
 		metadata
 	}
 	
-	@Override
-	MicroserviceInfo getSource() {
-		super.source
-	}
-					   
 }

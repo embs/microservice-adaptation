@@ -4,6 +4,7 @@ import static br.cin.gfads.adalrsjr1.endpoint.rabbitmq.ExchangeType.FANOUT;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -96,6 +97,18 @@ public class RabbitMQProcessingUnitWrapper implements ProcessingUnitListener, Ru
 	}
 	
 	public static void main(String[] args) throws InterruptedException {
+		BlockingQueue<byte[]> buffer = new ArrayBlockingQueue<>(100);
+
+		RabbitMQSubscriber sub = RabbitMQSubscriber.builder()
+				.withBuffer(buffer)
+				.withExchangeDurable(true)
+				.withExchangeName("fluentd.fanout")
+				.withExchangeType(FANOUT)
+				//.withHost("10.0.75.1")
+				.withHost("10.66.66.22")
+				.withRoutingKey("")
+				.build();
+		
 		
 		PropertyInstance p = new TestProperty();
 		OneByOneProcessingUnit pu = new OneByOneProcessingUnit(p);
@@ -104,21 +117,9 @@ public class RabbitMQProcessingUnitWrapper implements ProcessingUnitListener, Ru
 		
 		ExecutorService executor = Executors.newSingleThreadExecutor(Util.threadFactory("rabbitmq-wrapper-processing-unit"));
 		executor.execute(wrapper);
-		
 
-		Map<String, String> m = new HashMap<>();
-		m.put("idx", "0");
-		
-		pu.toEvaluate(new SymptomEvent(null, m)); //0
-		pu.toEvaluate(new SymptomEvent(null, m)); //1
-		pu.toEvaluate(new SymptomEvent(null, m)); //2
-		m = new HashMap<>();
-		m.put("idx", "3");
-		pu.toEvaluate(new SymptomEvent(null, m)); //3
-		Thread.sleep(5000);
-		wrapper.stop();
-		
-		
+		while(true)
+			pu.toEvaluate(new SymptomEvent(buffer.take()));
 		
 	}
 }

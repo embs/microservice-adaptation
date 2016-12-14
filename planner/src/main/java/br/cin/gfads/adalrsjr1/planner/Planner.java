@@ -90,7 +90,9 @@ public class Planner  {
 		List<Policy> policies = repository.fetchAdaptationPlans(changeRequest);
 		while(!policies.isEmpty()) {
 			Policy policy = policies.remove(0);
-			enqueue(new ChangePlanEvent(policy, policy.getPriority(), policy.getAction()));
+			ChangePlanEvent event = new ChangePlanEvent(policy, policy.getPriority(), policy.getAction());
+			event.setTime(changeRequest.getTime());
+			enqueue(event);
 		}
 	}
 
@@ -110,31 +112,33 @@ public class Planner  {
 		Planner planner = new Planner(queue, repository);
 		planner.start();
 
-		RabbitMQProducer producer = RabbitMQProducer.builder()
-				.withDurable(CONFIG.rabbitmqQueueDurable)
-				.withHost(CONFIG.host)
-				.withPort(CONFIG.port)
-				.withQueue(CONFIG.rabbitmqQueueName) 
-				.build();
-
-		ExecutorService tpool = Executors.newCachedThreadPool();
-
-		tpool.execute(() -> {
-			Random r = new Random();
-			long x = 1000;
-			for(;;) {
-				int n = r.nextInt(2);
-				System.out.println("changeRequest"+n);
-				producer.send(new ChangeRequestEvent("changeRequest"+n, null, new HashMap<>()).serialize());
-				try {
-					Thread.sleep(x);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		});
-
-		tpool.shutdown();
+//		RabbitMQProducer producer = RabbitMQProducer.builder()
+//				.withDurable(CONFIG.rabbitmqQueueDurable)
+//				.withHost(CONFIG.host)
+//				.withPort(CONFIG.port)
+//				.withQueue(CONFIG.rabbitmqQueueName) 
+//				.build();
+//
+//		ExecutorService tpool = Executors.newCachedThreadPool();
+//
+//		tpool.execute(() -> {
+//			Random r = new Random();
+//			long x = 1000;
+//			for(;;) {
+//				int n = r.nextInt(2);
+//				System.out.println("changeRequest"+n);
+//				ChangeRequestEvent ev = new ChangeRequestEvent("changeRequest"+n, null, new HashMap<>());
+//				ev.setTime(System.nanoTime());
+//				producer.send(ev.serialize());
+//				try {
+//					Thread.sleep(x);
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//
+//		tpool.shutdown();
 	}
 
 

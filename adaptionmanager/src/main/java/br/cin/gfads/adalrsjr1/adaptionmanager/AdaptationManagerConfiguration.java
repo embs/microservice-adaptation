@@ -4,12 +4,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Stopwatch;
 
+import br.cin.gfads.adalrsjr1.common.Util;
 import br.cin.gfads.adalrsjr1.jeromq.ZmqRunnable.ZmqProtocol;
 
 public class AdaptationManagerConfiguration {
@@ -39,7 +41,7 @@ public class AdaptationManagerConfiguration {
 		rabbitmqPriorityQueueName = properties.getProperty(PREFIX + "rabbitmq.priorityqueue-name",PREFIX+System.currentTimeMillis());
 		rabbitmqPriorityDurable = Boolean.valueOf(properties.getProperty(PREFIX + "rabbitmq.priorityqueue-durable","false"));
 		
-		log.info("Properties of AdaptationManager loaded in {}", watcher.stop());
+		Util.instrumentation("AdaptationManagerConfiguration-constructor", watcher.stop().elapsed(TimeUnit.MILLISECONDS), "Properties of AdaptationManaged loaded in ");
 	}
 	
 	public static AdaptationManagerConfiguration getInstance() {

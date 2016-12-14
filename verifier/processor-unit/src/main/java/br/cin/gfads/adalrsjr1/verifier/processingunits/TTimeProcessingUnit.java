@@ -52,30 +52,4 @@ public class TTimeProcessingUnit extends AbstractProcessingUnit {
 		return changeRequest;
 	}
 	
-	public static void main(String[] args) throws InterruptedException {
-		PropertyInstance p = new TestProperty();
-		TTimeProcessingUnit pu = new TTimeProcessingUnit(p, 1000);
-
-		Thread t = new Thread(pu);
-		t.start();
-		pu.start();
-
-		Map<String, String> m = new HashMap<>();
-		m.put("idx", "3");
-		Thread.sleep(700);
-		pu.toEvaluate(new SymptomEvent(null, m)); //0
-		pu.toEvaluate(new SymptomEvent(null, m)); //1
-		Thread.sleep(500);
-		pu.toEvaluate(new SymptomEvent(null, m)); //2
-		m = new HashMap<>();
-		m.put("idx", "3");
-		pu.toEvaluate(new SymptomEvent(null, m)); //3
-		pu.toEvaluate(new SymptomEvent(null, m)); //0
-		pu.toEvaluate(new SymptomEvent(null, m)); //1
-		Thread.sleep(600);
-		pu.toEvaluate(new SymptomEvent(null, m)); //2
-		Thread.sleep(10000);
-		t.interrupt();
-	}
-
 }

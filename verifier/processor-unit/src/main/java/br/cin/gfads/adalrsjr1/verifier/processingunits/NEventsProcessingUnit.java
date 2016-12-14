@@ -48,28 +48,5 @@ public class NEventsProcessingUnit extends AbstractProcessingUnit{
 		return changeRequest;
 	}
 	
-	public static void main(String[] args) throws InterruptedException {
-		PropertyInstance p = new TestProperty();
-		NEventsProcessingUnit pu = new NEventsProcessingUnit(p, 2);
-
-		Thread t = new Thread(pu);
-		t.start();
-		pu.start();
-
-		Map<String, String> m = new HashMap<>();
-		m.put("idx", "3");
-		
-		pu.toEvaluate(new SymptomEvent(null, m)); //0
-		pu.toEvaluate(new SymptomEvent(null, m)); //1
-		pu.toEvaluate(new SymptomEvent(null, m)); //2
-		m = new HashMap<>();
-		m.put("idx", "3");
-		pu.toEvaluate(new SymptomEvent(null, m)); //3
-		pu.toEvaluate(new SymptomEvent(null, m)); //0
-		pu.toEvaluate(new SymptomEvent(null, m)); //1
-		pu.toEvaluate(new SymptomEvent(null, m)); //2
-		Thread.sleep(10000);
-		t.interrupt();
-	}
 
 }

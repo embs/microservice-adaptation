@@ -20,7 +20,7 @@ import org.slf4j.LoggerFactory
 class HelloWorld {
 	private static final Logger log = LoggerFactory.getLogger(HelloWorld)
 	
-	private static final Random r = new Random(31);
+	private static final Random r = new Random();
 	
 	private static final int deviation = 100;
 	private static final int average = 1000;

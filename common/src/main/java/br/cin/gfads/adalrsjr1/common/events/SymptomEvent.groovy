@@ -16,6 +16,10 @@ public class SymptomEvent extends CommonEvent {
 	@JsonProperty("content")
 	private Map<String, String> content
 	
+	public SymptomEvent(byte[] message) {
+		throw new RuntimeException("yet not implemented");
+	}
+	
 	public SymptomEvent() { super() }
 	
 	public SymptomEvent(@JsonProperty("source") MicroserviceInfo source, 

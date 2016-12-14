@@ -121,7 +121,7 @@ public class Planner  {
 
 		tpool.execute(() -> {
 			Random r = new Random();
-			long x = 1000/10;
+			long x = 1000;
 			for(;;) {
 				int n = r.nextInt(2);
 				System.out.println("changeRequest"+n);

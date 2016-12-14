@@ -2,7 +2,7 @@ FROM openjdk:8-jdk-alpine
 
 RUN mkdir -p /home/app/repository
 
-COPY ../target/planner.jar /home/app
+COPY ../target/Planner.jar /home/app
 VOLUME ["/home/app/repository"]
 
 WORKDIR /home/app

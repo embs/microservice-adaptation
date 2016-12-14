@@ -1,0 +1,1 @@
+docker run -it --rm --name server -p "8080:8080" --log-driver=fluentd --log-opt fluentd-address=localhost:24224 --log-opt fluentd-async-connect=true --log-opt tag="{{.Name}}/{{.FullID}}" app/server

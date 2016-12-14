@@ -25,6 +25,10 @@ public class MicroserviceInfo {
 		this.microserviceName = microserviceName
 		this.host = host
 	}
+					 
+	public static MicroserviceInfo timeout() {
+		return new MicroserviceInfo("timeout", "0.0.0.0");
+	}
 
 	byte[] serialize() {
 		ObjectMapper mapper = new ObjectMapper()

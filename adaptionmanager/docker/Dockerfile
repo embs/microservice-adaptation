@@ -1,7 +1,5 @@
 FROM openjdk:8-jdk-alpine
 
-RUN apk --no-cache --update add tzdata openntpd
-RUN cp /usr/share/zoneinfo/America/Recife /etc/localtime && echo "America/Recife" > /etc/timezone
 RUN mkdir -p /home/app/scripts
 
 COPY target/AdaptationManager.jar /home/app

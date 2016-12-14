@@ -12,8 +12,7 @@
 		<Console name="Console" target="SYSTEM_OUT">
 			<!-- https://marketplace.eclipse.org/content/ansi-escape-console -->
 			<!-- https://logging.apache.org/log4j/2.x/manual/layouts.html#PatternLayout -->
-			<PatternLayout pattern="%d{UNIX} [%t] %highlight{%-5level}{STYLE=logback} 
-				%logger{36} - %msg%n" />
+			<PatternLayout pattern="%d{UNIX} [%t] %-5level %logger{36} - %msg%n" />
 		</Console>
 		<File name="LogFile" fileName="src/main/resources/logs/all.log"
 			immediateFlush="false" append="false">

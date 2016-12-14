@@ -4,12 +4,24 @@ import static br.cin.gfads.adalrsjr1.endpoint.rabbitmq.ExchangeType.FANOUT;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TimeZone;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.common.base.Stopwatch;
 import com.rabbitmq.client.AMQP;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -32,16 +44,16 @@ public class RabbitMQSubscriber implements ReceiverEndpoint {
 		private BlockingQueue<byte[]> buffer;
 		private ExchangeType exchangeType; 
 		private int port = 5672;
-		
+
 		public int getPort() {
 			return port;
 		}
-		
+
 		public Builder withPort(int port) {
 			this.port = port;
 			return this;
 		}
-		
+
 		public String getExchangeName() {
 			return exchangeName;
 		}
@@ -97,7 +109,7 @@ public class RabbitMQSubscriber implements ReceiverEndpoint {
 			finally {
 				return subscriber;
 			}
-			
+
 		}
 	}
 
@@ -123,7 +135,7 @@ public class RabbitMQSubscriber implements ReceiverEndpoint {
 		factory.setAutomaticRecoveryEnabled(true);
 		factory.setHost(builder.getHost());
 		factory.setPort(builder.getPort());
-		
+
 		try {
 			connection = factory.newConnection();
 			channel = connection.createChannel();
@@ -208,21 +220,42 @@ public class RabbitMQSubscriber implements ReceiverEndpoint {
 
 	}
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws Exception {
 		BlockingQueue<byte[]> buffer = new ArrayBlockingQueue<>(100);
 
 		RabbitMQSubscriber sub = RabbitMQSubscriber.builder()
 				.withBuffer(buffer)
 				.withExchangeDurable(true)
-				.withExchangeName("fluent.fanout")
+				.withExchangeName("fluentd.fanout")
 				.withExchangeType(FANOUT)
 				.withHost("10.0.75.1")
 				.withRoutingKey("")
 				.build();
+		int i = 0;
 
 		while(true) {
-			String message = new String(buffer.take());
-			System.err.println(" [x] " + " Received '" + message + "'");
+
+			try{
+				String message = new String(buffer.take());
+				Stopwatch watch = Stopwatch.createStarted();
+				ObjectMapper mapper = new ObjectMapper();
+				Map<String, String> containerLog = new HashMap<>();
+				// convert JSON string to Map
+				containerLog = mapper.readValue(message, new TypeReference<Map<String, String>>(){});
+
+				ObjectMapper mapper2 = new ObjectMapper();
+				Map<String, String> appLog = new HashMap<>();
+				appLog = mapper.readValue(containerLog.get("log"), new TypeReference<Map<String, String>>(){});
+				
+				long t1 = Long.parseLong(appLog.get("timeMillis"));
+				long t2 = System.currentTimeMillis();
+				
+				System.out.println(watch.stop() + " :: " + t1 + " :: " + t2 + " :: " + (t2-t1) + "ms");
+				
+			} catch(Exception e) {
+				continue;
+			}
+
 		}
 	}
 

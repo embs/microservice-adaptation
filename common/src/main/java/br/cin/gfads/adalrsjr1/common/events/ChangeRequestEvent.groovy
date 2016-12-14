@@ -17,6 +17,12 @@ public class ChangeRequestEvent extends CommonEvent {
 	@JsonProperty("metadata")
 	private Map<String, String> metadata
 	
+	private static ChangeRequestEvent nullChangeRequestEvent = new ChangeRequestEvent("NULL", new Object(), Collections.emptyMap());
+	
+	public static ChangeRequestEvent getNullChangeRequestEvent() {
+		return nullChangeRequestEvent;
+	}
+	
 	ChangeRequestEvent() { super() }
 	
 	ChangeRequestEvent(@JsonProperty("name") name,

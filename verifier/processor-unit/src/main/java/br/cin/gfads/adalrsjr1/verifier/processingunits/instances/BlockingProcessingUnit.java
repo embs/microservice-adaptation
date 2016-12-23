@@ -1,4 +1,4 @@
-package br.cin.gfads.adalrsjr1.verifier.processingunits;
+package br.cin.gfads.adalrsjr1.verifier.processingunits.instances;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -13,6 +13,7 @@ import br.cin.gfads.adalrsjr1.common.MicroserviceInfo;
 import br.cin.gfads.adalrsjr1.common.events.ChangeRequestEvent;
 import br.cin.gfads.adalrsjr1.common.events.SymptomEvent;
 import br.cin.gfads.adalrsjr1.verifier.PropertyInstance;
+import br.cin.gfads.adalrsjr1.verifier.processingunits.AbstractProcessingUnit;
 import br.cin.gfads.adalrsjr1.verifier.properties.TestProperty;
 
 public class BlockingProcessingUnit extends AbstractProcessingUnit {

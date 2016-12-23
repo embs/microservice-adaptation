@@ -20,7 +20,8 @@ import br.cin.gfads.adalrsjr1.verifier.PropertyInstance;
 
 abstract public class AbstractProcessingUnit implements ProcessingUnit {
 
-	private static final Logger log = LoggerFactory.getLogger(AbstractProcessingUnit.class);
+	private static final Logger log = LoggerFactory
+			.getLogger(AbstractProcessingUnit.class);
 
 	protected BlockingQueue<SymptomEvent> symptomBuffer;
 	protected List<ProcessingUnitListener> listeners;
@@ -50,7 +51,6 @@ abstract public class AbstractProcessingUnit implements ProcessingUnit {
 		log.trace("Processing Unit waiting to be started...");
 	}
 
-
 	@Override
 	public void addListener(ProcessingUnitListener listener) {
 		listeners.add(listener);
@@ -65,7 +65,7 @@ abstract public class AbstractProcessingUnit implements ProcessingUnit {
 	public synchronized void start() {
 		watch.start();
 		stoped = false;
-		latch.countDown();
+//		latch.countDown();
 
 		log.trace("Processing Unit started...");
 	}
@@ -83,22 +83,26 @@ abstract public class AbstractProcessingUnit implements ProcessingUnit {
 		try {
 			latch.await();
 
-			while(!stoped && !Thread.currentThread().isInterrupted()) {
+			while (!stoped && !Thread.currentThread().isInterrupted()) {
 				Stopwatch watch = Stopwatch.createStarted();
 				ChangeRequestEvent changeRequest;
-				
+
 				changeRequest = evaluate();
-				log.trace("evaluation result {}",changeRequest);
-				if(changeRequest != ChangeRequestEvent.getNullChangeRequestEvent()) {
+				log.trace("evaluation result {}", changeRequest);
+				if (changeRequest != ChangeRequestEvent
+						.getNullChangeRequestEvent()) {
 					listeners.stream().forEach(l -> {
 						l.notify(changeRequest);
 					});
 				}
-				Util.instrumentation("AbstractProcessingUnit-"+property.getName(), watch.elapsed(TimeUnit.MILLISECONDS), "evaluation of property performed in");
+				Util.instrumentation(
+						"AbstractProcessingUnit-" + property.getName(),
+						watch.elapsed(TimeUnit.MILLISECONDS),
+						"evaluation of property performed in");
 			}
 
 		}
-		catch(InterruptedException e) {
+		catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 			log.error(e.getMessage());
 		}
@@ -106,12 +110,12 @@ abstract public class AbstractProcessingUnit implements ProcessingUnit {
 
 	@Override
 	public synchronized boolean toEvaluate(SymptomEvent symptom) {
-		
+		latch.countDown();
 		boolean result = symptomBuffer.offer(symptom);
-		if(result) {
+		if (result) {
 			count.incrementAndGet();
 		}
-		
+
 		return result;
 	}
 

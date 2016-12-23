@@ -1,7 +1,7 @@
-package br.cin.gfads.adalrsjr1.common.events;
+package br.cin.gfads.adalrsjr1.common.events
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.core.type.TypeReference
@@ -17,7 +17,7 @@ public class SymptomEvent extends CommonEvent {
 	@JsonProperty("content")
 	private Map content
 	
-	public final long TIME; 
+	public final long TIME 
 	
 	public SymptomEvent() { 
 		super()
@@ -25,18 +25,18 @@ public class SymptomEvent extends CommonEvent {
 	}
 	
 	public SymptomEvent(byte[] message) {
-		this(null, message);
+		this(null, message)
 	}
 	
 	public SymptomEvent(Object source, byte[] message) {
-		TIME = System.nanoTime();
+		TIME = System.nanoTime()
 		content = deserialize(message)
 		super.source = tryGet('container_id')
 	}
 	
 	public SymptomEvent(Object source, Map content) {
 		super(source)
-		TIME = System.nanoTime();
+		TIME = System.nanoTime()
 		this.content = content
 	}
 	

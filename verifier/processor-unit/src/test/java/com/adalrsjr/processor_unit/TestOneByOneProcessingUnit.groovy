@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import br.cin.gfads.adalrsjr1.common.events.SymptomEvent
 import br.cin.gfads.adalrsjr1.verifier.PropertyInstance
-import br.cin.gfads.adalrsjr1.verifier.processingunits.OneByOneProcessingUnit
+import br.cin.gfads.adalrsjr1.verifier.processingunits.instances.OneByOneProcessingUnit
 import br.cin.gfads.adalrsjr1.verifier.properties.TestProperty
 
 public class TestOneByOneProcessingUnit extends GroovyTestCase {

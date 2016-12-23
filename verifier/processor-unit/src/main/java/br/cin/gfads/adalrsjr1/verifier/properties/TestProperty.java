@@ -12,7 +12,7 @@ import br.cin.gfads.adalrsjr1.common.Util;
 import br.cin.gfads.adalrsjr1.common.events.SymptomEvent;
 import br.cin.gfads.adalrsjr1.endpoint.rabbitmq.RabbitMQSubscriber;
 import br.cin.gfads.adalrsjr1.verifier.PropertyInstance;
-import br.cin.gfads.adalrsjr1.verifier.processingunits.OneByOneProcessingUnit;
+import br.cin.gfads.adalrsjr1.verifier.processingunits.instances.OneByOneProcessingUnit;
 import br.cin.gfads.adalrsjr1.verifier.processingunits.wrappers.RabbitMQProcessingUnitWrapper;
 
 public class TestProperty implements PropertyInstance {

@@ -26,7 +26,8 @@ public class App {
 		int rate = Integer.parseInt(env.getOrDefault("THROTTLE", "1")) % 1000;
 		
 		int cores = Runtime.getRuntime().availableProcessors();
-		ExecutorService tPool = Executors.newFixedThreadPool((int)Math.round(rate/2)+1 * cores);
+		
+		ExecutorService tPool = Executors.newWorkStealingPool()//Executors.newFixedThreadPool((int)Math.round(rate/2)+1 * cores);
 		RateLimiter throttle = RateLimiter.create(rate);
 		
 		for(;;) {

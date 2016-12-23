@@ -1,30 +1,31 @@
-package br.cin.gfads.adalrsjr1.verifier.properties.temporal;
+package br.cin.gfads.adalrsjr1.verifier.properties.temporal
 
 import java.util.concurrent.TimeUnit
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import com.google.common.base.Stopwatch
 
-import br.cin.gfads.adalrsjr1.common.events.SymptomEvent;
+import br.cin.gfads.adalrsjr1.common.events.SymptomEvent
+import groovy.transform.CompileStatic
 import groovy.transform.Memoized
-import jhoafparser.ast.BooleanExpression;
+import jhoafparser.ast.BooleanExpression
 import jhoafparser.consumer.HOAConsumerPrint
 import jhoafparser.consumer.HOAConsumerStore
 import jhoafparser.parser.HOAFParser
-import jhoafparser.storage.StoredAutomaton;
+import jhoafparser.storage.StoredAutomaton
 
 public class LabeledTransitionSystem {
 
-	private static final Logger log = LoggerFactory.getLogger(LabeledTransitionSystem.class);
+	private static final Logger log = LoggerFactory.getLogger(LabeledTransitionSystem.class)
 
 	private StoredAutomaton storedAutomaton
 	private int currentState = 0
 	private Stopwatch timeInCurrentState
 	private TimeUnit timeUnit
 	
-	private List listeners = []
+	private List<LabeledTransitionSystemListener> listeners = []
 	
 	private LabeledTransitionSystem(StoredAutomaton automaton, TimeUnit standardTimeUnit) {
 		storedAutomaton = automaton
@@ -50,7 +51,7 @@ public class LabeledTransitionSystem {
 		}
 	}
 	
-	public static labeledTransitionSystemFactory(String ltlProperty, TimeUnit timeUnit) {
+	public static LabeledTransitionSystem labeledTransitionSystemFactory(String ltlProperty, TimeUnit timeUnit) {
 		String LTL_GENERATOR = "ltl2tgba"
 		String LTL_GENERATOR_ARGS = "-B -D -G --lenient"
 		
@@ -78,6 +79,10 @@ public class LabeledTransitionSystem {
 	
 	public long getElapsedTimeInCurrentState(TimeUnit timeUnit) {
 		return timeInCurrentState.elapsed(timeUnit)
+	}
+	
+	public void resetLts() {
+		setCurrentState(0, new SymptomEvent())
 	}
 	
 	private void setCurrentState(int state, SymptomEvent event) {
@@ -162,10 +167,10 @@ public class LabeledTransitionSystem {
 			boolean result = evaluate(transition.labelExpr, event)
 			if(result) {
 				setCurrentState(transition.conjSuccessors.first(), event)
-				return true
+				return isInAcceptanceState()
 			}
 		}
-		return false
+		return isInAcceptanceState()
 	}
 	
 	boolean next(SymptomEvent event) {

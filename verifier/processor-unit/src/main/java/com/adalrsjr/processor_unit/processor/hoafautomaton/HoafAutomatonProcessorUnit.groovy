@@ -120,15 +120,7 @@ class HoafAutomatonProcessorUnit implements IProcessorUnit {
 		return result
 	}
 
-	@Memoized
-	private Map stringToMap(String token) {
-		def splited = token.split(":")
-		def map = [:]
-		map[splited[0]] = splited[1]
-		return map
-	}
-
-	@Memoized
+	
 	boolean evaluate(BooleanExpression expression, Map toEvaluate) {
 		BooleanExpression root = expression
 		boolean leftResult = null, rightResult = null, result = true

@@ -49,7 +49,7 @@ public class SymptomEvent extends CommonEvent {
 	}
 	
 	public String tryGet(String key) {
-		content.getOrDefault(key, content['log'].getOrDefault(key, content['log']['message']['key']))
+		content.getOrDefault(key, content['log'].getOrDefault(key, content['log']['message'][key]))
 	}
 	
 	@Override

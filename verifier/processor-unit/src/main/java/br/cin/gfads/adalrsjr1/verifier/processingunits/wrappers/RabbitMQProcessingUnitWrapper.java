@@ -96,30 +96,4 @@ public class RabbitMQProcessingUnitWrapper implements ProcessingUnitListener, Ru
 		plannerProducer.send(changeRequest.serialize());
 	}
 	
-	public static void main(String[] args) throws InterruptedException {
-		BlockingQueue<byte[]> buffer = new ArrayBlockingQueue<>(100);
-
-		RabbitMQSubscriber sub = RabbitMQSubscriber.builder()
-				.withBuffer(buffer)
-				.withExchangeDurable(true)
-				.withExchangeName("fluentd.fanout")
-				.withExchangeType(FANOUT)
-				//.withHost("10.0.75.1")
-				.withHost("10.66.66.22")
-				.withRoutingKey("")
-				.build();
-		
-		
-		PropertyInstance p = new TestProperty();
-		OneByOneProcessingUnit pu = new OneByOneProcessingUnit(p);
-
-		RabbitMQProcessingUnitWrapper wrapper = new RabbitMQProcessingUnitWrapper(pu);
-		
-		ExecutorService executor = Executors.newSingleThreadExecutor(Util.threadFactory("rabbitmq-wrapper-processing-unit"));
-		executor.execute(wrapper);
-
-		while(true)
-			pu.toEvaluate(new SymptomEvent(buffer.take()));
-		
-	}
 }

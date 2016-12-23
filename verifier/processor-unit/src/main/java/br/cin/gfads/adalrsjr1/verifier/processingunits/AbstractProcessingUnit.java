@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Stopwatch;
 
+import br.cin.gfads.adalrsjr1.common.Util;
 import br.cin.gfads.adalrsjr1.common.events.ChangeRequestEvent;
 import br.cin.gfads.adalrsjr1.common.events.SymptomEvent;
 import br.cin.gfads.adalrsjr1.verifier.PropertyInstance;
@@ -86,12 +87,6 @@ abstract public class AbstractProcessingUnit implements ProcessingUnit {
 				Stopwatch watch = Stopwatch.createStarted();
 				ChangeRequestEvent changeRequest;
 				
-				if(symptomBuffer.isEmpty()) {
-					synchronized (this) {
-						log.trace("buffer empty, waiting for event...");
-						this.wait();
-					}
-				}
 				changeRequest = evaluate();
 				log.trace("evaluation result {}",changeRequest);
 				if(changeRequest != ChangeRequestEvent.getNullChangeRequestEvent()) {
@@ -99,7 +94,7 @@ abstract public class AbstractProcessingUnit implements ProcessingUnit {
 						l.notify(changeRequest);
 					});
 				}
-				log.info("evaluation of property {} performed in {}", property.getName(), watch.stop());
+				Util.instrumentation("AbstractProcessingUnit-"+property.getName(), watch.elapsed(TimeUnit.MILLISECONDS), "evaluation of property performed in");
 			}
 
 		}
@@ -111,11 +106,6 @@ abstract public class AbstractProcessingUnit implements ProcessingUnit {
 
 	@Override
 	public synchronized boolean toEvaluate(SymptomEvent symptom) {
-		
-		if(symptomBuffer.isEmpty()) {
-			log.trace("buffer is not empty, unblocking thread...");
-			this.notify();
-		}
 		
 		boolean result = symptomBuffer.offer(symptom);
 		if(result) {

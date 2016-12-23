@@ -1,0 +1,2 @@
+#!/bin/sh
+docker service create --name client --network microservice-net -e "SERVER=server" -e "THROTTLE=10"  --log-driver=fluentd --log-opt fluentd-address=localhost:24224 --log-opt fluentd-async-connect=true --log-opt tag="{{.Name}}/{{.FullID}}" app/client

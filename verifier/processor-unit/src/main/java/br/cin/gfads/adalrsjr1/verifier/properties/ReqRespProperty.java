@@ -67,10 +67,9 @@ public class ReqRespProperty implements PropertyInstance {
 		
 		PropertyInstance p = new ReqRespProperty("");
 		OneByOneProcessingUnit pu = new OneByOneProcessingUnit(p);
-
 		RabbitMQProcessingUnitWrapper wrapper = new RabbitMQProcessingUnitWrapper(pu);
 		
-		ExecutorService executor = Executors.newSingleThreadExecutor(Util.threadFactory("rabbitmq-wrapper-processing-unit"));
+		ExecutorService executor = Executors.newSingleThreadExecutor(Util.threadFactory("rabbitmq-wrapper-processing-unit-reqresp"));
 		executor.execute(wrapper);
 
 		while(true)

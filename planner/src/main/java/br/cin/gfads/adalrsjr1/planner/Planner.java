@@ -1,8 +1,6 @@
 package br.cin.gfads.adalrsjr1.planner;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,7 +20,6 @@ import br.cin.gfads.adalrsjr1.common.events.ChangePlanEvent;
 import br.cin.gfads.adalrsjr1.common.events.ChangeRequestEvent;
 import br.cin.gfads.adalrsjr1.endpoint.ReceiverEndpoint;
 import br.cin.gfads.adalrsjr1.endpoint.rabbitmq.RabbitMQConsumer;
-import br.cin.gfads.adalrsjr1.endpoint.rabbitmq.RabbitMQProducer;
 import br.cin.gfads.adalrsjr1.planner.policy.Policy;
 import br.cin.gfads.adalrsjr1.planner.policy.PolicyRepository;
 import br.cin.gfads.adalrsjr1.planner.policy.PolicyRepositoryFileImpl;
@@ -54,12 +51,13 @@ public class Planner  {
 				.withPort(CONFIG.port)
 				.withQueue(CONFIG.rabbitmqQueueName)
 				.build();
-		log.info("Planner instantiated in {}", watch.stop());
+		log.info("Planner created in {}", watch.stop());
 	}
 
 	public void start() {
 		tPool.execute(() -> {
 			ChangeRequestEvent changeEvent = new ChangeRequestEvent();
+			log.info("Planner started");
 			while(!stopped) {
 				byte[] input;
 				try {
@@ -84,9 +82,12 @@ public class Planner  {
 		endpoint.stop();
 		stopped = true;
 		tPool.shutdown();
+		log.info("Planner stopped");
 	}
 
 	public void handle(ChangeRequestEvent changeRequest) {
+		Stopwatch watch = Stopwatch.createStarted();
+		log.debug("changeRequest: {}", changeRequest.getName());
 		List<Policy> policies = repository.fetchAdaptationPlans(changeRequest);
 		while(!policies.isEmpty()) {
 			Policy policy = policies.remove(0);
@@ -94,6 +95,7 @@ public class Planner  {
 			event.setTime(changeRequest.getTime());
 			enqueue(event);
 		}
+		Util.mavericLog(log, this.getClass(), "handle", watch.stop());
 	}
 
 	void enqueue(ChangePlanEvent changePlan) {
@@ -102,11 +104,12 @@ public class Planner  {
 
 	public static void main(String[] args) throws InterruptedException {
 		AdaptationPriorityQueueClient queue = 
-				new RabbitMQRemoteAdaptationPriorityQueueClientImpl(CONFIG.adaptationHost, 
-																    CONFIG.adaptationPort, 
-																    CONFIG.rabbitmqQueueDurable, 
-																    CONFIG.adaptationRabbitmqPriorityQueueName);
+				new RabbitMQRemoteAdaptationPriorityQueueClientImpl("10.66.66.22", 
+																    5672, 
+																    false, 
+																    "adaptationmanager.priorityqueue");
 		queue.start();
+		queue.enqueue(new ChangePlanEvent());
 		PolicyRepository repository = new PolicyRepositoryFileImpl();
 
 		Planner planner = new Planner(queue, repository);

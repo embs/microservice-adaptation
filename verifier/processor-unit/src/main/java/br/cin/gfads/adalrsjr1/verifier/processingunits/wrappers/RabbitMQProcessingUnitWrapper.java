@@ -28,7 +28,7 @@ public class RabbitMQProcessingUnitWrapper
 			.getInstance();
 
 	private final ExecutorService executor = Executors.newSingleThreadExecutor(
-			Util.threadFactory("processing-unit-at-" + this));
+			Util.threadFactory("processing-unit-at-" + this + "-%d"));
 
 	private ProcessingUnit processingUnit;
 

@@ -1,12 +1,16 @@
 package br.cin.gfads.adalrsjr1.verifier.properties.temporal
 
+import java.nio.file.Watchable
 import java.util.concurrent.TimeUnit
+
+import javax.swing.text.TabStop
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 import com.google.common.base.Stopwatch
 
+import br.cin.gfads.adalrsjr1.common.Util
 import br.cin.gfads.adalrsjr1.common.events.SymptomEvent
 import groovy.transform.CompileStatic
 import groovy.transform.Memoized
@@ -47,13 +51,14 @@ public class LabeledTransitionSystem {
 	}
 	
 	private notifyListeners(LabeledTransitionSystemEvent event) {
-		log.info "$event"
+		log.debug "$event"
 		listeners.each { LabeledTransitionSystemListener l ->
 			l.notifyTransition(event)
 		}
 	}
 	
 	public static LabeledTransitionSystem labeledTransitionSystemFactory(String ltlProperty, TimeUnit timeUnit) {
+		Stopwatch watch = Stopwatch.createStarted()
 		String LTL_GENERATOR = "ltl2tgba"
 		String LTL_GENERATOR_ARGS = "-B -D --lenient"
 		
@@ -76,7 +81,7 @@ public class LabeledTransitionSystem {
 		bis.reset()
 		HOAFParser.parseHOA(bis, new HOAConsumerPrint(System.out))
 		LabeledTransitionSystem lts = new LabeledTransitionSystem(storedAutomaton, TimeUnit.MICROSECONDS)
-		
+		Util.mavericLog(log, this.class, "labeledTrasitionSystemFactory", watch.stop())
 		return new LabeledTransitionSystem(storedAutomaton, TimeUnit.MICROSECONDS)
 	}
 	
@@ -126,7 +131,7 @@ public class LabeledTransitionSystem {
 		token.each { key, value ->
 			String symptomResult = symptom.tryGet(key)
 			result &= (symptomResult ==~ /$value/)
-			log.info "SymptomResult: ${symptomResult} :: value:${value} :: result:${result}"
+			log.debug "SymptomResult: ${symptomResult} :: value:${value} :: result:${result}"
 		}
 		return result
 	}
@@ -185,6 +190,9 @@ public class LabeledTransitionSystem {
 	}
 	
 	boolean next(SymptomEvent event) {
+		Stopwatch watch = Stopwatch.createStarted()
+		boolean result = transition(currentState, event)
+		Util.mavericLog(log, this.class, "next", watch.stop())
 		return transition(currentState, event)
 	}
 	

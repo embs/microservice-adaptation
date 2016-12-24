@@ -48,7 +48,6 @@ abstract public class AbstractProcessingUnit implements ProcessingUnit {
 		this.property = property;
 
 		watch = Stopwatch.createUnstarted();
-		log.trace("Processing Unit waiting to be started...");
 	}
 
 	@Override
@@ -65,16 +64,14 @@ abstract public class AbstractProcessingUnit implements ProcessingUnit {
 	public synchronized void start() {
 		watch.start();
 		stoped = false;
-//		latch.countDown();
-
-		log.trace("Processing Unit started...");
+		log.info("Processing Unit started");
 	}
 
 	@Override
 	public synchronized void stop() {
 		stoped = true;
 		watch.stop();
-		log.trace("Processing Unit stoped.");
+		log.info("Processing Unit stoped.");
 	}
 
 	@Override
@@ -88,17 +85,14 @@ abstract public class AbstractProcessingUnit implements ProcessingUnit {
 				ChangeRequestEvent changeRequest;
 
 				changeRequest = evaluate();
-				log.trace("evaluation result {}", changeRequest);
+				
 				if (changeRequest != ChangeRequestEvent
 						.getNullChangeRequestEvent()) {
 					listeners.stream().forEach(l -> {
 						l.notify(changeRequest);
 					});
 				}
-				Util.instrumentation(
-						"AbstractProcessingUnit-" + property.getName(),
-						watch.elapsed(TimeUnit.MILLISECONDS),
-						"evaluation of property performed in");
+				Util.mavericLog(log, this.getClass(), "run", watch.stop());
 			}
 
 		}

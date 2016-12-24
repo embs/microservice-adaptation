@@ -83,7 +83,6 @@ public class BlockingProcessingUnit extends AbstractProcessingUnit {
 				unblock = true;
 			}
 		}
-		log.trace(unblock+"");
 		return result;
 	}
 	

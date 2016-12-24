@@ -12,6 +12,8 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Stopwatch;
+
 import br.cin.gfads.adalrsjr1.common.SoftHashMap;
 import br.cin.gfads.adalrsjr1.common.Util;
 import br.cin.gfads.adalrsjr1.common.events.SymptomEvent;
@@ -33,7 +35,6 @@ public class ReqRespProperty implements PropertyInstance {
 	}
 
 	private LabeledTransitionSystem getLts(String key) {
-		System.err.println(key);
 		LabeledTransitionSystem lts = map.get(key);
 		if (lts == null) {
 			lts = LabeledTransitionSystem.labeledTransitionSystemFactory(
@@ -46,11 +47,13 @@ public class ReqRespProperty implements PropertyInstance {
 
 	@Override
 	public boolean check(SymptomEvent symptom) {
+		Stopwatch watch = Stopwatch.createStarted();
  		String key1 = symptom.tryGet("container_id");
  		String key2 = symptom.tryGet("client");
- 		log.warn("map lts:: {}", map.size());
 		LabeledTransitionSystem lts = getLts(key1+"-"+key2);
-		return lts.next(symptom);
+		boolean result = lts.next(symptom);
+		Util.mavericLog(log, this.getClass(), "check", watch.stop());
+		return result;
 	}
 
 	@Override

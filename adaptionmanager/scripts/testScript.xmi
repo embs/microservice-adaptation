@@ -8,7 +8,7 @@
     name="instantiateServiceJava">
   <commands
       xsi:type="metamodel:CommandContext"
-      implementation=""
+      implementation="br.cin.gfads.adalrsrj1.adaptationmanater.commands.impl.docker.DockerCreateServiceCommandImpl"
       name="dockerCreateService">
     <commandParameter
         xsi:type="metamodel:CompositeCommandParameter"

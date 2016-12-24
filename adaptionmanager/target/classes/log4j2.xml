@@ -6,8 +6,8 @@
 		<Console name="Console" target="SYSTEM_OUT">
 			<!-- https://marketplace.eclipse.org/content/ansi-escape-console -->
 			<!-- https://logging.apache.org/log4j/2.x/manual/layouts.html#PatternLayout -->
-			<JsonLayout charset="UTF-8" compact="true" eventEol="true" />
-			<!-- <PatternLayout pattern="%d{UNIX} [%t] %-5level %c{1.} - %msg%n" /> -->
+			<!-- <JsonLayout charset="UTF-8" compact="true" eventEol="true" /> -->
+			<PatternLayout pattern="%d{UNIX} [%t] %-5level %c{1.} - %msg%n" /> 
 		</Console>
 		<File name="LogFile" fileName="src/main/resources/logs/all.log"
 			immediateFlush="false" append="false">
@@ -24,8 +24,8 @@
 		<!-- <Logger name="com.adalrsjr.processor_unit.fluentd.subscriber.TraceSubscriber" 
 			level="ALL"> <AppenderRef ref="JeroMQAppender" /> </Logger> -->
 		<Root level="ALL">
-			<!-- <AppenderRef ref="Console" /> -->
-			<AppenderRef ref="LogFile" />
+			<!-- <AppenderRef ref="LogFile" /> -->
+			<AppenderRef ref="Console" />
 		</Root>
 	</Loggers>
 </Configuration>

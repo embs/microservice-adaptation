@@ -78,7 +78,7 @@ public class AdaptationManager implements AutoCloseable, ContextListener {
 		worker = new AdaptationQueueWorker(this);
 		
 		tPool = Executors.newCachedThreadPool(Util.threadFactory("adaptation-manager-%d"));
-		Util.instrumentation("AdaptationManager-Constructor", watch.stop().elapsed(TimeUnit.MILLISECONDS), "AdaptationManager instantiated in");
+		log.info("Adaptaiton manager instantiated in {}", watch.stop());
 	}
 	
 	void init() {
@@ -86,6 +86,7 @@ public class AdaptationManager implements AutoCloseable, ContextListener {
 		repository.load();
 		tPool.execute(worker);
 		queue.start();
+		log.info("Adaptation manager started");
 	}
 	
 	void stop() {
@@ -93,6 +94,7 @@ public class AdaptationManager implements AutoCloseable, ContextListener {
 		context.removeListener(this);
 		worker.stop();
 		tPool.shutdown();
+		log.info("Adaptation manager stopped");
 	}
 	
 	@Override
@@ -104,14 +106,14 @@ public class AdaptationManager implements AutoCloseable, ContextListener {
 		Stopwatch watch = Stopwatch.createStarted();
 		
 		Script script = repository.getAdaptationScript(changePlan.getAdaptationScript());
-		Util.instrumentation("AdaptationManager-execute", TimeUnit.NANOSECONDS.toMillis(System.nanoTime()-changePlan.getTime()), "workflow time before to adapt");
+		Util.mavericLog(log, this.getClass(), "execute-workflow-before-adapt", (System.nanoTime()-changePlan.getTime()));
 		if(script != null) {	
 			engine.execute(script);
 		}
 		else {
-			Util.instumentation(log, "message", "no script with name " + changePlan.getAdaptationScript());
+			log.warn("No adaptation script with name {}", changePlan.getAdaptationScript());
 		}
-		Util.instrumentation("AdaptationManager-executor", watch.stop().elapsed(TimeUnit.MILLISECONDS), "adaptation performed in");
+		Util.mavericLog(log, this.getClass(), "execute-adaption", watch.stop());
 	}
 	
 	@Override
@@ -122,6 +124,7 @@ public class AdaptationManager implements AutoCloseable, ContextListener {
 	public static void main(String[] args) throws Exception {
 		Stopwatch watch = Stopwatch.createStarted();
 		BlockingQueue<byte[]> buffer = new LinkedBlockingQueue<>();
+		
 		AdaptationPriorityQueue queue = 
 				new RabbitMQRemoteAdaptationPriorityQueueServerImpl(CONFIG.host, 
 																	CONFIG.port, 
@@ -129,6 +132,7 @@ public class AdaptationManager implements AutoCloseable, ContextListener {
 																	CONFIG.rabbitmqPriorityDurable, 
 																	buffer);
 		queue.start();
+		
 		Context context = new ContextImpl();
 		ActionsRepository repository = new ActionsRepository();
 		

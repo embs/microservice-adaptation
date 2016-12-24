@@ -7,7 +7,11 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import br.cin.gfads.adalrsjr1.common.SoftHashMap;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.common.base.Stopwatch;
+
 import br.cin.gfads.adalrsjr1.common.Util;
 import br.cin.gfads.adalrsjr1.common.events.SymptomEvent;
 import br.cin.gfads.adalrsjr1.verifier.PropertyInstance;
@@ -15,7 +19,8 @@ import br.cin.gfads.adalrsjr1.verifier.processingunits.instances.OneByOneProcess
 import br.cin.gfads.adalrsjr1.verifier.processingunits.wrappers.RabbitMQProcessingUnitWrapper;
 
 public class ResponseTimeProperty implements PropertyInstance {
-	
+	private static final Logger log = LoggerFactory
+			.getLogger(ResponseTimeProperty.class);
 	private static class TimeEntry implements Comparable<TimeEntry> {
 		final String id;
 		private long time = 0L; 
@@ -53,6 +58,11 @@ public class ResponseTimeProperty implements PropertyInstance {
 	Map<String, Long> map = new WeakHashMap<>();
 	double sum = 0.0;
 	double count = 0.0;
+	double threshold = 0.0;
+	
+	public ResponseTimeProperty(double threshould) {
+		this.threshold = threshould;
+	}
 	
 	private long insertIntoMap(SymptomEvent s) {
 		String key = s.tryGet("req-id");
@@ -72,16 +82,19 @@ public class ResponseTimeProperty implements PropertyInstance {
 	
 	@Override
 	public boolean check(SymptomEvent symptom) {
-//		System.out.println(symptom);
+		Stopwatch watch = Stopwatch.createStarted();
 		long v = insertIntoMap(symptom);
-		
+		boolean result = true;
 		if(v > 0) {
 			count++;
 			sum += v;
-			System.err.println(count + " " + sum + " " + sum/count );
+//			System.err.println(count + " " + sum + " " + sum/count );
+			if(sum/count > this.threshold) {
+				result = false;
+			}
 		}
-		
-		return false;
+		Util.mavericLog(log, this.getClass(), "check", watch.stop());
+		return result;
 	}
 
 	@Override
@@ -103,7 +116,7 @@ public class ResponseTimeProperty implements PropertyInstance {
 //				.build();
 		
 		
-		PropertyInstance p = new ResponseTimeProperty();
+		PropertyInstance p = new ResponseTimeProperty(10);
 		OneByOneProcessingUnit pu = new OneByOneProcessingUnit(p);
 
 		RabbitMQProcessingUnitWrapper wrapper = new RabbitMQProcessingUnitWrapper(pu);

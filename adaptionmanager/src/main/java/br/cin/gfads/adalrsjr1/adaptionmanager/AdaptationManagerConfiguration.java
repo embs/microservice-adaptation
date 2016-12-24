@@ -41,7 +41,7 @@ public class AdaptationManagerConfiguration {
 		rabbitmqPriorityQueueName = properties.getProperty(PREFIX + "rabbitmq.priorityqueue-name",PREFIX+System.currentTimeMillis());
 		rabbitmqPriorityDurable = Boolean.valueOf(properties.getProperty(PREFIX + "rabbitmq.priorityqueue-durable","false"));
 		
-		Util.instrumentation("AdaptationManagerConfiguration-constructor", watcher.stop().elapsed(TimeUnit.MILLISECONDS), "Properties of AdaptationManaged loaded in ");
+		log.info("Adaptation manager configuration loaded in {}", watcher.stop());
 	}
 	
 	public static AdaptationManagerConfiguration getInstance() {
@@ -71,7 +71,9 @@ public class AdaptationManagerConfiguration {
 		  .append("\nrepository:")
 		  .append(scriptsRepository)
 		  .append("\npriorityqueue-name:")
-		  .append(rabbitmqPriorityQueueName);
+		  .append(rabbitmqPriorityQueueName)
+		  .append("\npriorityqueue-durable:")
+		  .append(rabbitmqPriorityDurable);
 		return sb.toString();
 	}
 

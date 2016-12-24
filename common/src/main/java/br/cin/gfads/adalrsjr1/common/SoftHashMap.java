@@ -60,6 +60,11 @@ public class SoftHashMap<K,V> extends AbstractMap<K, V> {
         throw new UnsupportedOperationException();
     }
 	
+	@Override
+	public int size() {
+		return map.size();
+	}
+
 	private static class SoftValue<T> extends SoftReference<T> {
 		final Object key;
 		

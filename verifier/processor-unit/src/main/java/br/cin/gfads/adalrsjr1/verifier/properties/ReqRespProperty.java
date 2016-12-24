@@ -1,5 +1,6 @@
 package br.cin.gfads.adalrsjr1.verifier.properties;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.WeakHashMap;
 import java.util.concurrent.ArrayBlockingQueue;
@@ -24,7 +25,7 @@ public class ReqRespProperty implements PropertyInstance {
 	private static final Logger log = LoggerFactory
 			.getLogger(ReqRespProperty.class);
 
-	private Map<String, LabeledTransitionSystem> map = new WeakHashMap<>();
+	private Map<String, LabeledTransitionSystem> map = new SoftHashMap<>();
 	private String property;
 
 	ReqRespProperty(String property) {
@@ -32,6 +33,7 @@ public class ReqRespProperty implements PropertyInstance {
 	}
 
 	private LabeledTransitionSystem getLts(String key) {
+		System.err.println(key);
 		LabeledTransitionSystem lts = map.get(key);
 		if (lts == null) {
 			lts = LabeledTransitionSystem.labeledTransitionSystemFactory(
@@ -44,9 +46,10 @@ public class ReqRespProperty implements PropertyInstance {
 
 	@Override
 	public boolean check(SymptomEvent symptom) {
- 		String key = symptom.tryGet("client");
-
-		LabeledTransitionSystem lts = getLts(key);
+ 		String key1 = symptom.tryGet("container_id");
+ 		String key2 = symptom.tryGet("client");
+ 		log.warn("map lts:: {}", map.size());
+		LabeledTransitionSystem lts = getLts(key1+"-"+key2);
 		return lts.next(symptom);
 	}
 

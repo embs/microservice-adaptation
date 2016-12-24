@@ -32,7 +32,6 @@ public class OneByOneProcessingUnit extends AbstractProcessingUnit {
 		count.decrementAndGet();
 
 		boolean checkingResult = property.check(symptom);
-
 		ChangeRequestEvent event = checkingResult
 				? ChangeRequestEvent.getNullChangeRequestEvent()
 				: new ChangeRequestEvent(property.getName(),

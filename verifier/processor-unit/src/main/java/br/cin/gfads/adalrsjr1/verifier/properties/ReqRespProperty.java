@@ -24,25 +24,29 @@ public class ReqRespProperty implements PropertyInstance {
 	private static final Logger log = LoggerFactory
 			.getLogger(ReqRespProperty.class);
 
-	private ExecutorService clientsLts = Executors
-			.newCachedThreadPool(Util.threadFactory("ReqRespProperty-%d"));
 	private Map<String, LabeledTransitionSystem> map = new WeakHashMap<>();
 	private String property;
-	
+
 	ReqRespProperty(String property) {
 		this.property = property;
 	}
 
-	private LabeledTransitionSystem createLts(String property) {
-		return LabeledTransitionSystem.labeledTransitionSystemFactory(property,
-				TimeUnit.MICROSECONDS);
+	private LabeledTransitionSystem getLts(String key) {
+		LabeledTransitionSystem lts = map.get(key);
+		if (lts == null) {
+			lts = LabeledTransitionSystem.labeledTransitionSystemFactory(
+					property, TimeUnit.MICROSECONDS);
+			map.put(key, lts);
+		}
+
+		return lts;
 	}
-	
+
 	@Override
 	public boolean check(SymptomEvent symptom) {
-		String key = symptom.tryGet("client");
+ 		String key = symptom.tryGet("client");
 
-		LabeledTransitionSystem lts = map.get(key);
+		LabeledTransitionSystem lts = getLts(key);
 		return lts.next(symptom);
 	}
 
@@ -50,30 +54,33 @@ public class ReqRespProperty implements PropertyInstance {
 	public String getName() {
 		return "Request-Response";
 	}
-	
+
 	public static void main(String[] args) throws InterruptedException {
 		BlockingQueue<byte[]> buffer = new ArrayBlockingQueue<>(100);
 
-//		RabbitMQSubscriber sub = RabbitMQSubscriber.builder()
-//				.withBuffer(buffer)
-//				.withExchangeDurable(true)
-//				.withExchangeName("fluentd.fanout")
-//				.withExchangeType(FANOUT)
-//				//.withHost("10.0.75.1")
-//				.withHost("10.66.66.22")
-//				.withRoutingKey("")
-//				.build();
-		
-		
-		PropertyInstance p = new ReqRespProperty("");
+		// RabbitMQSubscriber sub = RabbitMQSubscriber.builder()
+		// .withBuffer(buffer)
+		// .withExchangeDurable(true)
+		// .withExchangeName("fluentd.fanout")
+		// .withExchangeType(FANOUT)
+		// //.withHost("10.0.75.1")
+		// .withHost("10.66.66.22")
+		// .withRoutingKey("")
+		// .build();
+
+		PropertyInstance p = new ReqRespProperty(
+				"G(((client:(.)*) && (container_name:.client(.)*)) ->F((client:(.)*) && (container_name:.server(.)*)))");
 		OneByOneProcessingUnit pu = new OneByOneProcessingUnit(p);
-		RabbitMQProcessingUnitWrapper wrapper = new RabbitMQProcessingUnitWrapper(pu);
-		
-		ExecutorService executor = Executors.newSingleThreadExecutor(Util.threadFactory("rabbitmq-wrapper-processing-unit-reqresp"));
+		RabbitMQProcessingUnitWrapper wrapper = new RabbitMQProcessingUnitWrapper(
+				pu);
+
+		ExecutorService executor = Executors.newSingleThreadExecutor(
+				Util.threadFactory("rabbitmq-wrapper-processing-unit-reqresp"));
 		executor.execute(wrapper);
 
-		while(true)
+		while (true)
 			pu.toEvaluate(new SymptomEvent(buffer.take()));
+
 		
 	}
 

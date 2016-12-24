@@ -22,11 +22,11 @@ public class App
 		
 		PropertyPattern pp = Property.create()
 		
-		PropertyInstance property = pp.absence(p)
-		.isFalse()
-		.before(r)
-		.build()
-		StoredAutomaton automaton = AutomatonFactory.createAutomaton(property)
+//		PropertyInstance property = pp.absence(p)
+//		.isFalse()
+//		.before(r)
+//		.build()
+//		StoredAutomaton automaton = AutomatonFactory.createAutomaton(property)
 				
 		/*println pp.absence(p)
 			.isFalse()
@@ -50,12 +50,12 @@ public class App
 			.between(q)
 			.and(r)
 			.build()
-			
+			*/
 		println pp.response(s)
 			.respondsTo(p)
 			.globally()
 			.build()
-			
+			/*
 		println pp.boundedExistence(p)
 			.occurs(3)
 			.globally()

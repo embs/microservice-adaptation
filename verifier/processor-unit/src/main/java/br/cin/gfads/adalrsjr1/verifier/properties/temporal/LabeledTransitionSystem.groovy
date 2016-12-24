@@ -15,6 +15,7 @@ import jhoafparser.consumer.HOAConsumerPrint
 import jhoafparser.consumer.HOAConsumerStore
 import jhoafparser.parser.HOAFParser
 import jhoafparser.storage.StoredAutomaton
+import jhoafparser.storage.StoredState
 
 public class LabeledTransitionSystem {
 
@@ -46,6 +47,7 @@ public class LabeledTransitionSystem {
 	}
 	
 	private notifyListeners(LabeledTransitionSystemEvent event) {
+		log.info "$event"
 		listeners.each { LabeledTransitionSystemListener l ->
 			l.notifyTransition(event)
 		}
@@ -53,7 +55,7 @@ public class LabeledTransitionSystem {
 	
 	public static LabeledTransitionSystem labeledTransitionSystemFactory(String ltlProperty, TimeUnit timeUnit) {
 		String LTL_GENERATOR = "ltl2tgba"
-		String LTL_GENERATOR_ARGS = "-B -D -G --lenient"
+		String LTL_GENERATOR_ARGS = "-B -D --lenient"
 		
 		String spotCommand = "${LTL_GENERATOR} ${LTL_GENERATOR_ARGS} \'${ltlProperty.toString()}\'"
 		ProcessBuilder builder = new ProcessBuilder("bash", "-c", spotCommand)
@@ -63,9 +65,18 @@ public class LabeledTransitionSystem {
 		PipedOutputStream out = new PipedOutputStream(input)
 
 		process.waitForProcessOutput(out, System.err)
+		
+		BufferedInputStream bis = new BufferedInputStream(input)
+		bis.mark(0)
+		
 		HOAConsumerStore consumerStore = new HOAConsumerStore()
-		HOAFParser.parseHOA(input, consumerStore)
+		HOAFParser.parseHOA(bis, consumerStore)
 		StoredAutomaton storedAutomaton = consumerStore.getStoredAutomaton()
+	    
+		bis.reset()
+		HOAFParser.parseHOA(bis, new HOAConsumerPrint(System.out))
+		LabeledTransitionSystem lts = new LabeledTransitionSystem(storedAutomaton, TimeUnit.MICROSECONDS)
+		
 		return new LabeledTransitionSystem(storedAutomaton, TimeUnit.MICROSECONDS)
 	}
 	
@@ -105,7 +116,6 @@ public class LabeledTransitionSystem {
 		return storedAutomaton.getStoredState(currentState).getAccSignature() != null
 	}
 	
-	@Memoized
 	private Map stringToMap(String token) {
 		def splited = token.split(":")
 		return [(splited[0]):splited[1]]
@@ -115,7 +125,8 @@ public class LabeledTransitionSystem {
 		boolean result = true
 		token.each { key, value ->
 			String symptomResult = symptom.tryGet(key)
-			result &= (symptomResult == value)
+			result &= (symptomResult ==~ /$value/)
+			log.info "SymptomResult: ${symptomResult} :: value:${value} :: result:${result}"
 		}
 		return result
 	}
@@ -178,44 +189,46 @@ public class LabeledTransitionSystem {
 	}
 	
 	public static void main(String[] args) {
-		String LTL_GENERATOR = "ltl2tgba"
-		String LTL_GENERATOR_ARGS = "-B -D -G --lenient"
-		String property = "G((a:10)->F(b:11))"
+//		String LTL_GENERATOR = "ltl2tgba"
+//		String LTL_GENERATOR_ARGS = "-B -D -G --lenient"
+//		String property = "G((a:10)->F(b:11))"
+//		
+//		String spotCommand = "${LTL_GENERATOR} ${LTL_GENERATOR_ARGS} \'${property.toString()}\'"
+//		ProcessBuilder builder = new ProcessBuilder("bash", "-c", spotCommand)
+//		Process process = builder.start()
+//
+//		PipedInputStream input = new PipedInputStream()
+//		PipedOutputStream out = new PipedOutputStream(input)
+//
+//		process.waitForProcessOutput(out, System.err)
+//		
+//		BufferedInputStream bis = new BufferedInputStream(input)
+//		bis.mark(0)
+//		
+//		HOAConsumerStore consumerStore = new HOAConsumerStore()
+//		HOAFParser.parseHOA(bis, consumerStore)
+//		StoredAutomaton storedAutomaton = consumerStore.getStoredAutomaton()
+//	    
+//		bis.reset()
+//		HOAFParser.parseHOA(bis, new HOAConsumerPrint(System.out))
+//		println ""
+//		LabeledTransitionSystem lts = new LabeledTransitionSystem(storedAutomaton, TimeUnit.MICROSECONDS)
+//		
+//		lts.addListener([notifyTransition:{println it}] as LabeledTransitionSystemListener)
+//		
+//		for(int i = 0; i < 1000; i++) 
+//			{
+//		SymptomEvent event1 = new SymptomEvent(null, [log:[message:[b:"11"]]])
+//		lts.next(event1)
+//		SymptomEvent event2 = new SymptomEvent(null, [log:[message:[a:"10", b:"10"]]])
+//		lts.next(event2)
+//		SymptomEvent event3 = new SymptomEvent(null, [log:[message:[a:"10", b:"10"]]])
+//		lts.next(event3)
+//		SymptomEvent event4 = new SymptomEvent(null, [log:[message:[a:"10", b:"11"]]])
+//		lts.next(event4)
+//			}
 		
-		String spotCommand = "${LTL_GENERATOR} ${LTL_GENERATOR_ARGS} \'${property.toString()}\'"
-		ProcessBuilder builder = new ProcessBuilder("bash", "-c", spotCommand)
-		Process process = builder.start()
-
-		PipedInputStream input = new PipedInputStream()
-		PipedOutputStream out = new PipedOutputStream(input)
-
-		process.waitForProcessOutput(out, System.err)
-		
-		BufferedInputStream bis = new BufferedInputStream(input)
-		bis.mark(0)
-		
-		HOAConsumerStore consumerStore = new HOAConsumerStore()
-		HOAFParser.parseHOA(bis, consumerStore)
-		StoredAutomaton storedAutomaton = consumerStore.getStoredAutomaton()
-	    
-		bis.reset()
-		HOAFParser.parseHOA(bis, new HOAConsumerPrint(System.out))
-		println ""
-		LabeledTransitionSystem lts = new LabeledTransitionSystem(storedAutomaton, TimeUnit.MICROSECONDS)
-		
-		lts.addListener([notifyTransition:{println it}] as LabeledTransitionSystemListener)
-		
-		for(int i = 0; i < 1000; i++) 
-			{
-		SymptomEvent event1 = new SymptomEvent(null, [log:[message:[b:"11"]]])
-		lts.next(event1)
-		SymptomEvent event2 = new SymptomEvent(null, [log:[message:[a:"10", b:"10"]]])
-		lts.next(event2)
-		SymptomEvent event3 = new SymptomEvent(null, [log:[message:[a:"10", b:"10"]]])
-		lts.next(event3)
-		SymptomEvent event4 = new SymptomEvent(null, [log:[message:[a:"10", b:"11"]]])
-		lts.next(event4)
-			}
+		println "/client.1.cqzx9brzfgyv96xiii66g9n5m" ==~ /.client(.)*/
 	}
 	
 }

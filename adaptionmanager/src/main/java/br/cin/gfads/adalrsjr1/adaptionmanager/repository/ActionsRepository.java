@@ -11,7 +11,6 @@ import com.google.common.base.Stopwatch;
 import com.google.common.io.Files;
 
 import br.cin.gfads.adalrsjr1.adaptionmanager.AdaptationManager;
-import br.cin.gfads.adalrsjr1.adaptionmanager.AdaptationManagerConfiguration;
 import br.cin.gfads.adalrsjr1.adaptionmanager.commands.Script;
 import br.gfads.cin.adalrsjr1.emf.util.EmfLoader;
 import metamodel.AdaptationScript;

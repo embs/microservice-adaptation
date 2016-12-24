@@ -47,7 +47,7 @@ public class ProcessingUnitConfiguration {
 		plannerQueueName = properties.getProperty(PREFIX_PLANNER + "rabbitmq.queue-name");
 		plannerQueueDurable = Boolean.parseBoolean(properties.getProperty(PREFIX_PLANNER + "rabbitmq.queue-durable"));
 		
-		log.info("Properties of PLANNER loaded in {}", watcher.stop());
+		log.info("Properties of Property loaded in {}", watcher.stop());
 	}
 	
 	public static ProcessingUnitConfiguration getInstance() {

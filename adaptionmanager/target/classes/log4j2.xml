@@ -6,25 +6,17 @@
 		<Console name="Console" target="SYSTEM_OUT">
 			<!-- https://marketplace.eclipse.org/content/ansi-escape-console -->
 			<!-- https://logging.apache.org/log4j/2.x/manual/layouts.html#PatternLayout -->
-			<!-- <JsonLayout charset="UTF-8" compact="true" eventEol="true" /> -->
 			<PatternLayout pattern="%d{UNIX} [%t] %-5level %c{1.} - %msg%n" /> 
 		</Console>
-		<File name="LogFile" fileName="src/main/resources/logs/all.log"
-			immediateFlush="false" append="false">
-			<!-- <PatternLayout pattern="%d{UNIX} [%t] %-5level %logger{36} - %msg%n" /> -->
+		<File name="LogFile" fileName="src/main/resources/logs/adaptation.log"
+			immediateFlush="true" append="false" bufferedIO="true">
 			<JsonLayout charset="UTF-8" compact="true" eventEol="true" />
 		</File>
-		<Socket name="Socket" host="localhost" port="5160" protocol="UDP">
-			<PatternLayout pattern="%d{UNIX} [%t] %level %logger{36} - %msg%n" />
-			<!-- <JSONLaout /> -->
-		</Socket>
 	</Appenders>
 	<Loggers>
 		<!-- additivity attribute allows show message in ROOT logger -->
-		<!-- <Logger name="com.adalrsjr.processor_unit.fluentd.subscriber.TraceSubscriber" 
-			level="ALL"> <AppenderRef ref="JeroMQAppender" /> </Logger> -->
 		<Root level="ALL">
-			<!-- <AppenderRef ref="LogFile" /> -->
+			<AppenderRef ref="LogFile" />
 			<AppenderRef ref="Console" />
 		</Root>
 	</Loggers>

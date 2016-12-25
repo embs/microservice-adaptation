@@ -8,4 +8,4 @@ VOLUME /home/app/src/main/resources
 WORKDIR /home/app
 EXPOSE 5560
 
-ENTRYPOINT ["java", "-jar", "/home/app/planner.jar"]
+ENTRYPOINT ["java", "-jar", "/home/app/Planner.jar"]

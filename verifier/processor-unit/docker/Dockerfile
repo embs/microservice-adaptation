@@ -1,4 +1,4 @@
-FROM openjdk:8-jdk-alpine
+FROM adalrsjr/spot-alpine
 
 RUN mkdir -p /home/app
 

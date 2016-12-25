@@ -63,7 +63,15 @@ public class LabeledTransitionSystem {
 		String LTL_GENERATOR_ARGS = "-B -D --lenient"
 		
 		String spotCommand = "${LTL_GENERATOR} ${LTL_GENERATOR_ARGS} \'${ltlProperty.toString()}\'"
-		ProcessBuilder builder = new ProcessBuilder("bash", "-c", spotCommand)
+		ProcessBuilder builder 
+		
+		if(System.getProperty("os.name").indexOf("win") >= 0) {
+			builder = new ProcessBuilder("bash", "-c", spotCommand)
+		}
+		else {
+			builder = new ProcessBuilder(spotCommand)
+		}
+		
 		Process process = builder.start()
 
 		PipedInputStream input = new PipedInputStream()

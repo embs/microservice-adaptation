@@ -64,7 +64,8 @@ local.properties
 
 # Package Files #
 #*.jar
-target/
+*.jar
+!/target/*.jar
 *.war
 *.ear
 

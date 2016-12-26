@@ -5,6 +5,7 @@ RUN mkdir -p /home/app/scripts
 COPY target/AdaptationManager.jar /home/app
 COPY src/main/resources/log4j2.xml /home/app
 COPY docker/adaptation.properties /home/app
+COPY scripts /home/app/scripts
 VOLUME /home/app/src/main/resources
 WORKDIR /home/app
 

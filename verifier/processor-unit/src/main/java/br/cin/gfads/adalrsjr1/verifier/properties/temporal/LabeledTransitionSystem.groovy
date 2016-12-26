@@ -65,7 +65,7 @@ public class LabeledTransitionSystem {
 		String spotCommand = "${LTL_GENERATOR} ${LTL_GENERATOR_ARGS} \'${ltlProperty.toString()}\'"
 		ProcessBuilder builder 
 		
-		if(System.getProperty("os.name").indexOf("win") >= 0) {
+		if(System.getProperty("os.name").toLowerCase().indexOf("win") >= 0) {
 			builder = new ProcessBuilder("bash", "-c", spotCommand)
 		}
 		else {

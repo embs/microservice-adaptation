@@ -5,10 +5,10 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:metamodel="http://gfads.cin.ufpe.br/maveric"
     xsi:schemaLocation="http://gfads.cin.ufpe.br/maveric ../../adaptation-metamodel/model/metamodel.ecore"
-    name="instantiateServiceJava">
+    name="testScript">
   <commands
       xsi:type="metamodel:CommandContext"
-      implementation="br.cin.gfads.adalrsrj1.adaptationmanater.commands.impl.docker.DockerCreateServiceCommandImpl"
+      implementation="br.cin.gfads.adalrsjr1.adaptionmanager.commands.impl.docker.DockerCreateServiceCommandImpl"
       name="dockerCreateService">
     <commandParameter
         xsi:type="metamodel:CompositeCommandParameter"

@@ -70,7 +70,8 @@ public class CommandImpl implements ScriptCommand {
 		
 		Object result = null;
 		try {
-			Class<?> clazz = Class.forName(metaCommand.getImplementation());
+			ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+			Class<?> clazz = classloader.loadClass(metaCommand.getImplementation());//Class.forName(metaCommand.getImplementation());
 			Command instance = (Command) clazz.newInstance();
 			result = instance.execute(metaCommand);
 		} catch (Exception e) {

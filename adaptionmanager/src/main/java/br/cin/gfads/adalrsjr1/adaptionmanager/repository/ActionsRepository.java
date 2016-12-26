@@ -64,6 +64,7 @@ public class ActionsRepository implements AutoCloseable {
 	
 	public void loadNewScript(String path) {
 		AdaptationScript metaScript = EmfLoader.getRootFromXmi(path);
+		System.err.println(metaScript.getName());
 		actions.put(metaScript.getName(), new Script(metaScript));
 	}
 	

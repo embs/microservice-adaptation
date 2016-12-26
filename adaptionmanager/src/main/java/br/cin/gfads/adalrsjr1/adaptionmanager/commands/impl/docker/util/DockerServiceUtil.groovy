@@ -40,6 +40,9 @@ public class DockerServiceUtil {
 	public static DockerClient getDockerClient() {
 		if(dockerClient == null) {
 			try {
+//				return DefaultDockerClient.builder()
+//						.uri(URI.create("http://10.66.66.22:2376"))
+//						.build()
 				return DefaultDockerClient.fromEnv().build()
 			} catch (DockerCertificateException e) {
 				e.printStackTrace()

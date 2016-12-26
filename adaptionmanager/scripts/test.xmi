@@ -5,7 +5,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:metamodel="http://gfads.cin.ufpe.br/maveric"
     xsi:schemaLocation="http://gfads.cin.ufpe.br/maveric ../../adaptation-metamodel/model/metamodel.ecore"
-    name="instantiateServiceJava">
+    name="test">
   <commands
       xsi:type="metamodel:CommandContext"
       implementation=""

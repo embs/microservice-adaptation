@@ -69,7 +69,8 @@ public class LabeledTransitionSystem {
 			builder = new ProcessBuilder("bash", "-c", spotCommand)
 		}
 		else {
-			builder = new ProcessBuilder(spotCommand)
+			println "toAKI"
+			builder = new ProcessBuilder(LTL_GENERATOR, "-B", "-D", "--lenient", ltlProperty.toString())
 		}
 		
 		Process process = builder.start()

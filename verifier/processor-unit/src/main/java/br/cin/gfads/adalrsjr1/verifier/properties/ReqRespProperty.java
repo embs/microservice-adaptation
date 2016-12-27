@@ -30,7 +30,7 @@ public class ReqRespProperty implements PropertyInstance {
 	private Map<String, LabeledTransitionSystem> map = new SoftHashMap<>();
 	private String property;
 
-	ReqRespProperty(String property) {
+	public ReqRespProperty(String property) {
 		this.property = property;
 	}
 

@@ -80,7 +80,7 @@ public class AdaptationManager implements AutoCloseable, ContextListener {
 		log.info("Adaptaiton manager instantiated in {}", watch.stop());
 	}
 	
-	void init() {
+	public void init() {
 		this.context.addListener(this);
 		repository.load();
 		tPool.execute(worker);
@@ -88,7 +88,7 @@ public class AdaptationManager implements AutoCloseable, ContextListener {
 		log.info("Adaptation manager started");
 	}
 	
-	void stop() {
+	public void stop() {
 		queue.stop();
 		context.removeListener(this);
 		worker.stop();

@@ -35,9 +35,9 @@ public class DockerCreateServiceCommandImpl extends AbstractCommandImpl {
 		ServiceCreateOptions serviceCreateOptions = new ServiceCreateOptions();
 		log.info("command {} created in {}", metaCommand.getName(), watch2.stop());
 //		ServiceCreateResponse response = docker.createService(serviceSpec, serviceCreateOptions);
-		docker.listTasks();
+//		docker.listTasks();
 		log.info("commands {} executed in {}", this, watch.stop());
-//		System.out.println(response.id());
+////		System.out.println(response.id());
 		
 		return null;
 	}

@@ -1,21 +1,75 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>br.cin.gfads.adalrsjr1</groupId>
-  <artifactId>planner</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
+	<groupId>br.cin.gfads.adalrsjr1</groupId>
+	<artifactId>planner</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 
-  <name>planner</name>
-  <url>http://maven.apache.org</url>
+	<name>planner</name>
+	<url>http://maven.apache.org</url>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
-  <build>
+	<build>
 		<plugins>
+		<!-- build fat jar must appear first than build docker -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.4.1</version>
+				<configuration>
+					<!-- get all project dependencies -->
+					<descriptorRefs>
+						<descriptorRef>jar-with-dependencies</descriptorRef>
+					</descriptorRefs>
+					<!-- MainClass in mainfest make a executable jar -->
+					<archive>
+						<manifest>
+							<mainClass>br.cin.gfads.adalrsjr1.planner.Planner</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-assembly</id>
+						<!-- bind to the packaging phase -->
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.13</version>
+				<configuration>
+					<imageName>maveric/${project.artifactId}</imageName>
+					<dockerDirectory>${project.basedir}/docker</dockerDirectory>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.basedir}</directory>
+						</resource>
+					</resources>
+				</configuration>
+				<executions>
+					<execution>
+						<id>build-image</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<!-- 2.8.0-01 and later require maven-compiler-plugin 3.1 or higher -->
@@ -23,7 +77,7 @@
 				<configuration>
 					<compilerId>groovy-eclipse-compiler</compilerId>
 					<source>1.8</source>
-                    <target>1.8</target>
+					<target>1.8</target>
 				</configuration>
 				<dependencies>
 					<dependency>

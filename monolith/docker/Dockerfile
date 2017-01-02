@@ -2,7 +2,7 @@ FROM adalrsjr/spot-alpine
 
 RUN mkdir -p /home/app
 
-COPY target/App.jar /home/app
+COPY target/monolith-0.0.1-SNAPSHOT-jar-with-dependencies.jar /home/app
 COPY docker/processing-unit.properties /home/app
 COPY docker/adaptation.properties /home/app
 COPY docker/planner.properties /home/app
@@ -14,4 +14,4 @@ VOLUME /home/app/src/main/resources
 WORKDIR /home/app
 EXPOSE 5560
 
-ENTRYPOINT ["java", "-jar", "App.jar"]
+ENTRYPOINT ["java", "-jar", "monolith-0.0.1-SNAPSHOT-jar-with-dependencies.jar"]

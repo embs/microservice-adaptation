@@ -1,0 +1,31 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>br.cin.gfads.adalrsjr1</groupId>
+  <artifactId>maveric</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <name>maveric</name>
+  <url>http://maven.apache.org</url>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
+
+  <modules>
+    <!-- <module>../adaptation-metamodel</module> -->
+    <!-- <module>../common</module> -->
+    <!-- <module>../zmq-endpoint</module> -->
+    <!-- <module>../specpatterns</module> -->
+  	<module>../adaptionmanager</module>
+    <module>../planner</module>
+    <module>../verifier/processor-unit</module>
+    <module>../monolith</module>
+    <module>../ms-http-client</module>
+    <module>../ms-http-server</module>
+    
+  </modules>
+
+</project>

@@ -16,6 +16,7 @@
 
 	<build>
 		<plugins>
+			<!-- build fat jar must appear first than build docker -->
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<!-- 2.8.0-01 and later require maven-compiler-plugin 3.1 or higher -->
@@ -23,7 +24,7 @@
 				<configuration>
 					<compilerId>groovy-eclipse-compiler</compilerId>
 					<source>1.8</source>
-                    <target>1.8</target>
+					<target>1.8</target>
 				</configuration>
 				<dependencies>
 					<dependency>
@@ -40,6 +41,32 @@
 					</dependency>
 				</dependencies>
 			</plugin>
+		
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<version>0.4.13</version>
+				<configuration>
+					<imageName>maveric/${project.artifactId}</imageName>
+					<dockerDirectory>${project.basedir}/docker</dockerDirectory>
+					<resources>
+						<resource>
+							<targetPath>/</targetPath>
+							<directory>${project.basedir}</directory>
+						</resource>
+					</resources>
+				</configuration>
+				<executions>
+					<execution>
+						<id>build-image</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
 		</plugins>
 	</build>
 

@@ -15,10 +15,10 @@
   </properties>
 
   <modules>
-    <!-- <module>../adaptation-metamodel</module> -->
-    <!-- <module>../common</module> -->
-    <!-- <module>../zmq-endpoint</module> -->
-    <!-- <module>../specpatterns</module> -->
+    <module>../adaptation-metamodel</module> 
+    <module>../common</module> 
+    <module>../zmq-endpoint</module>
+    <module>../specpatterns</module>
   	<module>../adaptionmanager</module>
     <module>../planner</module>
     <module>../verifier/processor-unit</module>

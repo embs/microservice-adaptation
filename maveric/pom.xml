@@ -15,18 +15,16 @@
   </properties>
 
   <modules>
-    <module>../adaptation-metamodel</module> 
-    
+    <module>../adaptation-metamodel</module>
+    <module>../adaptionmanager</module>
     <module>../common</module> 
     <module>../zmq-endpoint</module>
     <module>../specpatterns</module>
-  	<module>../adaptionmanager</module>
     <module>../planner</module>
     <module>../verifier/processor-unit</module>
     <module>../monolith</module>
     <module>../ms-http-client</module>
-    <module>../ms-http-server</module>
-    
+    <module>../ms-http-server</module> 
   </modules>
 
 </project>

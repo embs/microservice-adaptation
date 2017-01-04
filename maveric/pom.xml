@@ -22,9 +22,9 @@
     <module>../specpatterns</module>
     <module>../planner</module>
     <module>../verifier/processor-unit</module>
-    <module>../monolith</module>
     <module>../ms-http-client</module>
-    <module>../ms-http-server</module> 
+    <module>../ms-http-server</module>
+    <module>../monolith</module> 
   </modules>
 
 </project>

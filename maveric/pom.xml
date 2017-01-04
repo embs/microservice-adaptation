@@ -16,6 +16,7 @@
 
   <modules>
     <module>../adaptation-metamodel</module> 
+    
     <module>../common</module> 
     <module>../zmq-endpoint</module>
     <module>../specpatterns</module>

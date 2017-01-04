@@ -52,7 +52,7 @@ public class App {
 
 					String input
 					while((input = buffReader.readLine()) != null) {
-						input
+						log.info input
 					}
 					buffReader.close()
 					log.info "{\"serviceTime\":${timer.elapsed(TimeUnit.MILLISECONDS)}}"

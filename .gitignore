@@ -1,9 +1,6 @@
 
 # Created by https://www.gitignore.io/api/maven,eclipse,java
 
-### Custom ###
-*.log
-
 ### Maven ###
 target/
 pom.xml.tag
@@ -91,3 +88,5 @@ local.properties
 hs_err_pid*
 
 # End of https://www.gitignore.io/api/maven,eclipse,java
+*.log
+!src/main/resources/**/*

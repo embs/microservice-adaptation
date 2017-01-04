@@ -6,7 +6,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>adaptation-metamodel</name>
 	<build>
-		<sourceDirectory>src/main/</sourceDirectory>
+		<sourceDirectory>.</sourceDirectory>
 		<plugins>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>

@@ -179,10 +179,6 @@
 			<groupId>com.adalrsjr</groupId>
 			<artifactId>processor-unit</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>adaptation-metamodel</groupId>
-			<artifactId>adaptation-metamodel</artifactId>
-		</dependency>
 	</dependencies>
 
 
@@ -287,11 +283,6 @@
 			<dependency>
 				<groupId>com.adalrsjr</groupId>
 				<artifactId>processor-unit</artifactId>
-				<version>0.0.1-SNAPSHOT</version>
-			</dependency>
-			<dependency>
-				<groupId>adaptation-metamodel</groupId>
-				<artifactId>adaptation-metamodel</artifactId>
 				<version>0.0.1-SNAPSHOT</version>
 			</dependency>
 		</dependencies>

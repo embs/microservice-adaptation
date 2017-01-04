@@ -1,1 +1,1 @@
-docker run -it --rm --name client -e "SERVER=172.17.0.2" -e "THROTTLE=10"  --log-driver=fluentd --log-opt fluentd-address=localhost:24224 --log-opt fluentd-async-connect=true --log-opt tag="{{.Name}}/{{.FullID}}" app/client
+docker run -it --rm --name client -e "SERVER=172.17.0.2" -e "THROTTLE=10"  --log-driver=fluentd --log-opt fluentd-address=localhost:24224 --log-opt fluentd-async-connect=true --log-opt tag="{{.Name}}/{{.FullID}}" maveric/ms-http-client

@@ -33,6 +33,8 @@ import org.jfree.data.xy.XYDataset;
 
 import br.cin.gfads.adalrsjr1.common.Util;
 import br.cin.gfads.adalrsjr1.common.events.SymptomEvent;
+import br.cin.gfads.adalrsjr1.common.statistics.Mean;
+import br.cin.gfads.adalrsjr1.common.statistics.Variance;
 import br.cin.gfads.adalrsjr1.verifier.PropertyInstance;
 import br.cin.gfads.adalrsjr1.verifier.processingunits.instances.OneByOneProcessingUnit;
 import br.cin.gfads.adalrsjr1.verifier.processingunits.wrappers.RabbitMQProcessingUnitWrapper;
@@ -82,51 +84,22 @@ public class ChartProperty extends JFrame implements PropertyInstance {
 		return new TimeSeriesCollection(series1);
 	}
 
+	static Mean mean = new Mean();
+	static Variance variance = new Variance(mean);
 	static Second n = new Second();
-	static int c = 0;
-	static double total = 0.0;
-	double dev = 0.0;
+	
 	public void addValues(double value) {
-		c++;
-		total += value;
-		if(c % 100 == 0) {
-			double avg = total/c;
-			
-			dev = stddev((double)c, dev, avg, value);
-			series1.add(n, avg);
+		mean.sumNewValue(value);
+		
+		if(mean.getCounter() % 100 == 0) {
+			double avg = mean.result();
+			double dev = variance.calculate(value);
 			System.err.println(avg + " " + dev);
-			
+			series1.add(n, avg);
 		}
 		n = (Second) n.next();
 	}
 	
-	/*
-	 * def online_variance(data):
-	    n = 0
-	    mean = 0.0
-	    M2 = 0.0
-	     
-	    for x in data:
-	        n += 1
-	        delta = x - mean
-	        mean += delta/n
-	        delta2 = x - mean
-	        M2 += delta*delta2
-
-	    if n < 2:
-	        return float('nan')
-	    else:
-	        return M2 / (n - 1)
-	 */
-	double M2 = 0.0;
-	double stddev(double n, double olddev, double mean, double data) {
-		double delta = data - mean;
-		mean += delta / n;
-		double delta2 = data - mean;
-		M2 += delta*delta2;
-		return M2 / (n-1);
-	}
-
 	private void customizeChart(JFreeChart chart) {
 		XYPlot plot = chart.getXYPlot();
 
@@ -173,7 +146,6 @@ public class ChartProperty extends JFrame implements PropertyInstance {
 			});
 			t.start();
 		}
-		
 		
 	}
 

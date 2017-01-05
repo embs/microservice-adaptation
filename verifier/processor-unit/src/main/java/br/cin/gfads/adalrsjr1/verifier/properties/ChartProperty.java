@@ -18,8 +18,11 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
+import org.jfree.chart.axis.Axis;
+import org.jfree.chart.axis.AxisSpace;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.axis.NumberTickUnit;
+import org.jfree.chart.axis.TickUnits;
 import org.jfree.chart.plot.XYPlot;
 import org.jfree.chart.renderer.xy.XYLineAndShapeRenderer;
 import org.jfree.data.general.SeriesException;
@@ -43,7 +46,7 @@ import br.cin.gfads.adalrsjr1.verifier.processingunits.wrappers.RabbitMQProcessi
 public class ChartProperty extends JFrame implements PropertyInstance {
 
 	public TimeSeries series1;
-
+	static public Thread t = null;
 	public ChartProperty() {
 		super("XY Line Chart Example with JFreechart");
 
@@ -61,39 +64,67 @@ public class ChartProperty extends JFrame implements PropertyInstance {
 		String yAxisLabel = "Y";
 
 		XYDataset dataset = createDataset();
-
 		JFreeChart chart = ChartFactory.createTimeSeriesChart("", "X", "Y", dataset, false, false, false);
 
-		//		customizeChart(chart);
-
-		// saves the chart as an image files
-		//		File imageFile = new File("XYLineChart.png");
-		//		int width = 2400;
-		//		int height = 600;
-		//		
-		//		try {
-		//			ChartUtilities.saveChartAsPNG(imageFile, chart, width, height);
-		//		} catch (IOException ex) {
-		//			System.err.println(ex);
-		//		}
-		//		
+//		chart.getXYPlot().getRangeAxis().setFixedAutoRange(1000.0);
+		chart.getXYPlot().getRangeAxis().setAutoRange(false);
+		chart.getXYPlot().getRangeAxis().setRangeWithMargins(1000, 2000);
+//		chart.getXYPlot().getRangeAxis().setAutoRangeMinimumSize(1000);
+		
+		
 		return new ChartPanel(chart);
 	}
 
 	private XYDataset createDataset() {
 
 		series1 = new TimeSeries( "Data" );     
-		series1.setMaximumItemCount(100);
+		series1.setMaximumItemCount(5000);
 		return new TimeSeriesCollection(series1);
 	}
 
-
-
 	static Second n = new Second();
 	static int c = 0;
+	static double total = 0.0;
+	double dev = 0.0;
 	public void addValues(double value) {
-		series1.add(n, value);
+		c++;
+		total += value;
+		if(c % 100 == 0) {
+			double avg = total/c;
+			
+			dev = stddev((double)c, dev, avg, value);
+			series1.add(n, avg);
+			System.err.println(avg + " " + dev);
+			
+		}
 		n = (Second) n.next();
+	}
+	
+	/*
+	 * def online_variance(data):
+	    n = 0
+	    mean = 0.0
+	    M2 = 0.0
+	     
+	    for x in data:
+	        n += 1
+	        delta = x - mean
+	        mean += delta/n
+	        delta2 = x - mean
+	        M2 += delta*delta2
+
+	    if n < 2:
+	        return float('nan')
+	    else:
+	        return M2 / (n - 1)
+	 */
+	double M2 = 0.0;
+	double stddev(double n, double olddev, double mean, double data) {
+		double delta = data - mean;
+		mean += delta / n;
+		double delta2 = data - mean;
+		M2 += delta*delta2;
+		return M2 / (n-1);
 	}
 
 	private void customizeChart(JFreeChart chart) {
@@ -131,13 +162,19 @@ public class ChartProperty extends JFrame implements PropertyInstance {
 	}
 
 	public static void start(ChartProperty chart) {
-
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				chart.setVisible(true);
-			}
-		});
+		if(t == null) {
+			t = new Thread(() -> {
+				SwingUtilities.invokeLater(new Runnable() {
+					@Override
+					public void run() {
+						chart.setVisible(true);
+					}
+				});
+			});
+			t.start();
+		}
+		
+		
 	}
 
 	@Override

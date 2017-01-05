@@ -8,15 +8,31 @@
 			<!-- https://logging.apache.org/log4j/2.x/manual/layouts.html#PatternLayout -->
 			<PatternLayout pattern="%d{UNIX} [%t] %-5level %c{1.} - %msg%n" /> 
 		</Console>
-		<File name="LogFile" fileName="src/main/resources/logs/property.log"
+		<File name="LogFileReqResp" fileName="src/main/resources/logs/property-req-resp.log"
+			immediateFlush="true" append="false" bufferedIO="true">
+			<JsonLayout charset="UTF-8" compact="true" eventEol="true" />
+		</File>
+		<File name="LogFileRespTime" fileName="src/main/resources/logs/time-resp.log"
+			immediateFlush="true" append="false" bufferedIO="true">
+			<JsonLayout charset="UTF-8" compact="true" eventEol="true" />
+		</File>
+		<File name="LogFileChart" fileName="src/main/resources/logs/chart.log"
 			immediateFlush="true" append="false" bufferedIO="true">
 			<JsonLayout charset="UTF-8" compact="true" eventEol="true" />
 		</File>
 	</Appenders>
 	<Loggers>
 		<!-- additivity attribute allows show message in ROOT logger -->
+		<Logger name="br.cin.gfads.adalrsjr1.verifier.properties.ReqRespProperty" level="ALL"> 
+			<AppenderRef ref="LogFileReqResp" /> 
+		</Logger>
+		<Logger name="br.cin.gfads.adalrsjr1.verifier.properties.ResponseTimeProperty" level="ALL"> 
+			<AppenderRef ref="LogFileRespTime" /> 
+		</Logger>
+		<Logger name="br.cin.gfads.adalrsjr1.verifier.properties.ChartProperty" level="ALL"> 
+			<AppenderRef ref="LogFileChart" /> 
+		</Logger>
 		<Root level="ALL">
-			<AppenderRef ref="LogFile" />
 			<AppenderRef ref="Console" />
 		</Root>
 	</Loggers>

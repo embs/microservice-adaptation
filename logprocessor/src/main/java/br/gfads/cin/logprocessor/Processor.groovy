@@ -1,6 +1,15 @@
 package br.gfads.cin.logprocessor
 
-interface Processor {
-	def execute(Map entry) 
-	def reset() 
+abstract class Processor {
+	List values = new LinkedList()
+	
+	def execute(Map entry) { } 
+	def reset() { }
+	
+	def toTxt(String name) {
+		File f = new File(name)
+		values.each {
+			f.write(it.toString())
+		}
+	}
 }

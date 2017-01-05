@@ -3,9 +3,7 @@ package br.gfads.cin.logprocessor
 import java.util.Map
 import java.util.concurrent.TimeUnit
 
-class ReqResp implements Processor {
-	List values = new LinkedList()
-	
+class ReqResp extends Processor {
 	@Override
 	public Object execute(Map entry) {
 		if(entry.level == "TRACE" && entry.message instanceof Map && 

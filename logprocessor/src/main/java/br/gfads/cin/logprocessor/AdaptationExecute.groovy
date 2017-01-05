@@ -4,10 +4,8 @@ import java.math.RoundingMode
 import java.util.Map
 import java.util.concurrent.TimeUnit
 
-class AdaptationExecute implements Processor {
+class AdaptationExecute extends Processor {
 	def key = ""
-	
-	List values = new LinkedList()
 	
 	@Override
 	public Object execute(Map entry) {
@@ -21,7 +19,7 @@ class AdaptationExecute implements Processor {
 		key = ""
 		values.clear()
 	}
-
+	
 	public def avg() {
 		for(int i = 0; i < 10; i++) {
 			values.remove(i)

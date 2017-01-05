@@ -3,8 +3,7 @@ package br.gfads.cin.logprocessor
 import java.util.Map
 import java.util.concurrent.TimeUnit
 
-class RespTime implements Processor {
-	List values = new LinkedList()
+class RespTime extends Processor {
 	
 	@Override
 	public Object execute(Map entry) {

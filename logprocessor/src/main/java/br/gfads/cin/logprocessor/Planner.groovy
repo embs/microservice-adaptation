@@ -4,9 +4,7 @@ import java.util.List
 import java.util.Map
 import java.util.concurrent.TimeUnit
 
-class Planner implements Processor {
-	List values = new LinkedList()
-	
+class Planner extends Processor {
 	@Override
 	public Object execute(Map entry) {
 		if(entry.level == "TRACE" && entry.message instanceof Map && entry.message.method == "handle") {

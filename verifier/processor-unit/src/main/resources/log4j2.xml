@@ -23,15 +23,6 @@
 	</Appenders>
 	<Loggers>
 		<!-- additivity attribute allows show message in ROOT logger -->
-		<Logger name="br.cin.gfads.adalrsjr1.verifier.properties.ReqRespProperty" level="ALL"> 
-			<AppenderRef ref="LogFileReqResp" /> 
-		</Logger>
-		<Logger name="br.cin.gfads.adalrsjr1.verifier.properties.ResponseTimeProperty" level="ALL"> 
-			<AppenderRef ref="LogFileRespTime" /> 
-		</Logger>
-		<Logger name="br.cin.gfads.adalrsjr1.verifier.properties.ChartProperty" level="ALL"> 
-			<AppenderRef ref="LogFileChart" /> 
-		</Logger>
 		<Root level="ALL">
 			<AppenderRef ref="Console" />
 		</Root>

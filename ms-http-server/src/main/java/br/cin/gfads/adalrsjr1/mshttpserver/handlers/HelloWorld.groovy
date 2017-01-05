@@ -27,7 +27,7 @@ class HelloWorld {
 	private static final Random r = new Random(31);
 	static Map env = System.getenv()
 	
-	private static int deviation = Integer.parseInt(env.getOrDefault("DEV", "100"))
+	private static int deviation = Integer.parseInt(env.getOrDefault("DEV", "0"))
 	private static int average = Integer.parseInt(env.getOrDefault("AVG", "1000"))
 	
 	@GET

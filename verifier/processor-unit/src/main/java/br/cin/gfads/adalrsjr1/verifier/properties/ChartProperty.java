@@ -20,6 +20,8 @@ import org.jfree.data.time.Second;
 import org.jfree.data.time.TimeSeries;
 import org.jfree.data.time.TimeSeriesCollection;
 import org.jfree.data.xy.XYDataset;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import br.cin.gfads.adalrsjr1.common.Util;
 import br.cin.gfads.adalrsjr1.common.events.SymptomEvent;
@@ -36,7 +38,8 @@ import br.cin.gfads.adalrsjr1.verifier.processingunits.wrappers.RabbitMQProcessi
  *
  */
 public class ChartProperty extends JFrame implements PropertyInstance {
-
+	private static final Logger log = LoggerFactory
+			.getLogger(ChartProperty.class);
 	public TimeSeries series1;
 	static public Thread t = null;
 	public ChartProperty() {
@@ -84,7 +87,6 @@ public class ChartProperty extends JFrame implements PropertyInstance {
 		if(mean.getCounter() % 100 == 0) {
 			double avg = mean.result();
 			double dev = variance.calculate(value);
-			System.err.println(avg + " " + dev);
 			series1.add(n, avg);
 		}
 		n = (Second) n.next();
@@ -142,7 +144,9 @@ public class ChartProperty extends JFrame implements PropertyInstance {
 	@Override
 	public boolean check(SymptomEvent symptom) {
 		Long serviceTime = (Long)symptom.tryGet("serviceTime", Long.class);
+		
 		if(serviceTime != null) {
+			Util.mavericLog(log, getClass(), "serviceTime", serviceTime);
 			addValues((double)serviceTime);
 			//			SwingUtilities.updateComponentTreeUI(this);
 		}

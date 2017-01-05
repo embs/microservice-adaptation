@@ -28,7 +28,8 @@ public class App {
 
 		String destination = env.getOrDefault("SERVER", "localhost")
 		int rate = Integer.parseInt(env.getOrDefault("THROTTLE", "100")) 
-		long MAX_TIME = Long.parseLong(env.getOrDefault("MAX_TIME", "10"))
+		long MAX_TIME = Long.parseLong(env.getOrDefault("MAX_TIME", "${Long.MAX_VALUE}"))
+		MAX_TIME = MAX_TIME < 0 ? Long.MAX_VALUE : MAX_TIME
 		int cores = Runtime.getRuntime().availableProcessors()
 
 		ExecutorService tPool

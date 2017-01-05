@@ -8,6 +8,7 @@ abstract class Processor {
 	
 	def toTxt(String name) {
 		File f = new File(name)
+		
 		values.each {
 			f.write(it.toString())
 		}

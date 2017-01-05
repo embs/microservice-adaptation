@@ -37,7 +37,9 @@ public class ResponseTimeProperty implements PropertyInstance {
 			result = true;
 		}
 		result = false;
-		Util.mavericLog(log, this.getClass(), "check-serviceTime", serviceTime);
+		if(serviceTime != null) {
+			Util.mavericLog(log, this.getClass(), "check-serviceTime", serviceTime);
+		}
 		Util.mavericLog(log, this.getClass(), "check", watch.stop());
 		return result;
 	}

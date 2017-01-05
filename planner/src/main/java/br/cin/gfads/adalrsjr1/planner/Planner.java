@@ -109,7 +109,7 @@ public class Planner  {
 																    false, 
 																    "adaptationmanager.priorityqueue");
 		queue.start();
-		queue.enqueue(new ChangePlanEvent());
+//		queue.enqueue(new ChangePlanEvent());
 		PolicyRepository repository = new PolicyRepositoryFileImpl();
 
 		Planner planner = new Planner(queue, repository);

@@ -1,5 +1,7 @@
 package br.cin.gfads.adalrsjr1.common.events
 
+import java.rmi.activation.ActivationSystem
+
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -29,14 +31,16 @@ public class SymptomEvent extends CommonEvent {
 	}
 	
 	public SymptomEvent(Object source, byte[] message) {
-		TIME = System.nanoTime()
+//		TIME = System.nanoTime()
 		content = deserialize(message)
+		TIME = tryGet('timeMillis', Long)
 		super.source = tryGet('container_id')
 	}
 	
 	public SymptomEvent(Object source, Map content) {
 		super(source)
-		TIME = System.nanoTime()
+//		TIME = System.nanoTime()
+		TIME = tryGet('timeMillis', Long)
 		this.content = content
 	}
 	
@@ -50,6 +54,12 @@ public class SymptomEvent extends CommonEvent {
 	
 	public String tryGet(String key) {
 		content.getOrDefault(key, content['log'].getOrDefault(key, content['log']['message'][key]))
+	}
+	
+	public def tryGet(String key, Class clazz) {
+		def value = tryGet(key)
+		
+		value ? clazz."parse${clazz.simpleName}"(value) : null
 	}
 	
 	@Override

@@ -17,9 +17,9 @@ public class ChangePlanEvent extends CommonEvent implements Comparable {
 	@JsonProperty("adaptationScript")
 	private String adaptationScript
 	@JsonProperty("time")
-	public long time;
+	public long time = 0L;
 	ChangePlanEvent() { super()
-		time = System.nanoTime()
+//		time = System.nanoTime()
 	}
 	
 	/**

@@ -21,78 +21,22 @@ import br.cin.gfads.adalrsjr1.verifier.processingunits.wrappers.RabbitMQProcessi
 public class ResponseTimeProperty implements PropertyInstance {
 	private static final Logger log = LoggerFactory
 			.getLogger(ResponseTimeProperty.class);
-	private static class TimeEntry implements Comparable<TimeEntry> {
-		final String id;
-		private long time = 0L; 
-
-		private TimeEntry(String id) {
-			this.id = id;
-		}
-		
-		static TimeEntry newEntry(String id, long time) {
-			TimeEntry t = new TimeEntry(id);
-			t.addTime(time);
-			return t;
-		}
-		
-		static TimeEntry newEntry(String id) {
-			return newEntry(id, 0);
-		}
-		
-		@Override
-		public int compareTo(TimeEntry o) {
-			return this.id.compareTo(o.id);
-		}
-		
-		public long getTime() {
-			return time;
-		}
-		
-		public long addTime(long time) {
-			time += time;
-			return time;
-		}
 	
-	}
-	
-	Map<String, Long> map = new WeakHashMap<>();
-	double sum = 0.0;
-	double count = 0.0;
 	double threshold = 0.0;
 	
 	public ResponseTimeProperty(double threshould) {
 		this.threshold = threshould;
 	}
 	
-	private long insertIntoMap(SymptomEvent s) {
-		String key = s.tryGet("req-id");
-		long time = Long.parseLong(s.tryGet("timeMillis"));
-		
-		Long value = 0L;
-		value = map.putIfAbsent(key, time);
-		
-		if(value != null) {
-			value = time - value;
-			map.remove(key);
-			return value;
-		}
-		
-		return -1L;
-	}
-	
 	@Override
 	public boolean check(SymptomEvent symptom) {
 		Stopwatch watch = Stopwatch.createStarted();
-		long v = insertIntoMap(symptom);
-		boolean result = true;
-		if(v > 0) {
-			count++;
-			sum += v;
-//			System.err.println(count + " " + sum + " " + sum/count );
-			if(sum/count > this.threshold) {
-				result = false;
-			}
+		boolean result = false;
+		Long serviceTime = (Long)symptom.tryGet("serviceTime", Long.class);
+		if(serviceTime != null && serviceTime > this.threshold) {
+			result = true;
 		}
+		result = false;
 		Util.mavericLog(log, this.getClass(), "check", watch.stop());
 		return result;
 	}

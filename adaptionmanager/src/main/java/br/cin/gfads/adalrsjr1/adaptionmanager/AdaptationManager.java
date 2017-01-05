@@ -105,7 +105,8 @@ public class AdaptationManager implements AutoCloseable, ContextListener {
 		Stopwatch watch = Stopwatch.createStarted();
 		
 		Script script = repository.getAdaptationScript(changePlan.getAdaptationScript());
-		Util.mavericLog(log, this.getClass(), "execute-workflow-before-adapt", (System.nanoTime()-changePlan.getTime()));
+		System.err.println((System.currentTimeMillis()-changePlan.getTime()));
+		Util.mavericLog(log, this.getClass(), "execute-workflow-before-adapt", (System.currentTimeMillis()-changePlan.getTime()));
 		if(script != null) {	
 			engine.execute(script);
 		}

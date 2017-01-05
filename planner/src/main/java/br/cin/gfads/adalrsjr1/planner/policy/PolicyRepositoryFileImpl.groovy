@@ -11,7 +11,7 @@ public class PolicyRepositoryFileImpl implements PolicyRepository {
 	private static final Logger log = LoggerFactory.getLogger(PolicyRepositoryFileImpl.class);
 
 	private File dataStore
-	private TreeSet<Policy> policies 
+	private List<Policy> policies 
 
 	PolicyRepositoryFileImpl() {
 		this(Planner.CONFIG.policiesRepository)
@@ -19,7 +19,7 @@ public class PolicyRepositoryFileImpl implements PolicyRepository {
 		
 	PolicyRepositoryFileImpl(String path) {
 		dataStore = new File(path)
-		policies = new TreeSet<Policy>(
+		policies = new LinkedList<Policy>(
 		dataStore.readLines("UTF-8").collect {policySerialized ->
 			Policy.deserialize(policySerialized)
 		})
@@ -32,15 +32,14 @@ public class PolicyRepositoryFileImpl implements PolicyRepository {
 	}
 
 	public List<Policy> fetchAdaptationPlans(ChangeRequestEvent changeRequest) {
-		Set<Policy> policies = policies.findAll { policy ->
+		Collection<Policy> policies = policies.findAll { policy ->
 			policy.getChangeRequest() == changeRequest.getName()
 		}
-		
-		return Collections.unmodifiableCollection(policies).toList()
+		return policies
 	}
 	
 	public List<Policy> fetchAll() {
-		return Collections.unmodifiableList(policies)
+		return policies
 	}
 	
 }

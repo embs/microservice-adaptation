@@ -144,12 +144,12 @@ class LogHandler {
 		tpool.execute({
 			AdaptationExecute ae = new AdaptationExecute(key:"execute-workflow-before-adapt")
 			iterator(adaptation, ae)
-			ae.toTxt("ms-workflow.txt")
+			ae.toTxt("${ip}-ms-workflow.txt")
 			println "[${ip}:ms]-workflow:"+ae.avg()
 			ae.reset()
 			ae.key = "execute-adaption"
 			iterator(adaptation, ae)
-			ae.toTxt("ms-script_exeution.txt")
+			ae.toTxt("${ip}-ms-script_exeution.txt")
 			println "[${ip}:ms]-script execution:"+ae.avg()
 			ae.reset()
 		})
@@ -157,7 +157,7 @@ class LogHandler {
 		tpool.execute({
 			Planner p = new Planner()
 			iterator(planner, p)
-			p.toTxt("ms-planning.txt")
+			p.toTxt("${ip}-ms-planning.txt")
 			println "[${ip}:ms]-planning:"+p.avg()
 			p.reset()
 		})
@@ -165,7 +165,7 @@ class LogHandler {
 		tpool.execute({
 			ReqResp rr = new ReqResp()
 			iterator(reqresp,rr)
-			rr.toTxt("ms-ltl_property.txt")
+			rr.toTxt("${ip}-ms-ltl_property.txt")
 			println "[${ip}:ms]-ltl property:"+rr.avg()
 			rr.reset()
 		})
@@ -173,7 +173,7 @@ class LogHandler {
 		tpool.execute({
 			RespTime rt = new RespTime()
 			iterator(resptime, rt)
-			rt.toTxt("ms-quality_property.txt")
+			rt.toTxt("${ip}-ms-quality_property.txt")
 			println "[${ip}:ms]-quality property:"+rt.avg()
 			rt.reset()
 		});
@@ -181,7 +181,7 @@ class LogHandler {
 		tpool.execute({
 			ServiceTime st = new ServiceTime()
 			iterator(resptime, st)
-			st.toTxt("ms-service_time.txt")
+			st.toTxt("${ip}-ms-service_time.txt")
 			println "[${ip}:ms]-service time:" + st.avg()
 			st.reset()
 		});
@@ -190,12 +190,12 @@ class LogHandler {
 			AdaptationExecute ae = new AdaptationExecute(key:"execute-workflow-before-adapt")
 			ae.key = "execute-workflow-before-adapt"
 			iterator(monolith, ae)
-			ae.toTxt("mo-workflow.txt")
+			ae.toTxt("${ip}-mo-workflow.txt")
 			println "[${ip}:mo]-workflow:"+ae.avg()
 			ae.reset()
 			ae.key = "execute-adaption"
 			iterator(monolith, ae)
-			ae.toTxt("mo-script_execution.txt")
+			ae.toTxt("${ip}-mo-script_execution.txt")
 			println "[${ip}:mo]-script execution:"+ae.avg()
 		})
 
@@ -203,7 +203,7 @@ class LogHandler {
 			Planner p = new Planner()
 			p = new Planner()
 			iterator(monolith, p)
-			p.toTxt("mo-planning.txt")
+			p.toTxt("${ip}-mo-planning.txt")
 			println "[${ip}:mo]-planning:"+p.avg()
 		})
 
@@ -211,7 +211,7 @@ class LogHandler {
 			ReqResp rr = new ReqResp()
 			rr = new ReqResp()
 			iterator(monolith,rr)
-			rr.toTxt("mo-ltl_property.txt")
+			rr.toTxt("${ip}-mo-ltl_property.txt")
 			println "[${ip}:mo]-ltl property:"+rr.avg()
 		})
 
@@ -219,14 +219,14 @@ class LogHandler {
 			RespTime rt = new RespTime()
 			rt = new RespTime()
 			iterator(monolith, rt)
-			rt.toTxt("mo-quality_property.txt")
+			rt.toTxt("${ip}-mo-quality_property.txt")
 			println "[${ip}:mo]-quality property:"+rt.avg()
 		})
 		
 		tpool.execute({
 			ServiceTime st = new ServiceTime()
 			iterator(monolith, st)
-			st.toTxt("mo-service_time.txt")
+			st.toTxt("${ip}-mo-service_time.txt")
 			println "[${ip}:mo]-service time:" + st.avg()
 			st.reset()
 		});

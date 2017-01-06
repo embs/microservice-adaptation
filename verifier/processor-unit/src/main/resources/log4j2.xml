@@ -20,11 +20,16 @@
 			immediateFlush="true" append="false" bufferedIO="true">
 			<JsonLayout charset="UTF-8" compact="true" eventEol="true" />
 		</File>
+		<File name="LogFile" fileName="src/main/resources/logs/property.log"
+			immediateFlush="true" append="false" bufferedIO="true">
+			<JsonLayout charset="UTF-8" compact="true" eventEol="true" />
+		</File>
 	</Appenders>
 	<Loggers>
 		<!-- additivity attribute allows show message in ROOT logger -->
 		<Root level="ALL">
 			<AppenderRef ref="Console" />
+			<AppenderRef ref="LogFile" />
 		</Root>
 	</Loggers>
 </Configuration>

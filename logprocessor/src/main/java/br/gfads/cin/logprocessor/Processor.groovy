@@ -10,7 +10,6 @@ abstract class Processor {
 		new File(name).withWriter('utf-8') { writer ->
 			values.each { entry ->
 				writer.writeLine(entry.toString())
-				println entry.toString()
 			}
 		}
 	}

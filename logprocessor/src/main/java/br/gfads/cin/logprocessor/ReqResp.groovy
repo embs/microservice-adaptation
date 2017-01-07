@@ -18,17 +18,17 @@ class ReqResp extends Processor {
 	}
 	
 	public def avg() {
-		for(int i = 0; i < 10; i++) {
-			values.remove(i)
-		}
-		for(int i = 0; i < 10; i++) {
-			values.remove(values.size()-1)
-		}
+//		for(int i = 0; i < 10; i++) {
+//			values.remove(i)
+//		}
+//		for(int i = 0; i < 10; i++) {
+//			values.remove(values.size()-1)
+//		}
 		
-		def sum = values.inject { s, e ->
-			s + e
-		}
-		TimeUnit.NANOSECONDS.toMillis(sum)/ values.size()
+//		def sum = values?.inject { s, e ->
+//			s + e
+//		}
+//		TimeUnit.NANOSECONDS.toMillis(sum)/ values.size()
 	}
 	
 	

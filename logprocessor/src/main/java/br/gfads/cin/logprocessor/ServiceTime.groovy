@@ -4,11 +4,11 @@ import java.util.concurrent.TimeUnit
 
 public class ServiceTime extends Processor {
 	List values = new LinkedList()
-	
+
 	@Override
 	public Object execute(Map entry) {
 		if(entry.level == "TRACE" && entry.message instanceof Map &&
-		entry.message.clazz == "br.cin.gfads.adalrsjr1.verifier.properties.ResponseTimeProperty" && entry.message.method == "serviceTime") {
+		entry.message.clazz == "br.cin.gfads.adalrsjr1.verifier.properties.ResponseTimeProperty" && entry.message.method == "check-serviceTime") {
 			values << entry.message.time.toLong()
 		}
 	}

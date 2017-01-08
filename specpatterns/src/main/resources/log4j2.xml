@@ -8,7 +8,7 @@
 			<!-- https://logging.apache.org/log4j/2.x/manual/layouts.html#PatternLayout -->
 			<PatternLayout pattern="%d{UNIX} [%t] %level %logger{36} - %msg%n" />
 		</Console>
-		<File name="LogFile" fileName="src/main/resources/logs/all.log"
+		<File name="LogFile" fileName="src/main/resources/logs/spec-patterns.log"
 			immediateFlush="false" append="false">
 			<PatternLayout pattern="%d{UNIX} [%t] %-5level %logger{36} - %msg%n" />
 		</File>

@@ -74,4 +74,9 @@ public class RabbitMQRemoteAdaptationPriorityQueueServerImpl implements Adaptati
 		return queue.take();
 	}
 
+	@Override
+	public void clear() {
+		queue.clear();
+	}
+
 }

@@ -113,5 +113,10 @@ public class RemoteAdaptationPriorityQueueServerImpl implements AdaptationPriori
 		
 	}
 
+	@Override
+	public void clear() {
+		queue.clear();
+	}
+
 	
 }

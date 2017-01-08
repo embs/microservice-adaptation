@@ -28,7 +28,6 @@ public class DockerCreateServiceCommandImpl extends AbstractCommandImpl {
 	public Object execute(ICommand metaCommand) throws Exception {
 		Stopwatch watch = Stopwatch.createStarted();
 		DockerClient docker = DockerServiceUtil.getDockerClient();
-		
 		ICommandParameter parameters = metaCommand.getCommandParameter();
 		Stopwatch watch2 = Stopwatch.createStarted();
 		ServiceSpec serviceSpec = DockerServiceUtil.createServiceSpec(lookup("serviceSpec", parameters));
@@ -38,7 +37,6 @@ public class DockerCreateServiceCommandImpl extends AbstractCommandImpl {
 //		docker.listTasks();
 		log.info("commands {} executed in {}", this, watch.stop());
 ////		System.out.println(response.id());
-		
 		return null;
 	}
 	

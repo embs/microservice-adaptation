@@ -20,6 +20,10 @@ public class AdaptationPrioriryQueueImpl implements AdaptationPriorityQueue {
 		queue.offer(changePlan);
 	}
 
+	public void clear() {
+		queue.clear();
+	}
+	
 	public ChangePlanEvent remove() {
 		ChangePlanEvent changePlan = null;
 		try {

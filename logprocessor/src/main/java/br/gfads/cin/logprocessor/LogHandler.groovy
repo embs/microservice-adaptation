@@ -150,7 +150,7 @@ class LogHandler {
 		String planner = "C:\\Users\\adalr\\Desktop\\new-logs\\${spec}\\planner\\planner.log"
 		String reqresp = "C:\\Users\\adalr\\Desktop\\new-logs\\${spec}\\verifier\\reqresp\\property.log"
 		String resptime = "C:\\Users\\adalr\\Desktop\\new-logs\\${spec}\\verifier\\timeresp\\property.log"
-		String monolith = "C:\\Users\\adalr\\Desktop\\new-logs\\${spec}\\monolith\\adaptation.log"
+		String monolith = "C:\\Users\\adalr\\Desktop\\new-logs\\${spec}\\monolith\\monolithic.log"
 
 		tpool.execute({
 			ServiceTime st = new ServiceTime()

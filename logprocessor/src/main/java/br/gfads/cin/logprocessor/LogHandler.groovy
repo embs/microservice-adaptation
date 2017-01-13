@@ -123,7 +123,6 @@ class LogHandler {
 			try {
 				String s = scanner.nextLine()
 				Map map = slurper.parseText(s)
-				println s
 				try {
 					map.message = slurper.parseText(map.message)
 				}
@@ -182,7 +181,7 @@ class LogHandler {
 			AdaptationExecute ae = new AdaptationExecute(key:"execute-workflow-before-adapt")
 			iterator(adaptation, ae)
 			ae.toTxt("${ip}-ms-workflow.txt")
-			println "[${ip}:ms]-workflow:"+ae.avg()
+//			println "[${ip}:ms]-workflow:"+ae.avg()
 //			ae.reset()
 //			ae.key = "execute-adaption"
 //			iterator(adaptation, ae)
@@ -219,7 +218,7 @@ class LogHandler {
 			ae.key = "execute-workflow-before-adapt"
 			iterator(monolith, ae)
 			ae.toTxt("${ip}-mo-workflow.txt")
-			println "[${ip}:mo]-workflow:"+ae.avg()
+//			println "[${ip}:mo]-workflow:"+ae.avg()
 //			ae.reset()
 //			ae.key = "execute-adaption"
 //			iterator(monolith, ae)

@@ -121,7 +121,9 @@ class LogHandler {
 		JsonSlurper slurper = new JsonSlurper()
 		while(scanner.hasNext()) {
 			try {
-				Map map = slurper.parseText(scanner.nextLine())
+				String s = scanner.nextLine()
+				Map map = slurper.parseText(s)
+				println s
 				try {
 					map.message = slurper.parseText(map.message)
 				}
@@ -255,9 +257,10 @@ class LogHandler {
 	
 	public static void main(String[] args) {
 		ExecutorService tpool = Executors.newCachedThreadPool()
-		
+		if(args.length > 0)
+			process(args[0], args[1], args[2],tpool)
 //		process("Y","10.66.66.32",tpool)
-		process(args[0], args[1], args[2],tpool)
+		process("C:\\Users\\adalr\\Desktop\\logs-splitted\\logs-min-client", "teste","teste", tpool)
 //		process("local","local",tpool)
 		
 		tpool.shutdown()

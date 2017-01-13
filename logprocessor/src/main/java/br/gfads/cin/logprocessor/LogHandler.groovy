@@ -138,7 +138,7 @@ class LogHandler {
 
 	}
 
-	public static void process(def spec, def ip, def tpool) {
+	public static void process(def path, def spec, def ip, def tpool) {
 
 //		String adaptation = drive+":\\logs\\adaptation\\adaptation.log"
 //		String planner = drive+":\\logs\\planner\\planner.log"
@@ -146,100 +146,102 @@ class LogHandler {
 //		String resptime = drive+":\\logs\\verifier\\timeresp\\property.log"
 //		String monolith = drive+":\\logs\\monolith\\adaptation.log"
 		
-		String adaptation = "C:\\Users\\adalr\\Desktop\\new-logs\\${spec}\\adaptation\\adaptation.log"
-		String planner = "C:\\Users\\adalr\\Desktop\\new-logs\\${spec}\\planner\\planner.log"
-		String reqresp = "C:\\Users\\adalr\\Desktop\\new-logs\\${spec}\\verifier\\reqresp\\property.log"
-		String resptime = "C:\\Users\\adalr\\Desktop\\new-logs\\${spec}\\verifier\\timeresp\\property.log"
-		String monolith = "C:\\Users\\adalr\\Desktop\\new-logs\\${spec}\\monolith\\monolithic.log"
-
-		tpool.execute({
-			ServiceTime st = new ServiceTime()
-			iterator(resptime, st)
-			println "[${ip}:ms]-service time:" + st.avg()
-			st.toTxt("${ip}-ms-service_time.txt")
-			st.reset()
-		});
-
-		tpool.execute({
-			ServiceTime st = new ServiceTime()
-			iterator(monolith, st)
-			st.toTxt("${ip}-mo-service_time.txt")
-			println "[${ip}:mo]-service time:" + st.avg()
-			st.reset()
-		});
+		String PATH = path;
 		
+		String adaptation = PATH + "\\adaptation\\adaptation.log"
+		String planner =    PATH + "\\planner\\planner.log"
+		String reqresp =    PATH + "\\verifier\\reqresp\\property.log"
+		String resptime =   PATH + "\\verifier\\timeresp\\property.log"
+		String monolith =   PATH + "\\monolith\\monolithic.log"
+
+//		tpool.execute({
+//			ServiceTime st = new ServiceTime()
+//			iterator(resptime, st)
+//			println "[${ip}:ms]-service time:" + st.avg()
+//			st.toTxt("${ip}-ms-service_time.txt")
+//			st.reset()
+//		});
+//
+//		tpool.execute({
+//			ServiceTime st = new ServiceTime()
+//			iterator(monolith, st)
+//			st.toTxt("${ip}-mo-service_time.txt")
+//			println "[${ip}:mo]-service time:" + st.avg()
+//			st.reset()
+//		});
+//		
 		tpool.execute({
 			AdaptationExecute ae = new AdaptationExecute(key:"execute-workflow-before-adapt")
 			iterator(adaptation, ae)
 			ae.toTxt("${ip}-ms-workflow.txt")
 			println "[${ip}:ms]-workflow:"+ae.avg()
-			ae.reset()
-			ae.key = "execute-adaption"
-			iterator(adaptation, ae)
-			ae.toTxt("${ip}-ms-script_exeution.txt")
-			println "[${ip}:ms]-script execution:"+ae.avg()
-			ae.reset()
+//			ae.reset()
+//			ae.key = "execute-adaption"
+//			iterator(adaptation, ae)
+//			ae.toTxt("${ip}-ms-script_exeution.txt")
+//			println "[${ip}:ms]-script execution:"+ae.avg()
+//			ae.reset()
 		})
-
-		tpool.execute({
-			Planner p = new Planner()
-			iterator(planner, p)
-			p.toTxt("${ip}-ms-planning.txt")
-			println "[${ip}:ms]-planning:"+p.avg()
-			p.reset()
-		})
-
-		tpool.execute({
-			ReqResp rr = new ReqResp()
-			iterator(reqresp,rr)
-			rr.toTxt("${ip}-ms-ltl_property.txt")
-			println "[${ip}:ms]-ltl property:"+rr.avg()
-			rr.reset()
-		})
-
-		tpool.execute({
-			RespTime rt = new RespTime()
-			iterator(resptime, rt)
-			rt.toTxt("${ip}-ms-quality_property.txt")
-			println "[${ip}:ms]-quality property:"+rt.avg()
-			rt.reset()
-		});
+//
+//		tpool.execute({
+//			Planner p = new Planner()
+//			iterator(planner, p)
+//			p.toTxt("${ip}-ms-planning.txt")
+//			println "[${ip}:ms]-planning:"+p.avg()
+//			p.reset()
+//		})
+//
+//		tpool.execute({
+//			ReqResp rr = new ReqResp()
+//			iterator(reqresp,rr)
+//			rr.toTxt("${ip}-ms-ltl_property.txt")
+//			println "[${ip}:ms]-ltl property:"+rr.avg()
+//			rr.reset()
+//		})
+//
+//		tpool.execute({
+//			RespTime rt = new RespTime()
+//			iterator(resptime, rt)
+//			rt.toTxt("${ip}-ms-quality_property.txt")
+//			println "[${ip}:ms]-quality property:"+rt.avg()
+//			rt.reset()
+//		});
 		tpool.execute({
 			AdaptationExecute ae = new AdaptationExecute(key:"execute-workflow-before-adapt")
 			ae.key = "execute-workflow-before-adapt"
 			iterator(monolith, ae)
 			ae.toTxt("${ip}-mo-workflow.txt")
 			println "[${ip}:mo]-workflow:"+ae.avg()
-			ae.reset()
-			ae.key = "execute-adaption"
-			iterator(monolith, ae)
-			ae.toTxt("${ip}-mo-script_execution.txt")
-			println "[${ip}:mo]-script execution:"+ae.avg()
+//			ae.reset()
+//			ae.key = "execute-adaption"
+//			iterator(monolith, ae)
+//			ae.toTxt("${ip}-mo-script_execution.txt")
+//			println "[${ip}:mo]-script execution:"+ae.avg()
 		})
-
-		tpool.execute({
-			Planner p = new Planner()
-			p = new Planner()
-			iterator(monolith, p)
-			p.toTxt("${ip}-mo-planning.txt")
-			println "[${ip}:mo]-planning:"+p.avg()
-		})
-
-		tpool.execute({
-			ReqResp rr = new ReqResp()
-			rr = new ReqResp()
-			iterator(monolith,rr)
-			rr.toTxt("${ip}-mo-ltl_property.txt")
-			println "[${ip}:mo]-ltl property:"+rr.avg()
-		})
-
-		tpool.execute({
-			RespTime rt = new RespTime()
-			rt = new RespTime()
-			iterator(monolith, rt)
-			rt.toTxt("${ip}-mo-quality_property.txt")
-			println "[${ip}:mo]-quality property:"+rt.avg()
-		})
+//
+//		tpool.execute({
+//			Planner p = new Planner()
+//			p = new Planner()
+//			iterator(monolith, p)
+//			p.toTxt("${ip}-mo-planning.txt")
+//			println "[${ip}:mo]-planning:"+p.avg()
+//		})
+//
+//		tpool.execute({
+//			ReqResp rr = new ReqResp()
+//			rr = new ReqResp()
+//			iterator(monolith,rr)
+//			rr.toTxt("${ip}-mo-ltl_property.txt")
+//			println "[${ip}:mo]-ltl property:"+rr.avg()
+//		})
+//
+//		tpool.execute({
+//			RespTime rt = new RespTime()
+//			rt = new RespTime()
+//			iterator(monolith, rt)
+//			rt.toTxt("${ip}-mo-quality_property.txt")
+//			println "[${ip}:mo]-quality property:"+rt.avg()
+//		})
 		
 		
 	}
@@ -249,8 +251,8 @@ class LogHandler {
 		ExecutorService tpool = Executors.newCachedThreadPool()
 		
 //		process("Y","10.66.66.32",tpool)
-		process("remote","remote",tpool)
-		process("local","local",tpool)
+		process(args[0], args[1], args[2],tpool)
+//		process("local","local",tpool)
 		
 		tpool.shutdown()
 		

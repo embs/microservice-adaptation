@@ -150,10 +150,15 @@ class LogHandler {
 		String sp = File.separator; 
 		
 		String adaptation = PATH + "${sp}adaptation${sp}adaptation.log"
+		println adaptation
 		String planner =    PATH + "${sp}planner${sp}planner.log"
+		println planner
 		String reqresp =    PATH + "${sp}verifier${sp}reqresp${sp}property.log"
+		println reqresp
 		String resptime =   PATH + "${sp}verifier${sp}timeresp${sp}property.log"
+		println resptime
 		String monolith =   PATH + "${sp}monolith${sp}monolithic.log"
+		println monolith
 
 //		tpool.execute({
 //			ServiceTime st = new ServiceTime()

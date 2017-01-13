@@ -257,8 +257,12 @@ class LogHandler {
 	
 	public static void main(String[] args) {
 		ExecutorService tpool = Executors.newCachedThreadPool()
-		if(args.length > 0)
+		
+		if(args.length > 0) {
+			println args
 			process(args[0], args[1], args[2],tpool)
+			
+		}
 //		process("Y","10.66.66.32",tpool)
 		process("C:\\Users\\adalr\\Desktop\\logs-splitted\\logs-min-client", "teste","teste", tpool)
 //		process("local","local",tpool)

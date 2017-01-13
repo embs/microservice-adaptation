@@ -263,10 +263,11 @@ class LogHandler {
 			process(args[0], args[1], args[2],tpool)
 			
 		}
-//		process("Y","10.66.66.32",tpool)
-		process("C:\\Users\\adalr\\Desktop\\logs-splitted\\logs-min-client", "teste","teste", tpool)
+		else {
+			process("C:\\Users\\adalr\\Desktop\\logs-splitted\\logs-min-client", "teste","teste", tpool)
+		}
 //		process("local","local",tpool)
-		
+		//		process("Y","10.66.66.32",tpool)
 		tpool.shutdown()
 		
 	}

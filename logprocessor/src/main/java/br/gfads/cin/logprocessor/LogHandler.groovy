@@ -147,12 +147,13 @@ class LogHandler {
 //		String monolith = drive+":\\logs\\monolith\\adaptation.log"
 		
 		String PATH = path;
+		String sp = File.separator; 
 		
-		String adaptation = PATH + "\\adaptation\\adaptation.log"
-		String planner =    PATH + "\\planner\\planner.log"
-		String reqresp =    PATH + "\\verifier\\reqresp\\property.log"
-		String resptime =   PATH + "\\verifier\\timeresp\\property.log"
-		String monolith =   PATH + "\\monolith\\monolithic.log"
+		String adaptation = PATH + "${sp}adaptation${sp}adaptation.log"
+		String planner =    PATH + "${sp}planner${sp}planner.log"
+		String reqresp =    PATH + "${sp}verifier${sp}reqresp${sp}property.log"
+		String resptime =   PATH + "${sp}verifier${sp}timeresp${sp}property.log"
+		String monolith =   PATH + "${sp}monolith${sp}monolithic.log"
 
 //		tpool.execute({
 //			ServiceTime st = new ServiceTime()

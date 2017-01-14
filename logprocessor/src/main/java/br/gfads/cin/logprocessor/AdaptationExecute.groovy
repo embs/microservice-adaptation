@@ -21,14 +21,14 @@ class AdaptationExecute extends Processor {
 	}
 	
 	public def avg() {
-		for(int i = 0; values.size() > 10 && i < 10; i++) {
+		for(int i = 0; i < 10; i++) {
 			values.remove(i)
 		}
-		for(int i = 0; values.size() > 10 && i < 10; i++) {
+		for(int i = 0; i < 10; i++) {
 			values.remove(values.size()-1)
 		}
 		
-		def sum = values.inject { s, e ->
+		def sum = values.inject { s , e ->
 			s + e
 		}
 		

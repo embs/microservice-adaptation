@@ -33,7 +33,7 @@ public class OneByOneProcessingUnit extends AbstractProcessingUnit {
 
 		boolean checkingResult = property.check(symptom);
 		ChangeRequestEvent event = checkingResult
-				? ChangeRequestEvent.getNullChangeRequestEvent()
+				? ChangeRequestEvent.NULL_CHANGE_REQUEST_EVENT
 				: new ChangeRequestEvent(property.getName(),
 						symptom.getSource(), Collections.emptyMap());
 		event.setTime(symptom.TIME);

@@ -19,16 +19,12 @@ import br.cin.gfads.adalrsjr1.verifier.processingunits.ProcessingUnit;
 import br.cin.gfads.adalrsjr1.verifier.processingunits.ProcessingUnitConfiguration;
 import br.cin.gfads.adalrsjr1.verifier.processingunits.ProcessingUnitListener;
 
-public class RabbitMQProcessingUnitWrapper
-		implements ProcessingUnitListener, Runnable {
+public class RabbitMQProcessingUnitWrapper implements ProcessingUnitListener, Runnable {
 
-	private static final Logger log = LoggerFactory
-			.getLogger(RabbitMQProcessingUnitWrapper.class);
-	private static final ProcessingUnitConfiguration CONFIG = ProcessingUnitConfiguration
-			.getInstance();
+	private static final Logger log = LoggerFactory.getLogger(RabbitMQProcessingUnitWrapper.class);
+	private static final ProcessingUnitConfiguration CONFIG = ProcessingUnitConfiguration.getInstance();
 
-	private final ExecutorService executor = Executors.newSingleThreadExecutor(
-			Util.threadFactory("processing-unit-at-" + this + "-%d"));
+	private final ExecutorService executor = Executors.newSingleThreadExecutor();
 
 	private ProcessingUnit processingUnit;
 
@@ -46,15 +42,12 @@ public class RabbitMQProcessingUnitWrapper
 		executor.execute(procecessingUnit);
 
 		monitorSubscriber = RabbitMQSubscriber.builder().withBuffer(buffer)
-				.withExchangeDurable(CONFIG.monitoQueueDurable)
-				.withExchangeName(CONFIG.monitorExchangeName)
-				.withExchangeType(FANOUT).withHost(CONFIG.monitorHost)
-				.withPort(CONFIG.monitorPort).withRoutingKey("").build();
+				.withExchangeDurable(CONFIG.monitoQueueDurable).withExchangeName(CONFIG.monitorExchangeName)
+				.withExchangeType(FANOUT).withHost(CONFIG.monitorHost).withPort(CONFIG.monitorPort).withRoutingKey("")
+				.build();
 
-		plannerProducer = RabbitMQProducer.builder()
-				.withDurable(CONFIG.plannerQueueDurable)
-				.withHost(CONFIG.plannerHost).withPort(CONFIG.plannerPort)
-				.withQueue(CONFIG.plannerQueueName).build();
+		plannerProducer = RabbitMQProducer.builder().withDurable(CONFIG.plannerQueueDurable)
+				.withHost(CONFIG.plannerHost).withPort(CONFIG.plannerPort).withQueue(CONFIG.plannerQueueName).build();
 
 		this.processingUnit.start();
 	}
@@ -62,7 +55,7 @@ public class RabbitMQProcessingUnitWrapper
 	public void stop() {
 		processingUnit.stop();
 		executor.shutdown();
-		stoped = false;
+		stoped = true;
 	}
 
 	@Override
@@ -74,8 +67,7 @@ public class RabbitMQProcessingUnitWrapper
 				SymptomEvent symptom = new SymptomEvent(message);
 				processingUnit.toEvaluate(symptom);
 
-			}
-			catch (InterruptedException e) {
+			} catch (InterruptedException e) {
 				log.warn(e.getMessage());
 				Thread.currentThread().interrupt();
 			}

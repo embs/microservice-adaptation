@@ -23,11 +23,7 @@ public class ChangeRequestEvent extends CommonEvent {
 	@JsonProperty("time")
 	private long time = 0;
 	
-	private static ChangeRequestEvent nullChangeRequestEvent = new ChangeRequestEvent("NULL", new Object(), Collections.emptyMap());
-	
-	public static ChangeRequestEvent getNullChangeRequestEvent() {
-		return nullChangeRequestEvent;
-	}
+	public static final ChangeRequestEvent NULL_CHANGE_REQUEST_EVENT = new ChangeRequestEvent("NULL", new Object(), Collections.emptyMap());
 	
 	ChangeRequestEvent() { super() }
 	

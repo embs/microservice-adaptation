@@ -1,7 +1,5 @@
 package br.cin.gfads.adalrsjr1.verifier.processingunits;
 
-import java.util.List;
-
 import br.cin.gfads.adalrsjr1.common.events.ChangeRequestEvent;
 import br.cin.gfads.adalrsjr1.common.events.SymptomEvent;
 

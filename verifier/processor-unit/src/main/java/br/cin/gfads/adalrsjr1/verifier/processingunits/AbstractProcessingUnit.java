@@ -20,8 +20,7 @@ import br.cin.gfads.adalrsjr1.verifier.PropertyInstance;
 
 abstract public class AbstractProcessingUnit implements ProcessingUnit {
 
-	private static final Logger log = LoggerFactory
-			.getLogger(AbstractProcessingUnit.class);
+	private static final Logger log = LoggerFactory.getLogger(AbstractProcessingUnit.class);
 
 	protected BlockingQueue<SymptomEvent> symptomBuffer;
 	protected List<ProcessingUnitListener> listeners;
@@ -85,9 +84,8 @@ abstract public class AbstractProcessingUnit implements ProcessingUnit {
 				ChangeRequestEvent changeRequest;
 
 				changeRequest = evaluate();
-				
-				if (changeRequest != ChangeRequestEvent
-						.getNullChangeRequestEvent()) {
+
+				if (changeRequest != ChangeRequestEvent.NULL_CHANGE_REQUEST_EVENT) {
 					listeners.stream().forEach(l -> {
 						l.notify(changeRequest);
 					});
@@ -95,8 +93,7 @@ abstract public class AbstractProcessingUnit implements ProcessingUnit {
 				Util.mavericLog(log, this.getClass(), "run", watch.stop());
 			}
 
-		}
-		catch (InterruptedException e) {
+		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 			log.error(e.getMessage());
 		}

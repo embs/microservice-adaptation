@@ -13,10 +13,11 @@ public class Variance {
 	private double lastVariance = 0.0;
 	
 	private Mean mean;
+	
 	public Variance(Mean mean) {
 		this.mean = mean;
 	}
-	
+
 	public double calculate(double data) {
 			double innerMean = mean.getMean();
 			double n = mean.getCounter();

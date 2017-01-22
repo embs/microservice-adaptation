@@ -41,10 +41,10 @@ public class App {
 		BlockingQueue<byte[]> buffer = new LinkedBlockingQueue<>();
 		
 		AdaptationPriorityQueue queue = 
-				new RabbitMQRemoteAdaptationPriorityQueueServerImpl("10.66.66.22", 
-																	5672, 
-																	"adaptationmanager.priorityqueue", 
-																	false, 
+				new RabbitMQRemoteAdaptationPriorityQueueServerImpl(CONFIG.host, 
+																	CONFIG.port, 
+																	CONFIG.rabbitmqPriorityQueueName, 
+																	CONFIG.rabbitmqPriorityDurable, 
 																	buffer);
 		queue.start();
 		

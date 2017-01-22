@@ -8,7 +8,7 @@ import org.jfree.chart.JFreeChart
 
 import groovy.swing.SwingBuilder
 
-class App {
+class TimeSeriesVisualizer {
 	private static final SwingBuilder swing = new SwingBuilder()
 	
 	private JFrame jFrame
@@ -16,9 +16,9 @@ class App {
 	
 	Map<String, ChartPanelModule> modules
 	
-	App(def infos) {
+	TimeSeriesVisualizer(List<ChartInfo> infos) {
 		modules = infos.collectEntries {
-			[(it.chartTitle) : new ChartPanelModule(it)]
+			[(it.name) : new ChartPanelModule(it)]
 		}
 		
 		height = modules.size() * 200
@@ -42,7 +42,7 @@ class App {
 		def infoList = []
 		
 		infoList << ChartInfo.builder()
-		                     .withChartTitle("test1")
+		                     .withName("test1")
 				             .withXAxisLabel("")
 				             .withYAxisLabel("")
 				             .withTimeSerieName("")
@@ -50,7 +50,7 @@ class App {
 				             .build()
 				 
 		infoList << ChartInfo.builder()
-            		         .withChartTitle("test2")
+            		         .withName("test2")
 							 .withXAxisLabel("")
 							 .withYAxisLabel("")
 							 .withTimeSerieName("")
@@ -59,7 +59,7 @@ class App {
 		
 		
 							 
-		App app = new App(infoList)
+		TimeSeriesVisualizer app = new TimeSeriesVisualizer(infoList)
 		
 		Random r = new Random()
 		

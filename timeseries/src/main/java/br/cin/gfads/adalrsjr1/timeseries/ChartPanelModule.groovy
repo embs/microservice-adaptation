@@ -41,7 +41,7 @@ class ChartPanelModule {
 	private double M2 = 0
 
 	ChartPanelModule(ChartInfo info) {
-		this(info.chartTitle, info.xAxisLabel, info.yAxisLabel, info.timeSerieName, info.serieMaximumCount)
+		this(info.name, info.xAxisLabel, info.yAxisLabel, info.timeSerieName, info.serieMaximumCount)
 	}
 	
 	private ChartPanelModule(String chartTitle, String xAxisLabel, String yAxisLabel,

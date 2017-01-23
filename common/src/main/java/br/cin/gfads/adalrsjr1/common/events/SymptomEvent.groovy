@@ -1,7 +1,5 @@
 package br.cin.gfads.adalrsjr1.common.events
 
-import java.rmi.activation.ActivationSystem
-
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -9,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 
-import br.cin.gfads.adalrsjr1.common.MicroserviceInfo
 import groovy.transform.ToString
 
 @ToString(includeNames=true,includeFields=true,includePackage=false,includeSuper=true)
@@ -37,12 +34,12 @@ public class SymptomEvent extends CommonEvent {
 		super.source = tryGet('container_id')
 	}
 	
-	public SymptomEvent(Object source, Map content) {
-		super(source)
-//		TIME = System.nanoTime()
-		TIME = tryGet('timeMillis', Long)
-		this.content = content
-	}
+//	public SymptomEvent(Object source, Map content) {
+//		super(source)
+////		TIME = System.nanoTime()
+//		TIME = tryGet('timeMillis', Long)
+//		this.content = content
+//	}
 	
 	public Map getContent() {
 		return content
@@ -71,6 +68,7 @@ public class SymptomEvent extends CommonEvent {
 
 		ObjectMapper mapper2 = new ObjectMapper()
 		Map javaLog = [:]
+		mapper.readValue
 		javaLog = mapper.readValue(dockerLog["log"], new TypeReference<Map<String, String>>(){})
 		
 		ObjectMapper mapper3 = new ObjectMapper()

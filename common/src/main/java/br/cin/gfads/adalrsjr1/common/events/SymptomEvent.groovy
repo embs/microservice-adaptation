@@ -1,7 +1,5 @@
 package br.cin.gfads.adalrsjr1.common.events
 
-import java.rmi.activation.ActivationSystem
-
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -9,7 +7,6 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 
-import br.cin.gfads.adalrsjr1.common.MicroserviceInfo
 import groovy.transform.ToString
 
 @ToString(includeNames=true,includeFields=true,includePackage=false,includeSuper=true)
@@ -19,30 +16,30 @@ public class SymptomEvent extends CommonEvent {
 	@JsonProperty("content")
 	private Map content
 	
-	public final long TIME 
+	public Long TIME 
 	
 	public SymptomEvent() { 
 		super()
-		
+	}
+	
+	def init(byte[] message) {
+		content = deserialize(message)
+		TIME = tryGet('timeMillis', Long)
+		return tryGet('container_id')
 	}
 	
 	public SymptomEvent(byte[] message) {
-		this(null, message)
+		super("")
+		super.source = init(message)
+		
 	}
 	
-	public SymptomEvent(Object source, byte[] message) {
-//		TIME = System.nanoTime()
-		content = deserialize(message)
-		TIME = tryGet('timeMillis', Long)
-		super.source = tryGet('container_id')
-	}
-	
-	public SymptomEvent(Object source, Map content) {
-		super(source)
-//		TIME = System.nanoTime()
-		TIME = tryGet('timeMillis', Long)
-		this.content = content
-	}
+//	public SymptomEvent(Object source, Map content) {
+//		super(source)
+////		TIME = System.nanoTime()
+//		TIME = tryGet('timeMillis', Long)
+//		this.content = content
+//	}
 	
 	public Map getContent() {
 		return content
@@ -70,13 +67,21 @@ public class SymptomEvent extends CommonEvent {
 		dockerLog = mapper.readValue(message, new TypeReference<Map<String, String>>(){})
 
 		ObjectMapper mapper2 = new ObjectMapper()
-		Map javaLog = [:]
-		javaLog = mapper.readValue(dockerLog["log"], new TypeReference<Map<String, String>>(){})
+		Map<String,String> javaLog = [:]
+		
+		def value = dockerLog["log"]
+		if(value) {
+			javaLog = mapper.readValue(value, new TypeReference<Map<String, String>>(){})
+		}
 		
 		ObjectMapper mapper3 = new ObjectMapper()
-		Map appLog = [:]
-		appLog = mapper.readValue(javaLog.get("message"), new TypeReference<Map<String, String>>(){})
+		Map<String, String> appLog = [:]
+		value = javaLog.get("message")
 		
+		if(value) {
+			appLog = mapper.readValue(javaLog.get("message"), new TypeReference<Map<String, String>>(){})
+		}
+				
 		javaLog['message'] = appLog
 		dockerLog['log'] = javaLog
 		
@@ -85,6 +90,8 @@ public class SymptomEvent extends CommonEvent {
 	
 	@Override
 	byte[] serialize() {
-		throw new RuntimeException("This class cannot be serilized")
+		ObjectMapper mapper = new ObjectMapper()
+		return mapper.writeValueAsBytes(this)
+//		throw new RuntimeException("This class cannot be serilized")
 	}
 }

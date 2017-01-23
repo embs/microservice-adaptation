@@ -17,7 +17,8 @@
   <modules>
     <module>../adaptation-metamodel</module>
     <module>../adaptionmanager</module>
-    <module>../common</module> 
+    <module>../common</module>
+    <module>../timeseries</module>  
     <module>../zmq-endpoint</module>
     <module>../specpatterns</module>
     <module>../planner</module>

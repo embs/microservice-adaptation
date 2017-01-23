@@ -239,7 +239,7 @@ public class RabbitMQSubscriber implements ReceiverEndpoint {
 
 			try{
 				Stopwatch watch = Stopwatch.createStarted();
-				SymptomEvent symptom = new SymptomEvent(null, buffer.take());
+				SymptomEvent symptom = new SymptomEvent(buffer.take());
 				
 				System.err.println(symptom);
 				

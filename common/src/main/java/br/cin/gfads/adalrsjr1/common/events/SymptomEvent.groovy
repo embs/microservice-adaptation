@@ -16,22 +16,20 @@ public class SymptomEvent extends CommonEvent {
 	@JsonProperty("content")
 	private Map content
 	
-	public final long TIME 
+	public long TIME 
 	
 	public SymptomEvent() { 
 		super()
-		
+	}
+	
+	def init(byte[] message) {
+		content = deserialize(message)
+		TIME = tryGet('timeMillis', Long)
+		return tryGet('container_id')
 	}
 	
 	public SymptomEvent(byte[] message) {
-		this(null, message)
-	}
-	
-	public SymptomEvent(Object source, byte[] message) {
-//		TIME = System.nanoTime()
-		content = deserialize(message)
-		TIME = tryGet('timeMillis', Long)
-		super.source = tryGet('container_id')
+		super(init(message))
 	}
 	
 //	public SymptomEvent(Object source, Map content) {

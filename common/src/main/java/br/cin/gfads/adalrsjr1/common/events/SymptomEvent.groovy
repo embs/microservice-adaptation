@@ -70,14 +70,17 @@ public class SymptomEvent extends CommonEvent {
 		Map<String,String> javaLog = [:]
 		
 		def value = dockerLog["log"]
-		if(value)
+		if(value) {
 			javaLog = mapper.readValue(value, new TypeReference<Map<String, String>>(){})
+		}
 		
 		ObjectMapper mapper3 = new ObjectMapper()
 		Map<String, String> appLog = [:]
 		value = javaLog.get("message")
-		if(value)
+		
+		if(value) {
 			appLog = mapper.readValue(javaLog.get("message"), new TypeReference<Map<String, String>>(){})
+		}
 		
 		javaLog['message'] = appLog
 		dockerLog['log'] = javaLog

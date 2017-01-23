@@ -82,6 +82,7 @@ public class SymptomEvent extends CommonEvent {
 			appLog = mapper.readValue(javaLog.get("message"), new TypeReference<Map<String, String>>(){})
 		}
 		
+		
 		javaLog['message'] = appLog
 		dockerLog['log'] = javaLog
 		

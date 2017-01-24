@@ -36,7 +36,7 @@ public class OneByOneProcessingUnit extends AbstractProcessingUnit {
 				? ChangeRequestEvent.getNullChangeRequestEvent()
 				: new ChangeRequestEvent(property.getName(),
 						symptom.getSource(), Collections.emptyMap());
-		event.setTime(symptom.TIME);
+		event.setTime(symptom.getTime());
 		return event;
 	}
 

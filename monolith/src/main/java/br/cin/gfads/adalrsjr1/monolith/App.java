@@ -41,7 +41,7 @@ public class App {
 		BlockingQueue<byte[]> buffer = new LinkedBlockingQueue<>();
 		
 		AdaptationPriorityQueue queue = 
-				new RabbitMQRemoteAdaptationPriorityQueueServerImpl("10.66.66.22", 
+				new RabbitMQRemoteAdaptationPriorityQueueServerImpl(CONFIG.host, 
 																	5672, 
 																	"adaptationmanager.priorityqueue", 
 																	false, 
@@ -58,7 +58,7 @@ public class App {
 	
 	static void newPlanner() {
 		AdaptationPriorityQueueClient queue = 
-				new RabbitMQRemoteAdaptationPriorityQueueClientImpl("10.66.66.22", 
+				new RabbitMQRemoteAdaptationPriorityQueueClientImpl(CONFIG.host, 
 																    5672, 
 																    false, 
 																    "adaptationmanager.priorityqueue");
@@ -108,9 +108,9 @@ public class App {
 			newAdaptationManager();
 		});
 		
-		tPool.execute(() -> {
-			newPlanner();
-		});
+//		tPool.execute(() -> {
+//			newPlanner();
+//		});
 		
 		tPool.execute(() -> {
 			try {
@@ -121,13 +121,13 @@ public class App {
 			}
 		});
 		
-		tPool.execute(() -> {
-			try {
-				newResponseTime();
-			}
-			catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		});
+//		tPool.execute(() -> {
+//			try {
+//				newResponseTime();
+//			}
+//			catch (InterruptedException e) {
+//				e.printStackTrace();
+//			}
+//		});
 	}
 }

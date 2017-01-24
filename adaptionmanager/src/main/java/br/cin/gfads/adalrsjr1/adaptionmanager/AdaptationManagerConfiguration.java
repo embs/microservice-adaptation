@@ -35,7 +35,7 @@ public class AdaptationManagerConfiguration {
 		loadProperty(propertiesPath);
 		Random r = new Random();
 		
-		host = properties.getProperty(PREFIX + "host", "localhost");
+		host = System.getProperty("maverick.rabbitmq", properties.getProperty(PREFIX + "host", "localhost"));
 		port = Integer.valueOf(properties.getProperty(PREFIX + "port", r.nextInt(10)+5560+""));
 		scriptsRepository = properties.getProperty(PREFIX + "scripts-repository", "scripts");
 		rabbitmqPriorityQueueName = properties.getProperty(PREFIX + "rabbitmq.priorityqueue-name",PREFIX+System.currentTimeMillis());
@@ -75,6 +75,10 @@ public class AdaptationManagerConfiguration {
 		  .append("\npriorityqueue-durable:")
 		  .append(rabbitmqPriorityDurable);
 		return sb.toString();
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(AdaptationManagerConfiguration.getInstance().host);
 	}
 
 }

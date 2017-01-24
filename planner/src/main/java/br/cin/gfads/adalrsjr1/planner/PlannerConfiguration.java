@@ -10,8 +10,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Stopwatch;
 
-import br.cin.gfads.adalrsjr1.jeromq.ZmqRunnable.ZmqProtocol;
-
 public class PlannerConfiguration {
 
 	private static final Logger log = LoggerFactory.getLogger(PlannerConfiguration.class);
@@ -34,7 +32,7 @@ public class PlannerConfiguration {
 		loadProperty(propertiesPath);
 		Random r = new Random();
 		
-		host = properties.getProperty(PREFIX + "host", "localhost");
+		host = System.getProperty("maverick.rabbitmq", properties.getProperty(PREFIX + "host", "localhost"));
 		port = Integer.valueOf(properties.getProperty(PREFIX + "port", r.nextInt(10)+5560+""));
 		policiesRepository = properties.getProperty(PREFIX + "policy-repository", "repository/policies.json");
 		adaptationHost = properties.getProperty(PREFIX + "adaptation.host", "localhost");
@@ -80,5 +78,9 @@ public class PlannerConfiguration {
 		  .append("\nrabbitmq.queue-durable:")
 		  .append(rabbitmqQueueDurable);
 		return sb.toString();
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(PlannerConfiguration.getInstance().host);
 	}
 }

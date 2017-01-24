@@ -99,9 +99,6 @@ public class SymptomEvent extends CommonEvent {
 	
 	@Override
 	byte[] serialize() {
-		ObjectMapper mapper = new ObjectMapper()
-		
-		mapper.writeV
-		
+		throw new UnsupportedOperationException("Not Implemented yet")		
 	}
 }

@@ -42,9 +42,9 @@ public class App {
 		
 		AdaptationPriorityQueue queue = 
 				new RabbitMQRemoteAdaptationPriorityQueueServerImpl(CONFIG.host, 
-																	CONFIG.port, 
-																	CONFIG.rabbitmqPriorityQueueName, 
-																	CONFIG.rabbitmqPriorityDurable, 
+																	5672, 
+																	"adaptationmanager.priorityqueue", 
+																	false, 
 																	buffer);
 		queue.start();
 		
@@ -58,7 +58,7 @@ public class App {
 	
 	static void newPlanner() {
 		AdaptationPriorityQueueClient queue = 
-				new RabbitMQRemoteAdaptationPriorityQueueClientImpl("10.66.66.22", 
+				new RabbitMQRemoteAdaptationPriorityQueueClientImpl(CONFIG.host, 
 																    5672, 
 																    false, 
 																    "adaptationmanager.priorityqueue");

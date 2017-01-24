@@ -36,10 +36,12 @@ public class ProcessingUnitConfiguration {
 		loadProperty(propertiesPath);
 		Random r = new Random();
 		
-		monitorHost = properties.getProperty(PREFIX_MONITOR + "host");
+		
+		
+		monitorHost = System.getProperty("maverick.rabbitmq", properties.getProperty(PREFIX_MONITOR + "host", "localhost"));
 		monitorPort = Integer.valueOf(properties.getProperty(PREFIX_MONITOR + "port"));
 		
-		plannerHost = properties.getProperty(PREFIX_PLANNER + "host", "localhost");
+		plannerHost = System.getProperty("maverick.rabbitmq", properties.getProperty(PREFIX_PLANNER + "host", "localhost"));
 		plannerPort = Integer.valueOf(properties.getProperty(PREFIX_PLANNER + "port"));
 		
 		monitorExchangeName = properties.getProperty(PREFIX_MONITOR + "rabbitmq.exchange-name");

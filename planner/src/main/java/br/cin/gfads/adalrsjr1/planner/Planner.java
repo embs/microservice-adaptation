@@ -104,8 +104,8 @@ public class Planner  {
 
 	public static void main(String[] args) throws InterruptedException {
 		AdaptationPriorityQueueClient queue = 
-				new RabbitMQRemoteAdaptationPriorityQueueClientImpl(CONFIG.adaptationHost, 
-																    CONFIG.port, 
+				new RabbitMQRemoteAdaptationPriorityQueueClientImpl(CONFIG.host, 
+																    5672, 
 																    false, 
 																    "adaptationmanager.priorityqueue");
 		queue.start();

@@ -1,5 +1,7 @@
 package br.cin.gfads.adalrsjr1.common.events
 
+import java.rmi.activation.ActivationSystem
+
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -25,6 +27,10 @@ public class SymptomEvent extends CommonEvent {
 	def init(byte[] message) {
 		content = deserialize(message)
 		TIME = tryGet('timeMillis', Long)
+		if(!TIME) {
+			log.warn 'TIME initialized as NULL'
+			TIME = System.currentTimeMillis()
+		}
 		return tryGet('container_id')
 	}
 	

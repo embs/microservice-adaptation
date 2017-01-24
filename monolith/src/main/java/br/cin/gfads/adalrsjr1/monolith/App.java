@@ -108,9 +108,9 @@ public class App {
 			newAdaptationManager();
 		});
 		
-//		tPool.execute(() -> {
-//			newPlanner();
-//		});
+		tPool.execute(() -> {
+			newPlanner();
+		});
 		
 		tPool.execute(() -> {
 			try {
@@ -121,13 +121,13 @@ public class App {
 			}
 		});
 		
-//		tPool.execute(() -> {
-//			try {
-//				newResponseTime();
-//			}
-//			catch (InterruptedException e) {
-//				e.printStackTrace();
-//			}
-//		});
+		tPool.execute(() -> {
+			try {
+				newResponseTime();
+			}
+			catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		});
 	}
 }

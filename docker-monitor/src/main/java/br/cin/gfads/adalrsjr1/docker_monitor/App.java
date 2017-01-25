@@ -18,11 +18,6 @@ import com.spotify.docker.client.ObjectMapperProvider;
 import com.spotify.docker.client.messages.Event;
 
 
-/**
- * Hello world!
- *
- */
-
 public class App 
 {
 	/**

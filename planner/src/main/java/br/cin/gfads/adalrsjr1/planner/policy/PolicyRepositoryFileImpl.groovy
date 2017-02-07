@@ -37,7 +37,7 @@ public class PolicyRepositoryFileImpl implements PolicyRepository {
 		Collection<Policy> policies = policies.findAll { policy ->
 			policy.getChangeRequest() == changeRequest.getName()
 		}
-		return 
+		return policies
 	}
 	
 	public List<Policy> fetchAll() {

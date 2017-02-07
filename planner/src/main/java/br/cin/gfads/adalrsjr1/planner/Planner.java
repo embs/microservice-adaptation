@@ -69,9 +69,9 @@ public class Planner  {
 				tPool.execute(() -> {
 					try {
 
-						System.err.println(input);
 						if(input != null) {
-							handle((ChangeRequestEvent) changeEvent.deserialize(input));
+							Object obj = changeEvent.deserialize(input);
+							handle((ChangeRequestEvent) obj);
 						}
 					} catch (NullPointerException ex) {
 						log.warn(ex.getMessage());

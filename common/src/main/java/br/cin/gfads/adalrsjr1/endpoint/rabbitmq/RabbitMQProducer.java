@@ -95,7 +95,8 @@ public class RabbitMQProducer implements SenderEndpoint {
 		factory.setPort(builder.getPort());
 		factory.setHandshakeTimeout(5000);
 		try{
-			connection = factory.newConnection(Executors.newFixedThreadPool(20));
+			//connection = factory.newConnection(Executors.newFixedThreadPool(20));
+			connection = factory.newConnection();
 			channel = connection.createChannel();
 			queue = builder.getQueue();
 

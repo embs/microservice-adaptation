@@ -113,7 +113,8 @@ public class RabbitMQConsumer implements ReceiverEndpoint {
 //		factory.setHandshakeTimeout(5000);
 
 		try{
-			connection = factory.newConnection(Executors.newFixedThreadPool(20));
+//			connection = factory.newConnection(Executors.newFixedThreadPool(20));
+			connection = factory.newConnection();
 			channel = connection.createChannel();
 			queue = builder.getQueue();
 

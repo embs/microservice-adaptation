@@ -15,7 +15,7 @@
 	</Appenders>
 	<Loggers>
 		<!-- additivity attribute allows show message in ROOT logger -->
-		<Root level="ALL">
+		<Root level="OFF">
 			<AppenderRef ref="LogFile" />
 			<AppenderRef ref="Console" />
 		</Root>

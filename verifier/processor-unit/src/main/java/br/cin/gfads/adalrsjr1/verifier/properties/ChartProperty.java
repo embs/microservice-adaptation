@@ -46,15 +46,15 @@ public class ChartProperty implements PropertyInstance {
 	public static void main(String[] args) throws InterruptedException {
 		BlockingQueue<byte[]> buffer = new ArrayBlockingQueue<>(100);
 
-		// RabbitMQSubscriber sub = RabbitMQSubscriber.builder()
-		// .withBuffer(buffer)
-		// .withExchangeDurable(true)
-		// .withExchangeName("fluentd.fanout")
-		// .withExchangeType(FANOUT)
-		// //.withHost("10.0.75.1")
-		// .withHost("10.66.66.22")
-		// .withRoutingKey("")
-		// .build();
+//		 RabbitMQSubscriber sub = RabbitMQSubscriber.builder()
+//		 .withBuffer(buffer)
+//		 .withExchangeDurable(true)
+//		 .withExchangeName("fluentd.fanout")
+//		 .withExchangeType(FANOUT)
+//		 //.withHost("10.0.75.1")
+//		 .withHost("10.66.66.22")
+//		 .withRoutingKey("")
+//		 .build();
 
 
 		ChartInfo[] infos = {ChartInfo.builder()

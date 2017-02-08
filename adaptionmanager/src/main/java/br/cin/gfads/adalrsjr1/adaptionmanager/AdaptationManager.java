@@ -45,7 +45,8 @@ public class AdaptationManager implements AutoCloseable, ContextListener {
 				}
 				catch (InterruptedException e) {
 					Thread.currentThread().interrupt();
-					log.warn(e.getMessage());
+					log.error(e.getMessage());
+					throw new RuntimeException(e);
 				}
 			}
 		}

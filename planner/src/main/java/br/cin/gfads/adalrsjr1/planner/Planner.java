@@ -36,7 +36,8 @@ public class Planner  {
 	private AdaptationPriorityQueueClient queue;
 	private PolicyRepository repository;
 
-	static final private BlockingQueue<byte[]> channel = new LinkedBlockingQueue<>();
+	//static final private BlockingQueue<byte[]> channel = new LinkedBlockingQueue<>();
+	static final private BlockingQueue<byte[]> channel = new LinkedBlockingQueue<>(100);
 
 	private ReceiverEndpoint endpoint;
 	private boolean stopped = true;
@@ -74,11 +75,13 @@ public class Planner  {
 							handle((ChangeRequestEvent) obj);
 						}
 					} catch (NullPointerException ex) {
-						log.warn(ex.getMessage());
+						log.error(ex.getMessage());
+						throw new RuntimeException(ex);
 					}
 				});
 			} catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
+				log.error(e.getMessage());
 				throw new RuntimeException(e);
 			}
 		}

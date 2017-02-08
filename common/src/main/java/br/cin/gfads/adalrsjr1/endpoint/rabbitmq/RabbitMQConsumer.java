@@ -124,6 +124,7 @@ public class RabbitMQConsumer implements ReceiverEndpoint {
 			channel.basicConsume(queue, false, consumer);
 		}
 		catch(Exception e) {
+			log.error(e.getMessage());
 			throw new RuntimeException(e);
 		}
 	}
@@ -135,6 +136,7 @@ public class RabbitMQConsumer implements ReceiverEndpoint {
 			connection.close();
 		}
 		catch(Exception e) {
+			log.error(e.getMessage());
 			throw new RuntimeException(e);
 		}
 	}
@@ -162,7 +164,8 @@ public class RabbitMQConsumer implements ReceiverEndpoint {
 					getChannel().basicAck(envelope.getDeliveryTag(), false);
 				}
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				log.error(e.getMessage());
+				throw new RuntimeException(e);
 			}
 		}
 	}

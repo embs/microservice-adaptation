@@ -37,7 +37,8 @@ public class WatchRepository implements Runnable {
 		try {
 			path.register(watcher, ENTRY_CREATE, ENTRY_DELETE, ENTRY_MODIFY);
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
+			throw new RuntimeException(e);
 		}
 	}
 
@@ -46,7 +47,8 @@ public class WatchRepository implements Runnable {
 		try {
 			watcher = FileSystems.getDefault().newWatchService();
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
+			throw new RuntimeException(e);
 		}
 		return watcher;
 	}

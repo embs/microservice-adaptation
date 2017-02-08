@@ -103,6 +103,7 @@ public class RabbitMQProducer implements SenderEndpoint {
 			channel.queueDeclare(getQueue(), builder.isDurable(), false, false, null);
 		}
 		catch(Exception e) {
+			log.error(e.getMessage());
 			throw new RuntimeException(e);
 		}
 	}
@@ -114,6 +115,7 @@ public class RabbitMQProducer implements SenderEndpoint {
 			connection.close();
 		}
 		catch(Exception e) {
+			log.error(e.getMessage());
 			throw new RuntimeException(e);
 		}
 	}
@@ -133,6 +135,7 @@ public class RabbitMQProducer implements SenderEndpoint {
 			channel.basicPublish("", getQueue(), MessageProperties.PERSISTENT_TEXT_PLAIN, message);
 			result = true;
 		} catch (IOException e) {
+			log.error(e.getMessage());
 			throw new RuntimeException(e);
 		}
 		finally {

@@ -75,7 +75,8 @@ public class CommandImpl implements ScriptCommand {
 			Command instance = (Command) clazz.newInstance();
 			result = instance.execute(metaCommand);
 		} catch (Exception e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
+			throw new RuntimeException(e);
 		} 
 		finally {
 			if(metaContext != null) {

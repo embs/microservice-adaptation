@@ -60,7 +60,8 @@ public class App {
 					timer.stop()
 				}
 				catch(Exception e) {
-					log.error e.getMessage()
+					log.error(e.getMessage());
+					throw new RuntimeException(e);
 				}
 			})
 		}

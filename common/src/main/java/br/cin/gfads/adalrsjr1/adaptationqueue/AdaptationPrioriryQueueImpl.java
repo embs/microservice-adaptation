@@ -30,7 +30,8 @@ public class AdaptationPrioriryQueueImpl implements AdaptationPriorityQueue {
 			changePlan = take();
 		}
 		catch(InterruptedException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
+			throw new RuntimeException(e);
 		}
 		finally {
 			return changePlan;

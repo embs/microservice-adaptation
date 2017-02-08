@@ -65,7 +65,8 @@ public class ProcessingUnitConfiguration {
 		try {
 			properties.load(new FileInputStream("processing-unit.properties"));
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
+			throw new RuntimeException(e);
 		}
 		return properties;
 	}

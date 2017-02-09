@@ -36,8 +36,8 @@ public class Planner  {
 	private AdaptationPriorityQueueClient queue;
 	private PolicyRepository repository;
 
-	//static final private BlockingQueue<byte[]> channel = new LinkedBlockingQueue<>();
-	static final private BlockingQueue<byte[]> channel = new LinkedBlockingQueue<>(100);
+	static final private BlockingQueue<byte[]> channel = new LinkedBlockingQueue<>();
+	//	static final private BlockingQueue<byte[]> channel = new LinkedBlockingQueue<>(100);
 
 	private ReceiverEndpoint endpoint;
 	private boolean stopped = true;
@@ -64,26 +64,23 @@ public class Planner  {
 		log.info("Planner started");
 		stopped = false;
 		while(!stopped) {
-			byte[] input;
-			try {
-				input = channel.take();
-				tPool.execute(() -> {
-					try {
 
-						if(input != null) {
-							Object obj = changeEvent.deserialize(input);
-							handle((ChangeRequestEvent) obj);
-						}
-					} catch (NullPointerException ex) {
-						log.error(ex.getMessage());
-						throw new RuntimeException(ex);
+			tPool.execute(() -> {
+				try {
+					byte[] input = channel.take();
+					if(input != null) {
+						Object obj = changeEvent.deserialize(input);
+						handle((ChangeRequestEvent) obj);
 					}
-				});
-			} catch (InterruptedException e) {
-				Thread.currentThread().interrupt();
-				log.error(e.getMessage());
-				throw new RuntimeException(e);
-			}
+				} catch (NullPointerException ex) {
+					log.error(ex.getMessage());
+					throw new RuntimeException(ex);
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+					log.error(e.getMessage());
+					throw new RuntimeException(e);
+				}
+			});
 		}
 
 	}

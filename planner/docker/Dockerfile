@@ -10,6 +10,5 @@ COPY docker/planner.properties /home/app
 VOLUME /home/app/src/main/resources
 
 WORKDIR /home/app
-EXPOSE 5560
 
 ENTRYPOINT ["java", "-jar", "/home/app/planner-0.0.1-SNAPSHOT-jar-with-dependencies.jar"]

@@ -8,6 +8,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import javax.inject.Singleton;
 
@@ -36,7 +37,7 @@ public class Planner  {
 	private AdaptationPriorityQueueClient queue;
 	private PolicyRepository repository;
 
-	//static final private BlockingQueue<byte[]> channel = new LinkedBlockingQueue<>();
+//	static final private BlockingQueue<byte[]> channel = new LinkedBlockingQueue<>();
 	static final private BlockingQueue<byte[]> channel = new LinkedBlockingQueue<>(100);
 
 	private ReceiverEndpoint endpoint;
@@ -69,7 +70,7 @@ public class Planner  {
 				input = channel.take();
 				tPool.execute(() -> {
 					try {
-
+						System.out.println(((ThreadPoolExecutor) tPool).getActiveCount());
 						if(input != null) {
 							Object obj = changeEvent.deserialize(input);
 							handle((ChangeRequestEvent) obj);

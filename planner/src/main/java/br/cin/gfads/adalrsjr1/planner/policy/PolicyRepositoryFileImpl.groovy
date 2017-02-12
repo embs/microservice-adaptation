@@ -32,7 +32,6 @@ public class PolicyRepositoryFileImpl implements PolicyRepository {
 		policies << policy
 	}
 
-	@Memoized
 	public List<Policy> fetchAdaptationPlans(ChangeRequestEvent changeRequest) {
 		Collection<Policy> policies = policies.findAll { policy ->
 			policy.getChangeRequest() == changeRequest.getName()

@@ -57,7 +57,8 @@ public class AdaptationManagerConfiguration {
 		try {
 			properties.load(new FileInputStream("adaptation.properties"));
 		} catch (IOException e) {
-			e.printStackTrace();
+			log.error(e.getMessage());
+			throw new RuntimeException(e);
 		}
 		return properties;
 	}

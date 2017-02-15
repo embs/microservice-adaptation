@@ -96,6 +96,7 @@ abstract public class AbstractProcessingUnit implements ProcessingUnit {
 		} catch (InterruptedException e) {
 			Thread.currentThread().interrupt();
 			log.error(e.getMessage());
+			throw new RuntimeException(e);
 		}
 	}
 

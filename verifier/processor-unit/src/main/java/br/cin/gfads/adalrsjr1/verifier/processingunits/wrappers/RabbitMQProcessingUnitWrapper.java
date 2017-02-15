@@ -67,9 +67,11 @@ public class RabbitMQProcessingUnitWrapper implements ProcessingUnitListener, Ru
 				SymptomEvent symptom = new SymptomEvent(message);
 				processingUnit.toEvaluate(symptom);
 
-			} catch (InterruptedException e) {
-				log.warn(e.getMessage());
+			}
+			catch (InterruptedException e) {
 				Thread.currentThread().interrupt();
+				log.error(e.getMessage());
+				throw new RuntimeException(e);
 			}
 		}
 	}

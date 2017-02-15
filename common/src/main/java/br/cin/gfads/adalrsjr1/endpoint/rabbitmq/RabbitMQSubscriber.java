@@ -219,7 +219,21 @@ public class RabbitMQSubscriber implements ReceiverEndpoint {
 		@Override
 		public void handleDelivery(String consumerTag, Envelope envelope,
 				AMQP.BasicProperties properties, byte[] body) throws IOException {
-			buffer.offer(body);
+			try {
+				int count = 0;
+				while(!buffer.offer(body,100, TimeUnit.MILLISECONDS)) {
+					if(count < 3) {
+						count++;
+						log.warn("trying to put a RabbitMQ message into buffer... try "+ count);
+					}
+					else {
+						log.error("message from RabbitMQ lost " + body);
+					}
+				}
+			} catch (InterruptedException e) {
+				log.error(e.getMessage());
+				throw new RuntimeException(e);
+			}
 		}
 
 	}

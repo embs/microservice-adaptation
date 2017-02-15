@@ -160,9 +160,17 @@ public class RabbitMQConsumer implements ReceiverEndpoint {
 		public void handleDelivery(String consumerTag, Envelope envelope,
 				AMQP.BasicProperties properties, byte[] body) throws IOException {
 			try {
-				if(buffer.offer(body,100, TimeUnit.MILLISECONDS)) {
-					getChannel().basicAck(envelope.getDeliveryTag(), false);
+				int count = 0;
+				while(!buffer.offer(body,100, TimeUnit.MILLISECONDS)) {
+					if(count < 3) {
+						count++;
+						log.warn("trying to put a RabbitMQ message into buffer... try "+ count);
+					}
+					else {
+						log.error("message from RabbitMQ lost " + body);
+					}
 				}
+				getChannel().basicAck(envelope.getDeliveryTag(), false);
 			} catch (InterruptedException e) {
 				log.error(e.getMessage());
 				throw new RuntimeException(e);

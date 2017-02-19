@@ -1,12 +1,12 @@
 package br.cin.gfads.adalrsjr1.mshttpserver
 
-import groovy.util.logging.Slf4j
-
 import org.eclipse.jetty.server.Server
 import org.eclipse.jetty.servlet.ServletContextHandler
 import org.eclipse.jetty.servlet.ServletHolder
 import org.glassfish.jersey.server.ResourceConfig
 import org.glassfish.jersey.servlet.ServletContainer
+
+import groovy.util.logging.Slf4j
 
 @Slf4j
 public class App {

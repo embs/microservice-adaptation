@@ -53,8 +53,7 @@ public class FluentdParser implements Parser<Map> {
 			parsedMessage.put("TIMESTAMP", Long.parseLong(arrayValue.get(1).toString()));
 			parsedMessage.put("CONTENT", arrayValue.get(2));
 		} catch (IOException e) {
-			log.error(e.getMessage());
-			throw new RuntimeException(e);
+			e.printStackTrace();
 		}
 		return parsedMessage;
 	}
@@ -68,8 +67,7 @@ public class FluentdParser implements Parser<Map> {
 			packer.packLong( (Long) message.get("TIMESTAMP") );
 			packer.packString( (String) message.get("CONTENT") );
 		} catch (IOException e) {
-			log.error(e.getMessage());
-			throw new RuntimeException(e);
+			e.printStackTrace();
 		}
 		return packer.toByteArray();
 	}

@@ -45,8 +45,7 @@ public class AdaptationManager implements AutoCloseable, ContextListener {
 				}
 				catch (InterruptedException e) {
 					Thread.currentThread().interrupt();
-					log.error(e.getMessage());
-					throw new RuntimeException(e);
+					log.warn(e.getMessage());
 				}
 			}
 		}
@@ -77,7 +76,7 @@ public class AdaptationManager implements AutoCloseable, ContextListener {
 		this.engine = new ScriptEngine(this.context);
 		worker = new AdaptationQueueWorker(this);
 		
-		tPool = Executors.newSingleThreadExecutor(Util.threadFactory("adaptation-manager-%d"));
+		tPool = Executors.newCachedThreadPool(Util.threadFactory("adaptation-manager-%d"));
 		log.info("Adaptaiton manager instantiated in {}", watch.stop());
 	}
 	

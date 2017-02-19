@@ -106,8 +106,7 @@ public class RemoteAdaptationPriorityQueueServerImpl implements AdaptationPriori
 				try {
 					System.err.println(server.take());
 				} catch (InterruptedException e) {
-					log.error(e.getMessage());
-					throw new RuntimeException(e);
+					e.printStackTrace();
 				}
 			}
 		}).start();

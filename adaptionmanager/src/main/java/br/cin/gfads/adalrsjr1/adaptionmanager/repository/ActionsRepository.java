@@ -92,7 +92,6 @@ public class ActionsRepository implements AutoCloseable {
 		}
 		catch(Exception e) {
 			log.error(e.getMessage());
-			throw new RuntimeException(e);
 		}
 		
 	}

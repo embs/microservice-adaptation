@@ -76,9 +76,8 @@ public class RabbitMQProcessingUnitWrapper
 
 			}
 			catch (InterruptedException e) {
+				log.warn(e.getMessage());
 				Thread.currentThread().interrupt();
-				log.error(e.getMessage());
-				throw new RuntimeException(e);
 			}
 		}
 	}

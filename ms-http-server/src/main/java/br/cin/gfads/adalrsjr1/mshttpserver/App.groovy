@@ -27,10 +27,9 @@ public class App {
 			server.join()
 		}
 		catch(Exception e) {
+			log.error e.message
 			server.stop()
 			server.destroy()
-			log.error(e.getMessage());
-			throw new RuntimeException(e);
 		}
 	}
 }

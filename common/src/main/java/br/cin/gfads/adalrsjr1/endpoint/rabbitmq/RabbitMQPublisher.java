@@ -123,7 +123,6 @@ public class RabbitMQPublisher implements SenderEndpoint {
 			channel.exchangeDeclare(getExchangeName(), builder.getExchangeType().name().toLowerCase(), builder.isExchangeDurable());
 		}
 		catch(Exception e) {
-			log.error(e.getMessage());
 			throw new RuntimeException(e);
 		}
 	}
@@ -135,7 +134,6 @@ public class RabbitMQPublisher implements SenderEndpoint {
 			connection.close();
 		}
 		catch(Exception e) {
-			log.error(e.getMessage());
 			throw new RuntimeException(e);
 		}
 	}
@@ -147,7 +145,7 @@ public class RabbitMQPublisher implements SenderEndpoint {
 			channel.basicPublish(getExchangeName(), getRoutingKey(), null, message);
 			result = true;
 		} catch (IOException e) {
-			log.error(e.getMessage());
+
 			throw new RuntimeException(e);
 		}
 		finally {

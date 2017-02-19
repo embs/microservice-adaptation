@@ -117,8 +117,7 @@ public class App {
 				newRequestResponse();
 			}
 			catch (InterruptedException e) {
-				log.error(e.getMessage());
-				throw new RuntimeException(e);
+				e.printStackTrace();
 			}
 		});
 		
@@ -127,8 +126,7 @@ public class App {
 				newResponseTime();
 			}
 			catch (InterruptedException e) {
-				log.error(e.getMessage());
-				throw new RuntimeException(e);
+				e.printStackTrace();
 			}
 		});
 	}

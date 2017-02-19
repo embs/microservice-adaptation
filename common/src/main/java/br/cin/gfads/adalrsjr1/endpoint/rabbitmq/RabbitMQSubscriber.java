@@ -150,7 +150,6 @@ public class RabbitMQSubscriber implements ReceiverEndpoint {
 
 		}
 		catch(Exception e) {
-			log.error(e.getMessage());
 			throw new RuntimeException(e);
 		}
 	}
@@ -162,7 +161,6 @@ public class RabbitMQSubscriber implements ReceiverEndpoint {
 			connection.close();
 		}
 		catch(Exception e) {
-			log.error(e.getMessage());
 			throw new RuntimeException(e);
 		}
 	}
@@ -188,7 +186,6 @@ public class RabbitMQSubscriber implements ReceiverEndpoint {
 		try {
 			channel.basicConsume(getQueue(), true, consumer);
 		} catch (IOException e) {
-			log.error(e.getMessage());
 			throw new RuntimeException(e);
 		}
 	}
@@ -252,8 +249,7 @@ public class RabbitMQSubscriber implements ReceiverEndpoint {
 				System.out.println(watch.stop() + " :: " + t1 + " :: " + t2 + " :: " + (t2-t1) + "ms");
 				
 			} catch(Exception e) {
-				log.error(e.getMessage());
-				throw new RuntimeException(e);
+				e.printStackTrace();
 			}
 
 		}

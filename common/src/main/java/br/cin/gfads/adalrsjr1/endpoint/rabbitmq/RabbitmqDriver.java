@@ -234,7 +234,6 @@ public class RabbitmqDriver<T extends Endpoint> implements EndpointDriver<T> {
 
 		BlockingQueue<byte[]> buffer = new LinkedBlockingQueue<>(10);
 		ExecutorService tpool = Executors.newCachedThreadPool();
-		
 		EndpointDriver<Endpoint> driver2 = new RabbitmqDriver<>();
 		EndpointBuilder<ReceiverEndpoint> consumer1 = new EndpointBuilder<>();
 		EndpointCallback receiverCallback1 = new ConsumerCallback(driver2);

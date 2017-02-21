@@ -41,6 +41,9 @@ public class ReqRespProperty implements PropertyInstance {
 					property, TimeUnit.MICROSECONDS);
 			map.put(key, lts);
 		}
+		else {
+			lts = map.remove(key);
+		}
 
 		return lts;
 	}

@@ -95,15 +95,13 @@ public class RabbitMQProducer implements SenderEndpoint {
 		factory.setPort(builder.getPort());
 		factory.setHandshakeTimeout(5000);
 		try{
-			//connection = factory.newConnection(Executors.newFixedThreadPool(20));
-			connection = factory.newConnection();
+			connection = factory.newConnection(Executors.newFixedThreadPool(20));
 			channel = connection.createChannel();
 			queue = builder.getQueue();
 
 			channel.queueDeclare(getQueue(), builder.isDurable(), false, false, null);
 		}
 		catch(Exception e) {
-			log.error(e.getMessage());
 			throw new RuntimeException(e);
 		}
 	}
@@ -115,7 +113,6 @@ public class RabbitMQProducer implements SenderEndpoint {
 			connection.close();
 		}
 		catch(Exception e) {
-			log.error(e.getMessage());
 			throw new RuntimeException(e);
 		}
 	}
@@ -135,7 +132,6 @@ public class RabbitMQProducer implements SenderEndpoint {
 			channel.basicPublish("", getQueue(), MessageProperties.PERSISTENT_TEXT_PLAIN, message);
 			result = true;
 		} catch (IOException e) {
-			log.error(e.getMessage());
 			throw new RuntimeException(e);
 		}
 		finally {

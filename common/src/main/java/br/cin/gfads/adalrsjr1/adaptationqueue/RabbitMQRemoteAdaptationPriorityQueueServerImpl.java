@@ -17,8 +17,7 @@ public class RabbitMQRemoteAdaptationPriorityQueueServerImpl implements Adaptati
 
 	final private AdaptationPriorityQueue queue = new AdaptationPrioriryQueueImpl();
 	
-	//private ExecutorService tPool = Executors.newSingleThreadExecutor(Util.threadFactory("adaptation-priority-queue-server")); 
-	private ExecutorService tPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1, Util.threadFactory("adaptation-priority-queue-server"));
+	private ExecutorService tPool = Executors.newSingleThreadExecutor(Util.threadFactory("adaptation-priority-queue-server")); 
 	private RabbitMQConsumer consumer;
 	private RabbitMQConsumer.Builder builder;
 	private BlockingQueue<byte[]> buffer;
@@ -35,41 +34,20 @@ public class RabbitMQRemoteAdaptationPriorityQueueServerImpl implements Adaptati
 				                   .withQueue(queueName);
 	}
 	
-//	@Override
-//	public void start() {
-//		consumer = builder.build();
-//		tPool.execute(() -> {
-//			ChangePlanEvent changePlan = new ChangePlanEvent();
-//			while(!stoped && !Thread.currentThread().isInterrupted()) {
-//				byte[] message;
-//				try {
-//					message = buffer.take();
-//					enqueue((ChangePlanEvent) changePlan.deserialize(message));
-//				} catch (InterruptedException e) {
-//					Thread.currentThread().interrupt();
-//					throw new RuntimeException(e);
-//				}
-//			}
-//		}); 
-//	}
-	
 	@Override
 	public void start() {
 		consumer = builder.build();
-		
 		tPool.execute(() -> {
 			ChangePlanEvent changePlan = new ChangePlanEvent();
 			while(!stoped && !Thread.currentThread().isInterrupted()) {
-				tPool.execute(() -> {
-					byte[] message;
-					try {
-						message = buffer.take();
-						enqueue((ChangePlanEvent) changePlan.deserialize(message));
-					} catch (InterruptedException e) {
-						Thread.currentThread().interrupt();
-						throw new RuntimeException(e);
-					}
-				});
+				byte[] message;
+				try {
+					message = buffer.take();
+					enqueue((ChangePlanEvent) changePlan.deserialize(message));
+				} catch (InterruptedException e) {
+					Thread.currentThread().interrupt();
+					throw new RuntimeException(e);
+				}
 			}
 		}); 
 	}

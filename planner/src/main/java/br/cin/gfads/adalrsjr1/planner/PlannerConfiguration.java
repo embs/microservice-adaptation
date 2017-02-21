@@ -56,8 +56,7 @@ public class PlannerConfiguration {
 		try {
 			properties.load(new FileInputStream("planner.properties"));
 		} catch (IOException e) {
-			log.error(e.getMessage());
-			throw new RuntimeException(e);
+			e.printStackTrace();
 		}
 		return properties;
 	}

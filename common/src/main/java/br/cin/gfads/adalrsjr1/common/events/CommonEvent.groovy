@@ -7,11 +7,8 @@ import org.slf4j.LoggerFactory;
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
-@EqualsAndHashCode
 @ToString(includeNames=false,includeFields=true,includePackage=false)
 public abstract class CommonEvent {
 
@@ -26,30 +23,30 @@ public abstract class CommonEvent {
 		this.source = source
 	}
 	
-//	@Override
-//	public int hashCode() {
-//		final int prime = 31;
-//		int result = 1;
-//		result = prime * result + ((source == null) ? 0 : source.hashCode());
-//		return result;
-//	}
-//
-//	@Override
-//	public boolean equals(Object obj) {
-//		if (this == obj)
-//			return true;
-//		if (obj == null)
-//			return false;
-//		if (getClass() != obj.getClass())
-//			return false;
-//		CommonEvent other = (CommonEvent) obj;
-//		if (source == null) {
-//			if (other.source != null)
-//				return false;
-//		} else if (!source.equals(other.source))
-//			return false;
-//		return true;
-//	}
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((source == null) ? 0 : source.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		CommonEvent other = (CommonEvent) obj;
+		if (source == null) {
+			if (other.source != null)
+				return false;
+		} else if (!source.equals(other.source))
+			return false;
+		return true;
+	}
 
 	public def getSource() {
 		source
@@ -62,8 +59,7 @@ public abstract class CommonEvent {
 	
 	Object deserialize(byte[] content) {
 		ObjectMapper mapper = new ObjectMapper()
-		def result = mapper.readValue(content, this.class)
-		return result
+		mapper.readValue(content, this.class)
 	}
 	
 }

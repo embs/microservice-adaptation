@@ -51,7 +51,7 @@ public class LabeledTransitionSystem {
 	}
 	
 	private notifyListeners(LabeledTransitionSystemEvent event) {
-		log.debug "$event"
+//		log.debug "$event"
 		listeners.each { LabeledTransitionSystemListener l ->
 			l.notifyTransition(event)
 		}
@@ -69,7 +69,6 @@ public class LabeledTransitionSystem {
 			builder = new ProcessBuilder("bash", "-c", spotCommand)
 		}
 		else {
-			println "toAKI"
 			builder = new ProcessBuilder(LTL_GENERATOR, "-B", "-D", "--lenient", ltlProperty.toString())
 		}
 		
@@ -87,10 +86,15 @@ public class LabeledTransitionSystem {
 		HOAFParser.parseHOA(bis, consumerStore)
 		StoredAutomaton storedAutomaton = consumerStore.getStoredAutomaton()
 	    
-		bis.reset()
-		HOAFParser.parseHOA(bis, new HOAConsumerPrint(System.out))
-		LabeledTransitionSystem lts = new LabeledTransitionSystem(storedAutomaton, TimeUnit.MICROSECONDS)
+//		bis.reset()
+//		HOAFParser.parseHOA(bis, new HOAConsumerPrint(System.out))
+//		LabeledTransitionSystem lts = new LabeledTransitionSystem(storedAutomaton, TimeUnit.MICROSECONDS)
 		Util.mavericLog(log, this.class, "labeledTrasitionSystemFactory", watch.stop())
+		
+		bis.close()
+		input.close()
+		out.close()
+		
 		return new LabeledTransitionSystem(storedAutomaton, TimeUnit.MICROSECONDS)
 	}
 	
@@ -137,10 +141,16 @@ public class LabeledTransitionSystem {
 	
 	private boolean check(Map token, SymptomEvent symptom) {
 		boolean result = true
-		token.each { key, value ->
-			String symptomResult = symptom.tryGet(key)
-			result &= (symptomResult ==~ /$value/)
-			log.debug "SymptomResult: ${symptomResult} :: value:${value} :: result:${result}"
+		for(def entry in token) {
+			String symptomResult = symptom.tryGet(entry.key)
+			boolean nresult = "$symptomResult" ==~ /$entry.value/ || symptomResult == entry.value
+			if(!nresult) {
+				result = false
+				log.debug "SymptomResult: ${symptomResult} :: value:${entry.value} :: result:${result}"
+				break
+			}
+			
+			log.debug "SymptomResult: ${symptomResult} :: value:${entry.value} :: result:${result}"
 		}
 		return result
 	}
@@ -201,8 +211,8 @@ public class LabeledTransitionSystem {
 	boolean next(SymptomEvent event) {
 		Stopwatch watch = Stopwatch.createStarted()
 		boolean result = transition(currentState, event)
-		Util.mavericLog(log, this.class, "next", watch.stop())
-		return transition(currentState, event)
+//		Util.mavericLog(log, this.class, "next", watch.stop())
+		return result
 	}
 	
 	public static void main(String[] args) {
@@ -244,7 +254,7 @@ public class LabeledTransitionSystem {
 //		SymptomEvent event4 = new SymptomEvent(null, [log:[message:[a:"10", b:"11"]]])
 //		lts.next(event4)
 //			}
-		
+		println "/application_client.1.pfwx2gnw98de7u7onyporuze5" ==~ /.application_client(.)*/
 		println "/client.1.cqzx9brzfgyv96xiii66g9n5m" ==~ /.client(.)*/
 	}
 	

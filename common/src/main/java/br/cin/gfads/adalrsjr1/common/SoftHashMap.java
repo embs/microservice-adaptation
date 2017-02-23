@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 //http://www.java2s.com/Code/Java/Collections-Data-Structure/MapwhichstoresitemsusingSoftReference.htm
+@Deprecated
 public class SoftHashMap<K,V> extends AbstractMap<K, V> {
 
 	private Map<K, SoftValue<V>> map;

@@ -27,7 +27,7 @@ public class ReqRespProperty implements PropertyInstance {
 	private static final Logger log = LoggerFactory
 			.getLogger(ReqRespProperty.class);
 
-	private Map<String, LabeledTransitionSystem> map = new SoftHashMap<>();
+	private Map<String, LabeledTransitionSystem> map = new WeakHashMap<>();
 	private String property;
 
 	public ReqRespProperty(String property) {
@@ -35,6 +35,7 @@ public class ReqRespProperty implements PropertyInstance {
 	}
 
 	private LabeledTransitionSystem getLts(String key) {
+		log.error(map.size()+"");
 		LabeledTransitionSystem lts = map.get(key);
 		if (lts == null) {
 			lts = LabeledTransitionSystem.labeledTransitionSystemFactory(
@@ -52,8 +53,8 @@ public class ReqRespProperty implements PropertyInstance {
  		String key2 = symptom.tryGet("client");
 		LabeledTransitionSystem lts = getLts(key1+"-"+key2);
 		boolean result = lts.next(symptom);
-		Util.mavericLog(log, this.getClass(), "check", watch.stop());
-		return result;
+		Util.mavericLog(log, this.getClass(), "check" + "::" +result , watch.stop());
+		return !result;
 	}
 
 	@Override
@@ -74,13 +75,15 @@ public class ReqRespProperty implements PropertyInstance {
 		// .withRoutingKey("")
 		// .build();
 
+//		PropertyInstance p = new ReqRespProperty(
+//				"G(((.client:(.)*) && (container_name:.(application_)*client(.)*)) ->F((.client:(.)*) && (container_name:.(application_)*server(.)*)))");
 		PropertyInstance p = new ReqRespProperty(
-				"G(((client:(.)*) && (container_name:.client(.)*)) ->F((client:(.)*) && (container_name:.server(.)*)))");
+		"G(((client:null) && (container_name:.(application_)*client(.)*)) ->F((container_name:.(application_)*server(.)*)))");
 		OneByOneProcessingUnit pu = new OneByOneProcessingUnit(p);
 		RabbitMQProcessingUnitWrapper wrapper = new RabbitMQProcessingUnitWrapper(
 				pu);
 
-		ExecutorService executor = Executors.newSingleThreadExecutor(
+		ExecutorService executor = Executors.newSingleThreadExecutor( 
 				Util.threadFactory("rabbitmq-wrapper-processing-unit-reqresp"));
 		executor.execute(wrapper);
 

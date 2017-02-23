@@ -27,11 +27,11 @@ public class SymptomEvent extends CommonEvent {
 	public SymptomEvent(byte[] message) {
 		content = deserialize(message)
 		time = tryGet('timeMillis',Long)
-		
+
 		if(!time) {
 			time = System.currentTimeMillis()
 		}
-		
+
 		source = tryGet('container_id')
 	}
 
@@ -69,7 +69,13 @@ public class SymptomEvent extends CommonEvent {
 		def value = dockerLog["log"]
 
 		if(value != null) {
-			javaLog = mapper.readValue(value, new TypeReference<Map<String, String>>(){})
+			try {
+				javaLog = mapper.readValue(value, new TypeReference<Map<String, String>>(){})
+			}
+			catch(Exception e) {
+				log.error e.message
+				javaLog = new HashMap()
+			}
 		}
 
 		ObjectMapper mapper3 = new ObjectMapper()
@@ -77,7 +83,13 @@ public class SymptomEvent extends CommonEvent {
 		value = javaLog.get("message")
 
 		if(value) {
-			appLog = mapper.readValue(javaLog.get("message"), new TypeReference<Map<String, String>>(){})
+			try{
+				appLog = mapper.readValue(javaLog.get("message"), new TypeReference<Map<String, String>>(){})
+			}
+			catch(Exception e) {
+				log.error e.message
+				appLog= new HashMap()
+			}
 		}
 
 		if(!appLog.empty)
@@ -88,9 +100,9 @@ public class SymptomEvent extends CommonEvent {
 
 		return dockerLog
 	}
-	
+
 	@Override
 	byte[] serialize() {
-		throw new UnsupportedOperationException("Not Implemented yet")		
+		throw new UnsupportedOperationException("Not Implemented yet")
 	}
 }

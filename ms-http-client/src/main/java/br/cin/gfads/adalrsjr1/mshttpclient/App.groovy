@@ -18,8 +18,8 @@ public class App {
 		Map env = System.getenv()
 
 		String destination = env.getOrDefault("SERVER", "localhost")
-		int rate = Integer.parseInt(env.getOrDefault("THROTTLE", "1")) 
-		long MAX_TIME = Long.parseLong(env.getOrDefault("MAX_TIME", "${Long.MAX_VALUE}"))
+		int rate = Integer.parseInt(env.getOrDefault("THROTTLE", "196")) 
+		long MAX_TIME = Long.parseLong(env.getOrDefault("MAX_TIME", "100"))
 		MAX_TIME = MAX_TIME < 0 ? Long.MAX_VALUE : MAX_TIME
 		int cores = Runtime.getRuntime().availableProcessors()
 
@@ -29,14 +29,16 @@ public class App {
 		RateLimiter throttle = RateLimiter.create(rate)
 
 		Stopwatch watch = Stopwatch.createStarted()
+		int count = 0
 		while(watch.elapsed(TimeUnit.SECONDS) <= MAX_TIME) {
 			throttle.acquire()
 			
 			tPool.execute({
+				
 				try {
 					UUID uuid = UUID.randomUUID()
 
-					URL server = new URL("http://${destination}:8080/${System.identityHashCode(this)}-${Thread.currentThread().getId()}/${uuid.toString()}")
+					URL server = new URL("http://${destination}:8080/${System.identityHashCode(this)}-${Thread.currentThread().getId()}/${uuid.toString()}/${System.currentTimeMillis()}")
 					Stopwatch timer = Stopwatch.createStarted()
 					URLConnection connection = server.openConnection()
 					BufferedReader buffReader = new BufferedReader(new InputStreamReader(connection.getInputStream()))
@@ -46,18 +48,21 @@ public class App {
 						log.info input
 					}
 					buffReader.close()
-					log.info "{\"serviceTime\":${timer.elapsed(TimeUnit.MILLISECONDS)}}"
+//					log.info "{\"serviceTime\":${timer.elapsed(TimeUnit.MILLISECONDS)}}"
 					timer.stop()
 				}
 				catch(Exception e) {
 					log.error(e.getMessage());
 					throw new RuntimeException(e);
 				}
+				count++
 			})
+			
 		}
 		
 		watch.stop()
 		
 		tPool.shutdown()
+		tPool.awaitTermination(1, TimeUnit.MINUTES)
 	}
 }

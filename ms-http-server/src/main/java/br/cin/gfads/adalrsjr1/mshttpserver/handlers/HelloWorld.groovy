@@ -76,7 +76,7 @@ class HelloWorld {
 		
 		timer.stop()
 		String str = "{\"client\":\"$client\", \"throughput\":\"${throughput.get()*1000}\", \"latency\":\"$latency\", \"processing\":${timer.elapsed(TimeUnit.MILLISECONDS)}, \"req-id\":\"$reqId\"}"
-		//log.info str
+		log.info str
 		return str
 	}
 	

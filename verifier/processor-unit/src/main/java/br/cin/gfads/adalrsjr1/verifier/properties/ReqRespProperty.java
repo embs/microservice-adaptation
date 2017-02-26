@@ -14,7 +14,6 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Stopwatch;
 
-import br.cin.gfads.adalrsjr1.common.SoftHashMap;
 import br.cin.gfads.adalrsjr1.common.Util;
 import br.cin.gfads.adalrsjr1.common.events.SymptomEvent;
 import br.cin.gfads.adalrsjr1.verifier.PropertyInstance;

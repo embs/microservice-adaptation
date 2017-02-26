@@ -219,19 +219,19 @@ public class RabbitmqDriver<T extends Endpoint> implements EndpointDriver<T> {
 	}
 
 	public static void main(String[] args) throws InterruptedException {
-		EndpointDriver<Endpoint> driver1 = new RabbitmqDriver<>();
-		EndpointBuilder<SenderEndpoint> producer = new EndpointBuilder<>();
-		SenderEndpoint sender = producer.withAddress("localhost")
-			.withPort(5672)
-			.withDurable(false)
-			.withQueueName("p-s")
-			.withTopic("") // only use in pub-sub
-			.withType(TypeEndpoint.PRODUCER)
-			.withCallback(null)
-			.withDriver(driver1)
-			.withBuffer(null)
-			.build();
-
+//		EndpointDriver<Endpoint> driver1 = new RabbitmqDriver<>();
+//		EndpointBuilder<SenderEndpoint> producer = new EndpointBuilder<>();
+//		SenderEndpoint sender = producer.withAddress("localhost")
+//			.withPort(5672)
+//			.withDurable(false)
+//			.withQueueName("p-s")
+//			.withTopic("") // only use in pub-sub
+//			.withType(TypeEndpoint.PRODUCER)
+//			.withCallback(null)
+//			.withDriver(driver1)
+//			.withBuffer(null)
+//			.build();
+//
 		BlockingQueue<byte[]> buffer = new LinkedBlockingQueue<>(10);
 		ExecutorService tpool = Executors.newCachedThreadPool();
 		
@@ -242,64 +242,65 @@ public class RabbitmqDriver<T extends Endpoint> implements EndpointDriver<T> {
 		ReceiverEndpoint receiver1 = consumer1.withAddress("localhost")
 			.withPort(5672)
 			.withDurable(false)
-			.withQueueName("p-s")
+			.withQueueName("fluentd.fanout")
 			.withTopic("")
 			.withType(TypeEndpoint.CONSUMER)
 			.withCallback(receiverCallback1)
 			.withDriver(driver2)
 			.withBuffer(buffer)
 			.build();
-		
-		EndpointDriver<Endpoint> driver3 = new RabbitmqDriver<>();
-		EndpointBuilder<ReceiverEndpoint> consumer2 = new EndpointBuilder<>();
-		EndpointCallback receiverCallback2 = new ConsumerCallback(driver3);
-		receiverCallback2.setBuilder(consumer2);
-		ReceiverEndpoint receiver2 = consumer2.withAddress("localhost")
-			.withPort(5672)
-			.withDurable(false)
-			.withQueueName("p-s")
-			.withTopic("")
-			.withType(TypeEndpoint.CONSUMER)
-			.withCallback(receiverCallback2)
-			.withDriver(driver3)
-			.withBuffer(buffer)
-			.build();
-		
-//		EndpointDriver<Endpoint> driver4 = new RabbitmqDriver<>();
-//		EndpointBuilder<ReceiverEndpoint> consumer3 = new EndpointBuilder<>();
-//		EndpointCallback receiverCallback3 = new ConsumerCallback(driver4);
-//		receiverCallback3.setBuilder(consumer3);
-//		ReceiverEndpoint receiver3 = consumer3.withAddress("localhost")
+//		
+//		EndpointDriver<Endpoint> driver3 = new RabbitmqDriver<>();
+//		EndpointBuilder<ReceiverEndpoint> consumer2 = new EndpointBuilder<>();
+//		EndpointCallback receiverCallback2 = new ConsumerCallback(driver3);
+//		receiverCallback2.setBuilder(consumer2);
+//		ReceiverEndpoint receiver2 = consumer2.withAddress("localhost")
 //			.withPort(5672)
 //			.withDurable(false)
 //			.withQueueName("p-s")
 //			.withTopic("")
 //			.withType(TypeEndpoint.CONSUMER)
-//			.withCallback(receiverCallback3)
-//			.withDriver(driver4)
+//			.withCallback(receiverCallback2)
+//			.withDriver(driver3)
 //			.withBuffer(buffer)
 //			.build();
-		
-		
-//		tpool.execute(() -> {
-//			Random r = new Random();
-//			while(true) {
-//				sender.send((""+System.currentTimeMillis()).getBytes());
-//				try {
-//					Thread.sleep((long) (10 * r.nextDouble()));
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-		
+//		
+////		EndpointDriver<Endpoint> driver4 = new RabbitmqDriver<>();
+////		EndpointBuilder<ReceiverEndpoint> consumer3 = new EndpointBuilder<>();
+////		EndpointCallback receiverCallback3 = new ConsumerCallback(driver4);
+////		receiverCallback3.setBuilder(consumer3);
+////		ReceiverEndpoint receiver3 = consumer3.withAddress("localhost")
+////			.withPort(5672)
+////			.withDurable(false)
+////			.withQueueName("p-s")
+////			.withTopic("")
+////			.withType(TypeEndpoint.CONSUMER)
+////			.withCallback(receiverCallback3)
+////			.withDriver(driver4)
+////			.withBuffer(buffer)
+////			.build();
+//		
+//		
+////		tpool.execute(() -> {
+////			Random r = new Random();
+////			while(true) {
+////				sender.send((""+System.currentTimeMillis()).getBytes());
+////				try {
+////					Thread.sleep((long) (10 * r.nextDouble()));
+////				} catch (InterruptedException e) {
+////					e.printStackTrace();
+////				}
+////			}
+////		});
+//		
 		Random r = new Random();
 		double sum = 0.0;
 		double count = 1.0;
 		while(true) {
 			try {
 				sum += buffer.size();
-				log.trace(new String(buffer.take()) + " " + (sum/count));
+				System.out.println(new String(buffer.take()));
+				//log.trace(new String(buffer.take()) + " " + (sum/count));
 				count++;
 			} catch (InterruptedException e1) {
 				e1.printStackTrace();
@@ -310,13 +311,13 @@ public class RabbitmqDriver<T extends Endpoint> implements EndpointDriver<T> {
 				e.printStackTrace();
 			}
 		}
-		
-		
-
-//		driver1.shutdown();
-//		driver2.shutdown();
-//		driver3.shutdown();
-//		buffer.clear();
+//		
+//		
+//
+////		driver1.shutdown();
+////		driver2.shutdown();
+////		driver3.shutdown();
+////		buffer.clear();
 
 	}
 }

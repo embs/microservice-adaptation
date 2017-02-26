@@ -3,18 +3,20 @@ package br.cin.gfads.adalrsjr1.endpoint.builder;
 import java.util.concurrent.BlockingQueue;
 
 import br.cin.gfads.adalrsjr1.endpoint.Endpoint;
+import br.cin.gfads.adalrsjr1.endpoint.rabbitmq.MaverickBuffer;
 
 public class EndpointBuilder<T extends Endpoint> {
 
 	private String address;
 	private int port;
-	private BlockingQueue<byte[]> buffer;
+	private MaverickBuffer<byte[]> buffer;
 	private String queueName;
 	private boolean durable;
 	private EndpointDriver<T> driver;
 	private TypeEndpoint type;
 	private String topic;
 	private EndpointCallback callback;
+	private int maxPriority;
 
 	public String getAddress() {
 		return address;
@@ -24,7 +26,7 @@ public class EndpointBuilder<T extends Endpoint> {
 		return port;
 	}
 
-	public BlockingQueue<byte[]> getBuffer() {
+	public MaverickBuffer<byte[]> getBuffer() {
 		return buffer;
 	}
 
@@ -34,6 +36,10 @@ public class EndpointBuilder<T extends Endpoint> {
 
 	public boolean isDurable() {
 		return durable;
+	}
+	
+	public int getMaxPriority() {
+		return maxPriority;
 	}
 
 	public EndpointDriver getDriver() {
@@ -63,7 +69,12 @@ public class EndpointBuilder<T extends Endpoint> {
 		return this;
 	}
 
-	public EndpointBuilder<T> withBuffer(BlockingQueue<byte[]> buffer) {
+	public EndpointBuilder<T> withMaxPriority(int maxPriority) {
+		this.maxPriority = maxPriority;
+		return this;
+	}
+	
+	public EndpointBuilder<T> withBuffer(MaverickBuffer<byte[]> buffer) {
 		this.buffer = buffer;
 		return this;
 	}

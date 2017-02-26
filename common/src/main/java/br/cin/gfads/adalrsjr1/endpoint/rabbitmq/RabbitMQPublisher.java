@@ -26,29 +26,27 @@ public class RabbitMQPublisher implements SenderEndpoint {
 		private boolean exchangeDurable;
 		private ExchangeType exchangeType;
 		private int port = 5672;
-		
+
 		public int getPort() {
 			return port;
 		}
-		
+
 		public Builder withPort(int port) {
 			this.port = port;
 			return this;
 		}
-		
+
 		public RabbitMQPublisher build() {
 			RabbitMQPublisher publisher = null;
 			try {
 				publisher = new RabbitMQPublisher(this);
-			}
-			catch(RuntimeException e) {
+			} catch (RuntimeException e) {
 				Thread.sleep(1000);
 				publisher = build();
-			}
-			finally {
+			} finally {
 				return publisher;
 			}
-			
+
 		}
 
 		public String getHost() {
@@ -96,11 +94,11 @@ public class RabbitMQPublisher implements SenderEndpoint {
 			return this;
 		}
 	}
-	
+
 	public static RabbitMQPublisher.Builder builder() {
 		return new RabbitMQPublisher.Builder();
 	}
-	
+
 	private ConnectionFactory factory;
 	private Connection connection;
 	private Channel channel;
@@ -120,9 +118,10 @@ public class RabbitMQPublisher implements SenderEndpoint {
 			connection = factory.newConnection();
 			channel = connection.createChannel();
 
-			channel.exchangeDeclare(getExchangeName(), builder.getExchangeType().name().toLowerCase(), builder.isExchangeDurable());
-		}
-		catch(Exception e) {
+			channel.exchangeDeclare(getExchangeName(), builder.getExchangeType()
+				.name()
+				.toLowerCase(), builder.isExchangeDurable());
+		} catch (Exception e) {
 			log.error(e.getMessage());
 			throw new RuntimeException(e);
 		}
@@ -133,8 +132,7 @@ public class RabbitMQPublisher implements SenderEndpoint {
 		try {
 			channel.close();
 			connection.close();
-		}
-		catch(Exception e) {
+		} catch (Exception e) {
 			log.error(e.getMessage());
 			throw new RuntimeException(e);
 		}
@@ -149,8 +147,7 @@ public class RabbitMQPublisher implements SenderEndpoint {
 		} catch (IOException e) {
 			log.error(e.getMessage());
 			throw new RuntimeException(e);
-		}
-		finally {
+		} finally {
 			return result;
 		}
 	}
@@ -164,27 +161,32 @@ public class RabbitMQPublisher implements SenderEndpoint {
 	}
 
 	public static void main(String[] args) {
-		//("10.0.75.1", "", "java-test", FANOUT, false);
+		// ("10.0.75.1", "", "java-test", FANOUT, false);
 		RabbitMQPublisher pub = RabbitMQPublisher.builder()
-												 .withExchangeDurable(false)
-												 .withExchangeName("java-test")
-												 .withExchangeType(FANOUT)
-												 .withRoutingKey("")
-												 .withHost("10.0.75.1")
-				                                 .build();
+			.withExchangeDurable(false)
+			.withExchangeName("java-test")
+			.withExchangeType(FANOUT)
+			.withRoutingKey("")
+			.withHost("10.0.75.1")
+			.build();
 
-		try(Scanner scanner = new Scanner(System.in)) {
-			while(scanner.hasNext()) {
+		try (Scanner scanner = new Scanner(System.in)) {
+			while (scanner.hasNext()) {
 				String message = scanner.nextLine();
-				if(message.equals("quit")) break;
-				for(int i = 0; i < 100; i++)
-					pub.send((""+i).getBytes());
+				if (message.equals("quit"))
+					break;
+				for (int i = 0; i < 100; i++)
+					pub.send(("" + i).getBytes());
 				System.err.println("[X] Sent >>> " + message);
 			}
-		}
-		finally {
+		} finally {
 			pub.stop();
 		}
+	}
+
+	@Override
+	public Object send(byte[] message, int priority) {
+		throw new UnsupportedOperationException("priority still is not implemented yet");
 	}
 
 }

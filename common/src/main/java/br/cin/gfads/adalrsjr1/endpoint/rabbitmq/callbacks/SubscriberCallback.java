@@ -14,6 +14,7 @@ import com.rabbitmq.client.Envelope;
 
 import br.cin.gfads.adalrsjr1.endpoint.builder.EndpointCallback;
 import br.cin.gfads.adalrsjr1.endpoint.builder.EndpointDriver;
+import br.cin.gfads.adalrsjr1.endpoint.rabbitmq.MaverickBuffer;
 import br.cin.gfads.adalrsjr1.endpoint.rabbitmq.RabbitmqDriver;
 
 /**
@@ -39,7 +40,7 @@ public class SubscriberCallback extends EndpointCallback<DefaultConsumer> {
 	@Override
 	public DefaultConsumer getImpl() {
 		DefaultConsumer consumer = new DefaultConsumer(channel) {
-			private BlockingQueue<byte[]> buffer = builder.getBuffer();
+			private MaverickBuffer<byte[]> buffer = builder.getBuffer();
 			private final int bufferOfferTimeout = Integer
 					.parseInt(System.getProperty("rabbitmq.subscriber.buffer.offer.timeout", "100"));
 			private final int bufferAttempts = Integer
@@ -50,7 +51,7 @@ public class SubscriberCallback extends EndpointCallback<DefaultConsumer> {
 					byte[] body) throws IOException {
 				try {
 					int count = 0;
-					while (!stoped && !buffer.offer(body, bufferOfferTimeout, TimeUnit.MILLISECONDS)) {
+					while (!stoped && !buffer.offer(body, properties.getPriority() , bufferOfferTimeout, TimeUnit.MILLISECONDS)) {
 						if (count < bufferAttempts) {
 							count++;
 							log.warn("trying to put a RabbitMQ message into buffer... try " + count);

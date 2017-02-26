@@ -165,4 +165,9 @@ public class RabbitMQProducer implements SenderEndpoint {
 		}
 	}
 
+	@Override
+	public Object send(byte[] message, int priority) {
+		throw new UnsupportedOperationException("priority still is not implemented yet");
+	}
+
 }

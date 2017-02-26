@@ -9,7 +9,7 @@
 			<!--  <PatternLayout pattern="%d{UNIX} [%t] %level %logger{36} - %msg%n" /> -->
 			<JsonLayout charset="UTF-8" compact="true" eventEol="true"  />
 		</Console>
-		<File name="LogFile" fileName="src/main/resources/logs/all.log"
+		<File name="LogFile" fileName="src/main/resources/logs/server/server.log"
 			immediateFlush="false" append="false">
 			<PatternLayout pattern="%d{UNIX} [%t] %-5level %logger{36} - %msg%n" />
 		</File>
@@ -28,6 +28,7 @@
 		</Logger>
 		<Root level="ALL">
 			<AppenderRef ref="Console" />
+			<AppenderRef ref="LogFile" />
 		</Root>
 	</Loggers>
 </Configuration>

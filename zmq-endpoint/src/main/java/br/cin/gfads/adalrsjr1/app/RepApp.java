@@ -34,8 +34,7 @@ public class RepApp extends AbstractWorker<byte[], byte[]> {
 		try {
 			log.info("processing {} at {}", str, Inet4Address.getLocalHost().getHostAddress());
 		} catch (UnknownHostException e) {
-			log.error(e.getMessage());
-			throw new RuntimeException(e);
+			e.printStackTrace();
 		}
 		return toProcess;
 	}

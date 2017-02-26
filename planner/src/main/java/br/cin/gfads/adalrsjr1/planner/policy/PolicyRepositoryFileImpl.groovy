@@ -5,7 +5,6 @@ import org.slf4j.LoggerFactory;
 
 import br.cin.gfads.adalrsjr1.common.events.ChangeRequestEvent;
 import br.cin.gfads.adalrsjr1.planner.Planner
-import groovy.transform.Memoized
 
 public class PolicyRepositoryFileImpl implements PolicyRepository {
 
@@ -26,7 +25,7 @@ public class PolicyRepositoryFileImpl implements PolicyRepository {
 		})
 	}
 	
-	public synchronized void storePolicy(Policy policy) {
+	public void storePolicy(Policy policy) {
 		String toAppend = policy.serializeToString() + "\n"
 		dataStore.append(toAppend, "UTF-8")
 		policies << policy

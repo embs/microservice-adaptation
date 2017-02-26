@@ -45,8 +45,7 @@ public class DockerServiceUtil {
 //						.build()
 				dockerClient= DefaultDockerClient.fromEnv().build()
 			} catch (DockerCertificateException e) {
-				log.error(e.getMessage());
-				throw new RuntimeException(e);
+				e.printStackTrace()
 			}
 		}
 		return dockerClient
